@@ -45,9 +45,9 @@ class KairosV6Gatekeeper {
             return { valid: false, error: "Facette 'episteme:' absente du tuple." };
         }
 
-        const epistemeMatch = epistemeFacet.match(/episteme:\[σ=([\d.]+),δ=([\d.]+),FC=([\d.]+)\]/);
+        const epistemeMatch = epistemeFacet.match(/episteme:\[(?:σ|sigma)=([\d.]+),(?:δ|delta)=([\d.]+),FC=([\d.]+)\]/i);
         if (!epistemeMatch) {
-            return { valid: false, error: `Syntaxe episteme invalide : '${epistemeFacet}'. Format requis : episteme:[σ=X.XX,δ=X.XX,FC=X.XX]` };
+            return { valid: false, error: `Syntaxe episteme invalide : '${epistemeFacet}'. Format requis : episteme:[σ=X.XX,δ=X.XX,FC=X.XX] ou episteme:[sigma=X.XX,delta=X.XX,FC=X.XX]` };
         }
 
         const sigma = parseFloat(epistemeMatch[1]);

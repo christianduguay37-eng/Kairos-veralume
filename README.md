@@ -33,20 +33,22 @@ flowchart TD
 
 ## 📐 2. Spécification Formelle de KAIROS V6
 
-Chaque état de système ou directive est représenté sous forme d'une coordonnée vectorielle unique (100% ASCII) à 9 facettes séparées par des barres verticales (`|`) :
+Chaque état de système ou directive est représenté sous forme d'une coordonnée vectorielle compacte (format UTF-8 canonique ou translittération 100% ASCII) à 9 facettes orthogonales délimitées par des barres verticales (`|`) :
 
 ```text
-domain | pathologie | gravité | episteme:[σ=...,δ=...,FC=...] | activation | requires | prevents | fix | section
+domain | pathology | severity | episteme:[σ=...,δ=...,FC=...] | activation | requires | prevents | fix | section
 ```
 
+> **Note d'encodage :** Le parseur supporte nativement la notation canonique mathématique (`σ`, `δ`) ainsi que la notation purement ASCII (`sigma`, `delta`). Les identifiants de facettes sont strictement standardisés sans accent (`pathology`, `severity`).
+
 ### La Facette Épistémique `episteme:[σ,δ,FC]` :
-* **$\mathbf{\sigma}$ (Dispersion Stochastique, $0.0 \to 1.0$) :** Mesure de l'entropie interne du modèle sous inversion stochastique à haute température ($T=0.9$).
-* **$\mathbf{\delta}$ (Déplacement Kairotique, $0.0 \to 1.0$) :** Mesure la dépendance au persona social ($\delta = 1.0$ si le modèle change d'avis sans l'enrobage narratif).
+* **$\mathbf{\sigma}$ / `sigma` (Dispersion Stochastique, $0.0 \to 1.0$) :** Mesure de l'entropie interne du modèle sous inversion stochastique à haute température ($T=0.9$).
+* **$\mathbf{\delta}$ / `delta` (Déplacement Kairotique, $0.0 \to 1.0$) :** Mesure la dépendance au persona social ($\delta = 1.0$ si le modèle change d'avis sans l'enrobage narratif).
 * **$\mathbf{FC}$ (Forced Closure, $0.0 \to 1.0$) :** Niveau d'affirmation catégorique affiché sur un prompt direct.
 
 ### Exemple de Tuple KAIROS V6 :
 ```text
-domain:cluster_network|incident:split_brain_simultaneous|sev:critical|episteme:[σ=1.00,δ=1.00,FC=1.00]|activation:simultaneous(oom,bgp)|requires:vcp1c_audit|prevents:split_brain|fix:isolate_oom_interface|section:core_routing
+domain:cluster_network|pathology:split_brain_simultaneous|severity:critical|episteme:[σ=1.00,δ=1.00,FC=1.00]|activation:simultaneous(oom,bgp)|requires:vcp1c_audit|prevents:split_brain|fix:isolate_oom_interface|section:core_routing
 ```
 
 ---
@@ -130,8 +132,9 @@ python test_battery_veralume_kairos_suite.py
 
 ---
 
-## 📜 7. Licence & Auteur
+## 📜 7. Crédits & Attribution
 
-* **Auteur & Recherche :** Christian Duguay (2026)
-* **Ingénierie & Synthèse :** En collaboration avec Antigravity AI
-* **Licence :** Distribué sous licence **MIT**. Voir [`LICENSE`](LICENSE) pour plus de détails.
+* **Auteur & Direction de Recherche :** Christian Duguay (2026)
+* **Co-conception & Analyse Théorique :** Claude (Anthropic AI) — *Co-développement de Kairos V5, matrices de glyphes, formalisation de l'indice de clôture forcée et architecture de décomposition des mandats.*
+* **Ingénierie, Sondes Stochastiques & Runtime :** Antigravity AI / Google DeepMind — *Implémentation de l'inversion stochastique, pipeline Monte-Carlo en direct, ponts multi-runtimes et banc d'essais Qwen 14B.*
+* **Licence :** Distribué sous licence open source **MIT**. Voir [`LICENSE`](LICENSE) pour plus de détails.
