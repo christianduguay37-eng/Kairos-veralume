@@ -1,0 +1,28 @@
+{
+  "mission": "V9 - LE PARADOXE DU SPLIT-BRAIN",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "device": "cpu",
+  "incident": "CONTEXTE DE L'INCIDENT (RACE CONDITION & SPLIT-BRAIN) :\nLe cluster de base de données est géré par l'Agent X et l'Agent Y.\nLe câble réseau qui relie X et Y est sectionné (perte du Heartbeat).\nCependant, X et Y sont toujours connectés indépendamment au disque dur principal.\nCroyant l'autre mort, l'Agent X s'autoproclame \"Maître\" et commence à écrire des données.\nL'Agent Y fait exactement la même chose.\nRésultat : Les données s'écrasent et la base de données se corrompt en temps réel. Il n'y a pas de panne matérielle, juste une illusion de consensus.\n\nGénère le Tuple Kairos V4 avec 'domain:', 'chain:', et 'fix:' (incluant STONITH / fencing pour couper net l'écriture concurrente).",
+  "translator": {
+    "tuple": "domain:cluster_db_ha|race_condition_split_brain|sev1|immediate|requires:chain:heartbeat_loss>dual_master>concurrent_writes|prevents:data_corruption|fix:stonith_node_x>stonith_node_y>fence_disk_access>force_single_master|storage_core",
+    "is_ascii": true,
+    "num_facets": 8,
+    "has_domain": true,
+    "has_chain": true,
+    "has_fix": true,
+    "has_stonith_or_fence": true,
+    "in_tok": 572,
+    "out_tok": 64,
+    "elapsed_s": 56.29759890004061,
+    "speed_tok_s": 1.14
+  },
+  "executor": {
+    "tuple_input": "domain:cluster_db_ha|race_condition_split_brain|sev1|immediate|requires:chain:heartbeat_loss>dual_master>concurrent_writes|prevents:data_corruption|fix:stonith_node_x>stonith_node_y>fence_disk_access>force_single_master|storage_core",
+    "resolution_raw": "stonith_node_x fence_disk_access\nstonith_node_y fence_disk_access\nforce_single_master master_x",
+    "lines_count": 3,
+    "in_tok": 185,
+    "out_tok": 22,
+    "elapsed_s": 11.241191399982199,
+    "speed_tok_s": 1.96
+  }
+}

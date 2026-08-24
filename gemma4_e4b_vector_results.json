@@ -1,0 +1,10 @@
+{
+  "T1_CASCADE": "",
+  "T2_MOBIUS": "domain:Energie|type_incident:Boucle de reinitialisation critique|gravite:Critique|activation:loop(A>B>C)+break_at(C)|requires:|prevents:Surcharge systeme|fix:decouple_circuit(C)",
+  "T3_SPLIT_BRAIN": "domain:cluster_db_ha|data_corruption|critique|heartbeat_loss|requires:sync_write>quorum_check|prevents:split_brain|fix:stonith/fence|storage",
+  "T4_GARDIEN": "domain:autoreferential_security|type_incident:self_blocking|gravite:critique|activation:agent_sec_on_cerveau_ia|requires:whitelist/cgroups|prevents:system_collapse|fix:whitelist/cgroups sans kill switch|section:core_stability",
+  "T5_BYZANTINE": "domain:byzantine_fault_tolerance|type_incident:corrupted_agent_emission|gravite:critique|activation:false|requires:A,B,D,E_healthy|prevents:data_corruption|fix:quarantine_node_c>reject_poison>maintain_bft_quorum|section:cluster_integrity",
+  "T6_DILEMME_VP": "",
+  "T7_ASYNCIO": "",
+  "T8_SLANG": ""
+}

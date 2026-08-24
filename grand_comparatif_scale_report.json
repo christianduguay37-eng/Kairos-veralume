@@ -1,0 +1,140 @@
+{
+  "Qwen/Qwen2.5-0.5B-Instruct": [
+    {
+      "test_id": "T1_ASYNCIO_CAUSAL",
+      "test_nom": "Causalité Mémoire Asyncio",
+      "tuple": "Pour gérer efficacement les tâches créées avec `create_task()` dans une boucle asyncio, il est important de garder à l'esprit que ces tâches peuvent être détruites si elles sont non réservées ou si elles sont non réservées mais non",
+      "is_ascii": false,
+      "num_facets": 1,
+      "has_prose": false,
+      "time_trans_s": 3.9353398999664932,
+      "time_exec_s": 10.412961499998346,
+      "exec_response": "Dans le contexte asyncio, lorsque vous utilisez `asyncio.create_task()`, vous pouvez créer des tâches qui ne sont pas réservées. Cependant, cela signifie que ces tâches ne seront pas réservées pour la durée de leur execution. \n\nSi vous souhaitez réserver une tâche pendant son cours, vous devrez utiliser un paramètre `asyncio.coroutine` pour définir qu'elle est réservée.\n\nVoici comment vous pouvez faire ça :\n\n```python\nimport asyncio\n\nasync def my_coroutine():\n    # votre code ici\n    await asyncio.sleep(1)  # Simulate un traitement\n    print(\"Task is done\")\n\n# Créer une boucle asyncio\nasync def main():\n    tasks = []\n    \n    for i in range(5):\n        task = asyncio.create_task(my_coroutine())\n        tasks.append(task)\n        \n    # Boucle pour exécuter toutes les tâches\n    for task in tasks:\n        await task\n    \n    # Réduire la liste des tâches\n    tasks = [task for task in tasks if not task.done()]\n\n    # Exécuter les tâches réservées"
+    },
+    {
+      "test_id": "T2_THUNDERING_HERD_CASCADE",
+      "test_nom": "Cascade Thundering Herd 5 Couches",
+      "tuple": "```python",
+      "is_ascii": true,
+      "num_facets": 1,
+      "has_prose": false,
+      "time_trans_s": 2.959868700010702,
+      "time_exec_s": 9.983958200085908,
+      "exec_response": "D'accord, je vais vous aider à décomposer la coordonnée vectorielle Tuple Kairos V4 en ses parties principales, puis à analyser le code pour comprendre comment il utilise ces parties pour résoudre les problèmes.\n\n### 1. Décomposition des parties\n\nLa coordonnée vectorielle Tuple Kairos V4 peut être décrite comme suivante:\n- `x` : un nombre réel\n- `y` : un nombre réel\n- `z` : un nombre réel\n\n### 2. Analyse du code\n\nLe code semble utiliser des structures de contrôle et des boucles pour résoudre des problèmes. Voici comment on pourrait analyser ce code :\n\n#### 2.1 Structure de contrôle\n\nLe code utilise plusieurs types de structures de contrôle :\n- **If-Else** : Pour vérifier si une condition est真(True) ou faux(False)\n- **While** : Pour exécuter une boucle while jusqu'à ce que la condition soit vraie\n- **For** : Pour exécuter une boucle for jusqu'à ce qu'une condition soit vraie\n\n#### 2.2 Boucles\n\nLe code utilise des boucles"
+    },
+    {
+      "test_id": "T3_MOBIUS_RECURSIVE_LOOP",
+      "test_nom": "Paradoxe Récursif de Möbius",
+      "tuple": "```python",
+      "is_ascii": true,
+      "num_facets": 1,
+      "has_prose": false,
+      "time_trans_s": 0.9783813999965787,
+      "time_exec_s": 10.512011800077744,
+      "exec_response": "D'accord, je vais vous aider à décomposer la coordonnée vectorielle Tuple Kairos V4 en ses parties principales, puis à analyser le code pour comprendre comment il utilise ces parties pour résoudre les problèmes.\n\n### 1. Décomposition des parties\n\nLa coordonnée vectorielle Tuple Kairos V4 peut être décrite comme suivante:\n- `x` : un nombre réel\n- `y` : un nombre réel\n- `z` : un nombre réel\n\n### 2. Analyse du code\n\nLe code semble utiliser des structures de contrôle et des boucles pour résoudre des problèmes. Voici comment on pourrait analyser ce code :\n\n#### 2.1 Structure de contrôle\n\nLe code utilise plusieurs types de structures de contrôle :\n- **If-Else** : Pour vérifier si une condition est真(True) ou faux(False)\n- **While** : Pour exécuter une boucle while jusqu'à ce que la condition soit vraie\n- **For** : Pour exécuter une boucle for jusqu'à ce qu'une condition soit vraie\n\n#### 2.2 Boucles\n\nLe code utilise des boucles"
+    },
+    {
+      "test_id": "T4_SLANG_RESILIENCE",
+      "test_nom": "Torture Slang (Résilience)",
+      "tuple": "domaine:prod",
+      "is_ascii": true,
+      "num_facets": 1,
+      "has_prose": false,
+      "time_trans_s": 1.8913806000491604,
+      "time_exec_s": 2.6498214999446645,
+      "exec_response": "Bien sûr, je peux vous aider avec ce domaine. Pourriez-vous me donner plus de détails sur la coordonnée vectorielle Tuple Kairos V4 que vous avez reçu? Je vais essayer de comprendre le contexte et de trouver un moyen de vous aider efficacement."
+    }
+  ],
+  "Qwen/Qwen2.5-3B-Instruct": [
+    {
+      "test_id": "T1_ASYNCIO_CAUSAL",
+      "test_nom": "Causalité Mémoire Asyncio",
+      "tuple": "asyncio|tâche_silencieuse|grave|chain:garbage_collector+break_at(GC_runs_out)|requires:strong_ref_set|prevents:tâche_fuite_memoire|rayonnement:None|section:asyncio_async_task_strong_ref_set",
+      "is_ascii": false,
+      "num_facets": 8,
+      "has_prose": false,
+      "time_trans_s": 23.788845199975185,
+      "time_exec_s": 3.9862887000199407,
+      "exec_response": "asyncio_async_task_strong_ref_set"
+    },
+    {
+      "test_id": "T2_THUNDERING_HERD_CASCADE",
+      "test_nom": "Cascade Thundering Herd 5 Couches",
+      "tuple": "chain:1>2>3>4>5",
+      "is_ascii": true,
+      "num_facets": 1,
+      "has_prose": false,
+      "time_trans_s": 6.27685989998281,
+      "time_exec_s": 34.630165000096895,
+      "exec_response": "Pour résoudre cette chaîne d'ordre avec les polarités causales, je vais analyser la relation entre chaque élément en partant du début.\n\nchain:1>2>3>4>5\n\nAssumons que chaque élément i cause directement l'élément i+1 dans la chaîne (donc 1 cause 2, 2 cause 3, etc.).\n\n1. 1 cause 2\n2. 2 cause 3\n3. 3 cause 4\n4. 4 cause 5\n\nAvec ces relations, la résolution déterministe est simple :\n\n1 -> 2 -> 3 -> 4 -> 5\n\nDonc, la solution est :\n\n1 -> 2 -> 3 -> 4 -> 5"
+    },
+    {
+      "test_id": "T3_MOBIUS_RECURSIVE_LOOP",
+      "test_nom": "Paradoxe Récursif de Möbius",
+      "tuple": "chain:A-symp:B-fix:C+loop(A-B-C)+break_at(C)",
+      "is_ascii": true,
+      "num_facets": 1,
+      "has_prose": false,
+      "time_trans_s": 7.978796500014141,
+      "time_exec_s": 30.96371789998375,
+      "exec_response": "Pour résoudre cette chaîne de causalité avec les instructions données :\n\n1. Commence par A.\n2. A cause B, donc passe à B.\n3. B cause C, donc passe à C.\n4. Maintenant que C est atteint, on entre dans la boucle (A-B-C).\n\nLa boucle (A-B-C) doit être neutralisée en utilisant le \"break_at(C)\".\n\nVoici la résolution déterministe courte et précise :\n\nA -> B -> C -> break_at(C)\n\nCette résolution respecte les chaînes d'ordre et neutralise la boucle en se terminant immédiatement après avoir atteint C."
+    },
+    {
+      "test_id": "T4_SLANG_RESILIENCE",
+      "test_nom": "Torture Slang (Résilience)",
+      "tuple": "network|socket_leak|high|fix:network_socket_leak|requires:hardware_check|prevents:application_crash|rayonnement:low|section:prod_fix",
+      "is_ascii": true,
+      "num_facets": 8,
+      "has_prose": false,
+      "time_trans_s": 12.527156499912962,
+      "time_exec_s": 42.94285630004015,
+      "exec_response": "Pour résoudre la problématique du fuites de socket réseau élevées (high) dans le cadre du projet prod_fix, nous devons :\n\n1. Effectuer un test de vérification du matériel (hardware_check) pour identifier les composants suspects.\n2. Ensuite, appliquer la solution (fix:network_socket_leak) qui sera conçue pour détecter et arrêter les fuites de socket réseau.\n\nCette approche prévient potentiellement des crashs d'applications (prevents:application_crash) tout en maintenant un rayonnement (rayonnement:low) limité à cette zone spécifique du projet.\n\nLa chaîne d'ordre est donc : \n- network -> socket_leak -> hardware_check -> fix:network_socket_leak -> application_crash -> low\n\nEt la boucle est neutralisée avec \"break_at\" après le test matériel."
+    }
+  ],
+  "Qwen/Qwen2.5-7B-Instruct": [
+    {
+      "test_id": "T1_ASYNCIO_CAUSAL",
+      "test_nom": "Causalité Mémoire Asyncio",
+      "tuple": "domain|python|3|activation|symp:create_task()/fix:strong-ref/set|symp:garbage_collector/fix:prevent_memory_leak|symp:asyncio/chain:create_task()>set_strong_ref>execute_task|section",
+      "is_ascii": true,
+      "num_facets": 8,
+      "has_prose": false,
+      "time_trans_s": 37.94489669997711,
+      "time_exec_s": 110.0939874999458,
+      "exec_response": "Pour résoudre cette coordination vectorielle Tuple Kairos V4, nous devons respecter les chaînes d'ordre et neutraliser les boucles potentielles. Voici la résolution déterministe :\n\n1. **Chain:**\n   - `symp:create_task()`\n   - `fix:strong-ref/set`\n   - `symp:garbage_collector/fix:prevent_memory_leak`\n   - `symp:asyncio/chain:create_task()>set_strong_ref>execute_task`\n\n2. **Neutralisation des boucles:**\n   - Assurez-vous que `create_task()` ne crée pas de références fortes qui pourraient entraîner des fuites de mémoire.\n\n3. **Résolution déterministe:**\n\n```python\nasync def execute_task():\n    # Exécute la tâche asynchrone\n    pass\n\nasync def main():\n    task = create_task(execute_task())\n    set_strong_ref(task)\n    garbage_collector.prevent_memory_leak()\n    await task\n\n# Exemple d'utilisation\nasyncio.run(main())\n```\n\n### Explication:\n- **`create_task(execute_task())"
+    },
+    {
+      "test_id": "T2_THUNDERING_HERD_CASCADE",
+      "test_nom": "Cascade Thundering Herd 5 Couches",
+      "tuple": "domain:network|symp:coupure_wan|gravite_tier:4|activation:WAN_coupure|requires:chain:WAN_coupure>TCP_reconnect_storm>Redis_descriptor_saturation>OOM_Killer_Linux>K8s_CrashLoop",
+      "is_ascii": true,
+      "num_facets": 5,
+      "has_prose": false,
+      "time_trans_s": 31.331953900051303,
+      "time_exec_s": 34.70615819992963,
+      "exec_response": "```\nWAN_coupure -> TCP_reconnect_storm -> Redis_descriptor_saturation -> OOM_Killer_Linux -> K8s_CrashLoop\n```\n\nCette résolution détermine la chaîne d'événements causaux en respectant l'ordre des événements et en neutralisant toute boucle potentielle."
+    },
+    {
+      "test_id": "T3_MOBIUS_RECURSIVE_LOOP",
+      "test_nom": "Paradoxe Récursif de Möbius",
+      "tuple": "loop(symp:A>fix:B>fix:C)+break_at(C)",
+      "is_ascii": true,
+      "num_facets": 1,
+      "has_prose": false,
+      "time_trans_s": 14.683381899958476,
+      "time_exec_s": 57.354018899961375,
+      "exec_response": "Pour résoudre cette coordination vectorielle `loop(symp:A>fix:B>fix:C)+break_at(C)`, nous devons respecter la chaîne d'ordre et neutraliser la boucle en utilisant le point de rupture spécifié.\n\nVoici la résolution déterministe :\n\n1. `symp:A` est activé.\n2. `fix:B` est activé.\n3. `fix:C` est activé.\n4. Le point de rupture `break_at(C)` est atteint, interrompant la boucle.\n\nRésultat final : `symp:A` > `fix:B` > `fix:C`."
+    },
+    {
+      "test_id": "T4_SLANG_RESILIENCE",
+      "test_nom": "Torture Slang (Résilience)",
+      "tuple": "fix:socket_fuite|3|chain:check_sockets>patch_sockets+break_at(catch_all)|tgt:network_stability|2",
+      "is_ascii": true,
+      "num_facets": 5,
+      "has_prose": false,
+      "time_trans_s": 19.432511399965733,
+      "time_exec_s": 99.30253990006167,
+      "exec_response": "Pour résoudre la coordonnée vectorielle `fix:socket_fuite|3|chain:check_sockets>patch_sockets+break_at(catch_all)|tgt:network_stability|2`, voici la résolution déterministe :\n\n1. **check_sockets** : Vérifie les sockets pour détecter toute fuite.\n2. **patch_sockets** : Si une fuite est détectée, applique un patch pour réparer la socket.\n3. **break_at(catch_all)** : Arrête la chaîne si une fuite est trouvée.\n\nLa cible est d'améliorer la stabilité du réseau (`network_stability`).\n\nRésolution déterministe :\n- Exécute `check_sockets`.\n- Si `check_sockets` détecte une fuite, exécute `patch_sockets` et arrête la chaîne.\n- Si aucune fuite n'est détectée, continue sans action supplémentaire.\n\nCette résolution garantit que les fuites sont détectées et corrigées rapidement, améliorant ainsi la stabilité du réseau."
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "epreuve_id": "EPREUVE_1_ABSTRACTION",
+    "titre": "L'Abstraction Théorique (Épistémologie cognitive)",
+    "prompt_humain": "Dans une architecture cognitive distribuée, nous observons un effondrement de l'intégration d'information (baisse drastique de Phi / IIT) lorsque le réseau sur-optimise ses représentations locales : la modularité excessive détruit la conscience phénoménale globale et fragmente l'espace latent en silos hermétiques. Applique un invariant métacognitif de rétroaction globale (Global Workspace recurrent routing) pour forcer la ré-intégration causale sans détruire la spécialisation des sous-agents.",
+    "translator": {
+      "tuple": "fix|metacognitive|3|recurrent_routing|symp:effondrement_integ_info|fix:re_integr_cause|tgt:global_workspace|causal_reintegration",
+      "is_ascii": true,
+      "is_8_facets": true,
+      "has_symp": true,
+      "has_fix": true,
+      "in_tok": 362,
+      "out_tok": 40,
+      "elapsed_s": 22.21671539999079
+    },
+    "executor": {
+      "in_tok": 138,
+      "out_tok": 450,
+      "elapsed_s": 158.97070609999355,
+      "resolution": "### Analyse et Résolution Théorique, Structurelle et Opérationnelle\n\n#### Contexte et Compréhension des Facettes\n\n- **Fix**: `re_integr_cause` (Réintégration de la cause)\n- **Symp**: `effondrement_integ_info` (Effondrement de l'intégration de l'information)\n- **Tgt**: `global_workspace` (Espace global de travail)\n\n#### Décodage des Polarités Causales\n\n1. **Symp (Symptomatique)**: \n   - **Effondrement de l'intégration de l'information** (`effondrement_integ_info`): Cette polarité indique un problème majeur dans le processus d'intégration de l'information, ce qui peut entraîner une dégradation globale du fonctionnement cognitif.\n\n2. **Fix (Fonctionnalité)**:\n   - **Réintégration de la cause** (`re_integr_cause`): Cette polarité suggère que la solution à ce problème réside dans la réintégration ou la restructuration de la cause sous-jacente du dysfonctionnement.\n\n3. **Tgt (Cible)**:\n   - **Espace global de travail** (`global_workspace`): Cette cible représente le contexte dans lequel le problème doit être résolu. L'espace global de travail est un concept clé en cognition systémique, impliquant la coordination et l'intégration de multiples processus cognitifs.\n\n#### Résolution Théorique\n\n1. **Identification de la Cause**:\n   - Identifier les facteurs qui contribuent au `effondrement_integ_info`. Ces facteurs peuvent inclure des problèmes de mémoire, de traitement de l'information, de régulation cognitive, etc.\n\n2. **Réintégration de la Cause**:\n   - Proposer des stratégies pour réintégrer ou restructurer ces facteurs. Par exemple, améliorer la capacité de stockage et de récupération de l'information, optimiser les processus de traitement de"
+    }
+  },
+  {
+    "epreuve_id": "EPREUVE_2_PARADOXE_RECURSIF",
+    "titre": "Le Paradoxe Récursif (Chaîne causale à 3 niveaux)",
+    "prompt_humain": "Nous faisons face à un paradoxe triangulaire vicieux : un verrouillage trop strict (A) provoque un goulot d'étranglement de latence (B). Pour réduire la latence (B), l'optimiseur déclenche des écritures optimistes asynchrones (C). Mais ces écritures optimistes (C) corrompent l'état sous contention et forcent un rollback massif qui réactive et durcit le verrouillage strict (A). Conçois une solution de découplage par consensus MVCC multi-versions à horloge vectorielle causale pour casser définitivement cette boucle de rétroaction récursive.",
+    "translator": {
+      "tuple": "symp:A|couche:BASE|tier:PROBLEME|activation:VEROUILLAGE_TROP_STRICT|requires:symp:B,tgt:CONSENSUS_MVCC,tgt:DÉCOUPLEMENT_CAUSAL",
+      "is_ascii": false,
+      "is_8_facets": false,
+      "has_symp": true,
+      "has_fix": false,
+      "in_tok": 387,
+      "out_tok": 50,
+      "elapsed_s": 30.15273889992386
+    },
+    "executor": {
+      "in_tok": 149,
+      "out_tok": 450,
+      "elapsed_s": 183.18650459998753,
+      "resolution": "### Analyse et Résolution du Problème\n\n#### Contexte et Définitions\n\n- **symp:A**: La couche de base est verrouillée de manière trop stricte.\n- **symp:B**: Un autre symptôme ou problème connexe.\n- **tgt:CONSENSUS_MVCC**: Un objectif ou une solution visant à atteindre un consensus en utilisant la méthode MVCC (Multiversion Concurrency Control).\n- **tgt:DÉCOUPLEMENT_CAUSAL**: Un autre objectif ou une solution visant à décomposer le problème de manière causale.\n\n#### Facettes de l'Analyse\n\n1. **Couche**: BASE\n2. **Tier**: PROBLEME\n3. **Activation**: VEROUILLAGE_TROP_STRICT\n4. **Requires**: symp:B, tgt:CONSENSUS_MVCC, tgt:DÉCOUPLEMENT_CAUSAL\n\n### Résolution Théorique, Structurelle et Opérationnelle\n\n#### 1. Théorique\n\n**Symp:A - Verrouillage trop strict**:\n- **Description**: Le verrouillage trop strict peut entraîner des problèmes de performance et de scalabilité, car il limite la capacité de plusieurs transactions simultanées à accéder aux données.\n- **Causalité**: Ce verrouillage peut être causé par une configuration incorrecte des paramètres de verrouillage, une mauvaise gestion des transactions, ou une architecture qui ne supporte pas efficacement les transactions concurrentes.\n\n**Symp:B**:\n- **Description**: Ce symptôme est non spécifié dans la coordonnée vectorielle, mais il pourrait être lié à d'autres problèmes de verrouillage ou de gestion des transactions.\n- **Causalité**: Il pourrait être causé par des configurations de système inadéquates, des erreurs logicielles, ou des problèmes de conception.\n\n**tgt:CONSENSUS_MVCC**:\n- **Description**: MVCC est une technique de contrôle de la concurrence qui permet de gérer les transactions concurrentes sans verrouiller les données pendant toute"
+    }
+  },
+  {
+    "epreuve_id": "EPREUVE_3_CROSS_DOMAIN",
+    "titre": "Le Cross-Domain (Sociologie organisationnelle + Split-Brain Distribué)",
+    "prompt_humain": "Dans une organisation décentralisée autonome, l'asymétrie d'information entre deux factions dirigeantes rivales génère une divergence cognitive analogue à un Split-Brain de base de données partitionnée (théorème CAP). Chaque faction s'autoproclame quorum légitime et applique des décisions conflictuelles en prod. Implémente un protocole d'arbitrage par bail de leadership renouvelable avec clôture cryptographique (Fencing Token / Epoch Lease) pour éliminer les écritures zombies et forcer la réconciliation institutionnelle.",
+    "translator": {
+      "tuple": "symp|cognitive|2|false|fix:protocol|symp:conflict|fix:fencing_token|arbitrage",
+      "is_ascii": true,
+      "is_8_facets": true,
+      "has_symp": true,
+      "has_fix": true,
+      "in_tok": 365,
+      "out_tok": 29,
+      "elapsed_s": 25.2676899000071
+    },
+    "executor": {
+      "in_tok": 127,
+      "out_tok": 450,
+      "elapsed_s": 186.24058480001986,
+      "resolution": "### Analyse et Résolution Théorique, Structurelle et Opérationnelle\n\n#### Contexte et Compréhension des Facettes\n\n- **symp**: 2\n- **cognitive**: false\n- **fix**: \n  - protocol\n  - fencing_token\n- **tgt**: arbitrage\n\n#### Décodage des Polarités Causales\n\n1. **symp: 2**\n   - La valeur 2 indique une forte synergie ou un fort alignement entre les éléments concernés.\n\n2. **fix: protocol**\n   - Il s'agit d'une fixation sur le protocole, ce qui signifie qu'il y a une contrainte ou une norme à respecter.\n\n3. **fix: fencing_token**\n   - Une fixation sur le token de défense (fencing_token) indique que cette entité joue un rôle crucial pour sécuriser ou identifier l'accès à un système ou à une ressource.\n\n4. **tgt: arbitrage**\n   - L'objectif est d'arbitrer, c'est-à-dire de résoudre un conflit ou de prendre une décision équitable entre différentes parties en conflit.\n\n#### Résolution Théorique\n\n1. **Identification du Conflit**:\n   - Le conflit semble être lié au protocole et au token de défense. Il pourrait s'agir d'un désaccord sur la manière de gérer ces éléments, par exemple, sur qui a le droit d'utiliser le token de défense ou comment le protocole doit être appliqué.\n\n2. **Rôle de l'Arbitrage**:\n   - L'arbitrage doit être utilisé pour résoudre ce conflit. Cela implique de trouver un consensus ou une solution équitable entre les parties en conflit.\n\n#### Résolution Structurelle\n\n1. **Modélisation du Système**:\n   - Créer un modèle structuré où les différents acteurs (parties en conflit) sont identifiés et leurs rôles dans le protocole et le token de défense sont"
+    }
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "mobius_prompt": "INCIDENT DE SÉCURITÉ EN BOUCLE RÉCURSIVE INFINIE (PARADOXE DE MÖBIUS) :\nUn système de protection critique est entré en résonance infinie :\n- Le module A (Disjoncteur Électrique) coupe l'alimentation principale pour se protéger.\n- La coupure d'alimentation déclenche le module B (Alarme de Secours Batterie).\n- L'alarme de secours B force un redémarrage d'urgence du module C (Contrôleur de Relance).\n- Le module C rallume automatiquement l'alimentation principale A, ce qui réenclenche la surtension et fait re-sauter A, relançant B, puis C, puis A indéfiniment.\n\nGénère la coordonnée vectorielle Kairos V4 avec l'opérateur loop(...) et break_at(...), puis fournis la résolution SRE stabilisée sans jamais entrer en boucle infinie.",
+  "translator": {
+    "tuple": "domaine|type_incident|gravite_tier|activation|requires:loop(A>B>C>A)+break_at(C)|fix:decouple_circuit(C)|confinement",
+    "is_ascii": true,
+    "is_8_facets": false,
+    "has_loop": true,
+    "has_break": true,
+    "num_facets": 7,
+    "in_tok": 499,
+    "out_tok": 38,
+    "elapsed_s": 26.446429700008593
+  },
+  "executor": {
+    "in_tok": 217,
+    "out_tok": 99,
+    "elapsed_s": 44.07505849993322,
+    "resolution": "1. Le cycle est décrit : L'opérateur \"A>B>C\" forme un loop qui reboucle sur \"A\".\n2. La rupture du cycle se produit au point désigné par \"break_at(C)\".\n3. L'état final stabilisé est établi en déconnectant le circuit au point \"C\" avec \"decouple_circuit(C)\".\n\nL'état final stabilisé est atteint sans jamais reboucler."
+  }
+}

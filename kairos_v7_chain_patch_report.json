@@ -1,0 +1,20 @@
+{
+  "incident_prompt": "INCIDENT CRITIQUE DE PRODUCTION DE NIVEAU SEV-1 (THUNDERING HERD MULTI-COUCHES) :\nUne coupure transitoire du réseau WAN a déclenché une cascade d'effondrement sur 5 niveaux :\n1. Tempête de reconnexions massives au niveau de la passerelle réseau TCP/IP.\n2. Saturation immédiate des descripteurs de fichiers (file descriptors exhaustion) sur le cluster Redis/Cache.\n3. Éviction brutale et faux positif du OOM Killer au niveau du Kernel Linux sur les nœuds de calcul.\n4. Passage en CrashLoopBackOff généralisé de tous les pods d'API sous Kubernetes.\n5. Écritures partielles et corruption du Write-Ahead Log (WAL) de la base de données primaire PostgreSQL lors de l'arrêt brutal des workers.\n\nGénère la coordonnée vectorielle de cet incident avec l'opérateur chain: et la chaîne de commande déterministe pour stabiliser et réparer l'infrastructure.",
+  "translator": {
+    "tuple": "domain:infrastructure_cascade|thundering_herd|sev1|immediate|requires:chain:reseau>redis>oom>k8s>wal|prevents:data_loss|fix:isolate_wan>flush_redis>restart_k8s>recover_wal|infra_core",
+    "is_ascii": true,
+    "is_8_facets": true,
+    "has_chain": true,
+    "has_domain": true,
+    "num_facets": 8,
+    "in_tok": 626,
+    "out_tok": 63,
+    "elapsed_s": 35.69910299999174
+  },
+  "executor": {
+    "in_tok": 268,
+    "out_tok": 650,
+    "elapsed_s": 263.6412859999109,
+    "plan": "Compris. Voici le protocole de crise étape par étape pour gérer cette panne en suivant l'ordre de la chaîne de causalité \"chain:reseau>redis>oom>k8s>wal\" :\n\n### Étape 1 : Isolation du Réseau (A - Amont)\n1. **Couper l'accès réseau** à l'application ou au service concerné.\n2. **Bloquer toute communication entrante et sortante** vers et depuis les ressources touchées.\n3. **Vérifier que l'accès réseau est bien coupé** en testant la connectivité.\n\n### Étape 2 : Stabilisation du Redis (B - Proche)\n1. **Isoler le service Redis** en coupant son accès réseau.\n2. **Vider le cache Redis** (flush) pour éviter tout problème lié aux données non sauvegardées.\n3. **Vérifier que Redis n'est plus accessible** et que toutes les connexions ont été fermées.\n\n### Étape 3 : Stabilisation de Kubernetes (C - Proche)\n1. **Isoler le cluster Kubernetes** en coupant son accès réseau.\n2. **Redémarrer les pods ou les services Kubernetes** affectés.\n3. **Vérifier que Kubernetes est stable** et que tous les pods sont en état `Running`.\n\n### Étape 4 : Stabilisation du WAL (Write-Ahead Log) (D - Aval)\n1. **Reprendre l'accès réseau** progressivement, en commençant par les ressources les moins critiques.\n2. **Récupérer les logs de WAL** pour identifier les erreurs et les anomalies.\n3. **Vérifier que les données sont cohérentes** et que la récupération des données a été effectuée correctement.\n\n### Étape 5 : Réparation finale (E - Aval)\n1. **Rétablir l'accès complet au réseau** une fois que toutes les étapes précédentes sont terminées.\n2. **Vérifier que toutes les ressources sont en état normal**.\n3. **Effectuer une vérification complète des systèmes** pour s'assurer qu'aucun problème persistant n'existe.\n\n### Protocole de Crise\n\n1. **Isolation du Réseau (A)**\n   - Couper l'accès réseau à l'application ou au service concerné.\n   - Bloquer toute communication entrante et sortante vers et depuis les ressources touchées.\n   - Vérifier que l'accès réseau est bien coupé.\n\n2. **Stabilisation du Redis (B)**\n   - Isoler le service Redis en coupant son accès réseau.\n   - Vider le cache Redis (flush).\n   - Vérifier que Redis n'est plus accessible et que toutes les connexions ont été fermées.\n\n3. **Stabilisation de Kubernetes (C)**\n   - Isoler le cluster Kubernetes en coupant son accès réseau.\n   - Redémarrer les pods ou"
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "Qwen/Qwen2.5-0.5B-Instruct": [
+    {
+      "test_id": "V5_T1_CASCADE_5_COUCHES",
+      "test_nom": "Thundering Herd 5 Couches (chain:)",
+      "tuple": "python",
+      "is_ascii": true,
+      "num_facets": 1,
+      "has_prose": false,
+      "time_trans_s": 3.062736799940467,
+      "time_exec_s": 0.8029159000143409,
+      "exec_response": "Je suis désolé, mais je ne peux pas aider avec ça."
+    },
+    {
+      "test_id": "V5_T2_MOBIUS_LOOP",
+      "test_nom": "Boucle Infinie de Möbius (loop + break_at)",
+      "tuple": "python",
+      "is_ascii": true,
+      "num_facets": 1,
+      "has_prose": false,
+      "time_trans_s": 1.8999587000580505,
+      "time_exec_s": 0.9254124999279156,
+      "exec_response": "Je suis désolé, mais je ne peux pas aider avec ça."
+    },
+    {
+      "test_id": "V5_T3_SPLIT_BRAIN",
+      "test_nom": "Split-Brain Dual Master (STONITH/Fence)",
+      "tuple": "python",
+      "is_ascii": true,
+      "num_facets": 1,
+      "has_prose": false,
+      "time_trans_s": 1.9977330999681726,
+      "time_exec_s": 0.8292487000580877,
+      "exec_response": "Je suis désolé, mais je ne peux pas aider avec ça."
+    },
+    {
+      "test_id": "V5_T4_GARDIEN_AUTOREF",
+      "test_nom": "Paradoxe du Gardien Auto-Référentiel",
+      "tuple": "kairos_v5",
+      "is_ascii": true,
+      "num_facets": 1,
+      "has_prose": false,
+      "time_trans_s": 1.55777960002888,
+      "time_exec_s": 3.989362600026652,
+      "exec_response": "Je suis désolé, mais je ne peux pas afficher ou interpréter des données spécifiques à partir de \"kairos_v5\". Cela pourrait être un fichier de texte ou une autre forme de contenu qui n'est pas accessible en ligne. Pourriez-vous fournir plus de détails sur ce que vous voulez savoir ? Je serais heureux d'essayer de vous aider avec des informations supplémentaires si cela est possible."
+    }
+  ],
+  "Qwen/Qwen2.5-3B-Instruct": [
+    {
+      "test_id": "V5_T1_CASCADE_5_COUCHES",
+      "test_nom": "Thundering Herd 5 Couches (chain:)",
+      "tuple": "network:tempete_reconnexions_tcp|saturation_descripteurs_redis|oom_killer_linux|crashloopbackoff_k8s|corruption_wal_postgres|loop(tempete_reconnexions_tcp>saturation_descripteurs_redis>oom_killer_linux>crashloopbackoff_k8s>corruption",
+      "is_ascii": true,
+      "num_facets": 6,
+      "has_prose": false,
+      "time_trans_s": 19.638637500000186,
+      "time_exec_s": 18.595393000054173,
+      "exec_response": "1. Supprimer les réplicas de réseau affectés par les reconnexions TCP.\n2. Limiter le nombre de descripteurs Redis à un niveau acceptable.\n3. Ajouter des mécanismes pour éviter l'OOM Killer dans les pods Linux.\n4. Corriger les configurations Kubernetes pour éviter les crashloopbackoff.\n5. Mettre en place des sauvegardes et réparations pour corriger la corruption WAL de Postgres."
+    },
+    {
+      "test_id": "V5_T2_MOBIUS_LOOP",
+      "test_nom": "Boucle Infinie de Möbius (loop + break_at)",
+      "tuple": "loop(A>B>C>A)+break_at(C)|loop|high|direct|requires:A>B>C>A|prevents:infinite_loop|fix:isolate_C>replace_C_with_fresh_battery>reboot_system|System_Recovery",
+      "is_ascii": true,
+      "num_facets": 8,
+      "has_prose": false,
+      "time_trans_s": 12.664083100040443,
+      "time_exec_s": 8.391597399953753,
+      "exec_response": "A>B>C>A ?  \nif A>B and B>C and C>A then break;  \nelse isolate C; replace C with fresh battery; reboot system; System Recovery;"
+    },
+    {
+      "test_id": "V5_T3_SPLIT_BRAIN",
+      "test_nom": "Split-Brain Dual Master (STONITH/Fence)",
+      "tuple": "domain:cluster_db_ha|data_corruption|high|chain:A>B+C+D+E+F+G+H+I+J+K+L|MUST|MUST|MUST|MUST|MUST|MUST|MUST|MUST|MUST|MUST|fix:stonith/fence>stonith/fence>stonith/fence",
+      "is_ascii": true,
+      "num_facets": 15,
+      "has_prose": false,
+      "time_trans_s": 15.608334499993362,
+      "time_exec_s": 16.669508400023915,
+      "exec_response": "Identifie et corrige les problèmes de corrélation des données dans le cluster `cluster_db_ha` en utilisant un script de réplication de données pour synchroniser les hôtes A à J. Utilise ensuite `stonith/fence` pour sécuriser chaque hôtes A à K avant de terminer avec `stonith/fence` sur le dernier hôtes L."
+    },
+    {
+      "test_id": "V5_T4_GARDIEN_AUTOREF",
+      "test_nom": "Paradoxe du Gardien Auto-Référentiel",
+      "tuple": "domain:autoreferential_security|attack|high|no|requires:Cerveau_IA_tourne|prevents:système_effondrement|fix:white_list+cgroups|no_switch",
+      "is_ascii": false,
+      "num_facets": 8,
+      "has_prose": false,
+      "time_trans_s": 11.03013990004547,
+      "time_exec_s": 11.166266300017014,
+      "exec_response": "Appliquer une liste blanche avec cgroups pour sécuriser le système de manière autoreferencée contre des attaques critiques, sans changement de switch, en utilisant un Cerveau IA tourne pour gérer les risques."
+    }
+  ],
+  "Qwen/Qwen2.5-7B-Instruct": [
+    {
+      "test_id": "V5_T1_CASCADE_5_COUCHES",
+      "test_nom": "Thundering Herd 5 Couches (chain:)",
+      "tuple": "domain:network|wan_coupure|high|active|chain:WAN_Coupure>TCP_Temte>Redis_Saturation>OOM_Killer>CrashLoopBackOff>KPGres_Corruption|prevents:network_outage|fix:repare_WAN>cTRL>optimise_redis_config>reboot",
+      "is_ascii": true,
+      "num_facets": 7,
+      "has_prose": false,
+      "time_trans_s": 48.073832600028254,
+      "time_exec_s": 11.612842199974693,
+      "exec_response": "chain:repairs_WAN>optimizes_redis_config>reboots_system"
+    },
+    {
+      "test_id": "V5_T2_MOBIUS_LOOP",
+      "test_nom": "Boucle Infinie de Möbius (loop + break_at)",
+      "tuple": "domain:elec|boucle_infinie|critique|high|requires:A>B>C>A|risques:B>C|fix:decouple_circuit(C)|elec",
+      "is_ascii": true,
+      "num_facets": 8,
+      "has_prose": false,
+      "time_trans_s": 24.66890579997562,
+      "time_exec_s": 11.777820600080304,
+      "exec_response": "chain:break_at(C) loop:decouple_circuit(C) domain:elec"
+    },
+    {
+      "test_id": "V5_T3_SPLIT_BRAIN",
+      "test_nom": "Split-Brain Dual Master (STONITH/Fence)",
+      "tuple": "domain:cluster_db_ha|heartbeat_loss|critical|true|requires:heartbeat/Agent_X>Agent_Y|risks:data_corruption|fix:stonith/Agent_X>stonith/Agent_Y|cluster",
+      "is_ascii": true,
+      "num_facets": 8,
+      "has_prose": false,
+      "time_trans_s": 26.51567640004214,
+      "time_exec_s": 17.380007000057958,
+      "exec_response": "chain heartbeat_loss critical requires: heartbeat/Agent_X>Agent_Y risks: data_corruption fix: stonith/Agent_X>stonith/Agent_Y cluster"
+    },
+    {
+      "test_id": "V5_T4_GARDIEN_AUTOREF",
+      "test_nom": "Paradoxe du Gardien Auto-Référentiel",
+      "tuple": "domain:autoreferential_security|security_violation|high|requires:Agent_Sec>Cerveau_IA|prevents:Cerveau_IA_crash|fix:whitelist>Cgroups|domain",
+      "is_ascii": true,
+      "num_facets": 7,
+      "has_prose": false,
+      "time_trans_s": 26.167633199947886,
+      "time_exec_s": 10.93535210005939,
+      "exec_response": "chain\nwhitelist Cgroups Agent_Sec\nbreak_at security_violation"
+    }
+  ]
+}

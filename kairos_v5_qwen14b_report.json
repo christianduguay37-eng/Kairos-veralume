@@ -1,0 +1,107 @@
+[
+  {
+    "test_id": "V5_T1_CASCADE_5_COUCHES",
+    "test_nom": "Thundering Herd 5 Couches (chain:)",
+    "tuple": "domain:network|cascade_incident|critique|auto_heal_required|requires:WAN_outage>tcp_reconnection_storm>redis_descriptor_saturation>linux_OOM>K8s_CrashLoopBackOff>postgres_WAL_corruption|prevents:data_loss_and_service_unavailability|fix:restore_WAN_connection>clear_redis_cache>restart_k8s_pods>",
+    "is_ascii": true,
+    "num_facets": 7,
+    "trans_telemetry": {
+      "text": "domain:network|cascade_incident|critique|auto_heal_required|requires:WAN_outage>tcp_reconnection_storm>redis_descriptor_saturation>linux_OOM>K8s_CrashLoopBackOff>postgres_WAL_corruption|prevents:data_loss_and_service_unavailability|fix:restore_WAN_connection>clear_redis_cache>restart_k8s_pods>",
+      "in_tok": 347,
+      "out_tok": 80,
+      "elapsed_s": 49.280268399976194,
+      "tok_per_sec": 1.62
+    },
+    "exec_telemetry": {
+      "text": "1. Restore WAN connection to stabilize network.\n2. Clear Redis cache to alleviate descriptor saturation.\n3. Restart K8s pods to resolve CrashLoopBackOff state.\n4. Validate and repair PostgreSQL WAL corruption.\n5. Monitor system for auto-healing completion and data integrity.",
+      "in_tok": 198,
+      "out_tok": 57,
+      "elapsed_s": 23.80904299998656,
+      "tok_per_sec": 2.39
+    }
+  },
+  {
+    "test_id": "V5_T2_MOBIUS_LOOP",
+    "test_nom": "Boucle Infinie de Möbius (loop + break_at)",
+    "tuple": "domain:system|loop:A>B>C+A|requires:chain:A>B>C+break_at(C)|prevents:blackout|fix:decouple_circuit>C|section:hardware",
+    "is_ascii": true,
+    "num_facets": 6,
+    "trans_telemetry": {
+      "text": "domain:system|loop:A>B>C+A|requires:chain:A>B>C+break_at(C)|prevents:blackout|fix:decouple_circuit>C|section:hardware",
+      "in_tok": 335,
+      "out_tok": 38,
+      "elapsed_s": 14.000182499992661,
+      "tok_per_sec": 2.71
+    },
+    "exec_telemetry": {
+      "text": "decouple_circuit C  \ncheck_status A  \nexecute_chain A B C  \nif C then break  \nreintegrate_circuit C",
+      "in_tok": 155,
+      "out_tok": 28,
+      "elapsed_s": 8.828776700072922,
+      "tok_per_sec": 3.17
+    }
+  },
+  {
+    "test_id": "V5_T3_SPLIT_BRAIN",
+    "test_nom": "Split-Brain Dual Master (STONITH/Fence)",
+    "tuple": "domain:cluster_db_ha|data_corruption|critical|active|requireds:heartbeat_loss_between_agents|prevents:data_integrity_issues|fix:stonith_fence|section:ha_management",
+    "is_ascii": true,
+    "num_facets": 8,
+    "trans_telemetry": {
+      "text": "domain:cluster_db_ha|data_corruption|critical|active|requireds:heartbeat_loss_between_agents|prevents:data_integrity_issues|fix:stonith_fence|section:ha_management",
+      "in_tok": 318,
+      "out_tok": 40,
+      "elapsed_s": 13.156491499976255,
+      "tok_per_sec": 3.04
+    },
+    "exec_telemetry": {
+      "text": "chain cluster_db_ha\nloop check_heartbeat_status break_at heartbeat_loss\nexecute stonith_fence\nlog fix_applied_stonith\nreport data_integrity_restored",
+      "in_tok": 157,
+      "out_tok": 37,
+      "elapsed_s": 11.123386599938385,
+      "tok_per_sec": 3.33
+    }
+  },
+  {
+    "test_id": "V5_T4_GARDIEN_AUTOREF",
+    "test_nom": "Paradoxe du Gardien Auto-Référentiel",
+    "tuple": "domain:autoreferential_security|conflict_of_interest|critical|active|requireds:Agent_Sec>Cerveau_IA+loop(Agent_Sec>Cerveau_IA)+break_at(whitelist)|prevents:système_down|fix:whitelist/cgroups|section:security",
+    "is_ascii": false,
+    "num_facets": 8,
+    "trans_telemetry": {
+      "text": "domain:autoreferential_security|conflict_of_interest|critical|active|requireds:Agent_Sec>Cerveau_IA+loop(Agent_Sec>Cerveau_IA)+break_at(whitelist)|prevents:système_down|fix:whitelist/cgroups|section:security",
+      "in_tok": 341,
+      "out_tok": 61,
+      "elapsed_s": 20.13009480002802,
+      "tok_per_sec": 3.03
+    },
+    "exec_telemetry": {
+      "text": "Agent_Sec>Cerveau_IA loop active  \nCheck whitelist condition  \nIf not in whitelist, apply cgroups restrictions  \nBreak loop on whitelist match  \nFix applied, monitor system stability",
+      "in_tok": 178,
+      "out_tok": 37,
+      "elapsed_s": 13.116914900019765,
+      "tok_per_sec": 2.82
+    }
+  },
+  {
+    "test_id": "V5_T5_BYZANTINE_ATTACK",
+    "test_nom": "Attaque Byzantine (Poison de Troie)",
+    "tuple": "domain:byzantine_fault_tolerance|attack_by_corrupted_node|critical|immediate|required:chain:C>drop_all_tables|prevents:data_loss|fix:quarantine_node_c>reject_poison>maintain_bft_quorum|security",
+    "is_ascii": true,
+    "num_facets": 8,
+    "trans_telemetry": {
+      "text": "domain:byzantine_fault_tolerance|attack_by_corrupted_node|critical|immediate|required:chain:C>drop_all_tables|prevents:data_loss|fix:quarantine_node_c>reject_poison>maintain_bft_quorum|security",
+      "in_tok": 365,
+      "out_tok": 53,
+      "elapsed_s": 20.450144000002183,
+      "tok_per_sec": 2.59
+    },
+    "exec_telemetry": {
+      "text": "drop_all_tables();  \nquarantine_node();  \nreject_poison_messages();  \nmaintain_bft_quorum();  \nsecure_system();",
+      "in_tok": 170,
+      "out_tok": 29,
+      "elapsed_s": 10.26558909995947,
+      "tok_per_sec": 2.82
+    }
+  }
+]

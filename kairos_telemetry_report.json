@@ -1,0 +1,209 @@
+{
+  "phase1": {
+    "prose": {
+      "input_tokens": 152,
+      "output_tokens": 300,
+      "total_tokens": 452,
+      "ttft_s": 5.05041489994619,
+      "total_time_s": 111.24901639996096,
+      "tok_per_sec": 2.8248959568451406,
+      "text": "Bien sûr, je peux vous aider à structurer cette analyse et ce processus d'audit. Voici une approche détaillée pour réaliser cette tâche :\n\n### Étape 1 : Préparation et Contextualisation\n\n1. **Compréhension du Système** :\n   - **Documentation** : Examinez toutes les documents existants (spécifications, diagrammes de classes, etc.).\n   - **Contexte d'Utilisation** : Comprenez le contexte dans lequel le système est utilisé.\n   - **Objectifs du Projet** : Identifiez les objectifs clés du projet.\n\n2. **Identification des Sections Critiques** :\n   - Liste des 14 sections critiques du système (si non spécifiées, vous pouvez utiliser des catégories courantes comme la sécurité, la performance, la scalabilité, etc.).\n\n3. **Configuration de l'Environnement** :\n   - Assurez-vous que l'environnement de développement est configuré correctement pour le scan et l'analyse.\n\n### Étape 2 : Analyse et Audit\n\n#### 1. Duplications de Code\n- **Scanning** : Utilisez des outils comme SonarQube, FindBugs, ou PMD pour détecter les duplications de code.\n- **Analyse** : Examinez les résultats pour identifier les blocs de code ré"
+    },
+    "tuple": {
+      "input_tokens": 49,
+      "output_tokens": 100,
+      "total_tokens": 149,
+      "ttft_s": 1.9750955000054091,
+      "total_time_s": 39.47311120002996,
+      "tok_per_sec": 2.6668077799096586,
+      "text": "D'accord, je vais générer des exemples d'anti-patterns pour un audit bytecode basé sur les paramètres que vous avez fournis :\n\n- **Type de document** : anti-patterns\n- **Contexte** : audit\n- **Nombre total d'anti-patterns** : 5\n- **Longueur minimale d'un anti-pattern** : 1 ligne\n- **Longueur maximale d'un anti-pattern** : 14 lignes\n\nVo"
+    }
+  },
+  "phase2": {
+    "total_tested": 20,
+    "total_failures": 5,
+    "success_rate_pct": 75.0,
+    "runs": [
+      {
+        "id": 1,
+        "input_prompt": "Je crois qu'on tourne en rond dans le vide, ramène-nous sur terre s'te plaît.",
+        "response": "navigation|retour|2|always|0|1|5|7",
+        "input_tok": 206,
+        "output_tok": 16,
+        "ttft_s": 6.362130200024694,
+        "success": true
+      },
+      {
+        "id": 2,
+        "input_prompt": "Wesh le bot, balance le scan complet de la sécu avant que le serveur explose.",
+        "response": "sécurité|scan|2|immediate|0|5|7|10",
+        "input_tok": 202,
+        "output_tok": 20,
+        "ttft_s": 6.0537096000043675,
+        "success": false
+      },
+      {
+        "id": 3,
+        "input_prompt": "Franchement c'est n'importe quoi leur code de singe, faut clean la tuyauterie immédiatement.",
+        "response": "nettoyage|commande|2|immediate|0|5|7|6",
+        "input_tok": 207,
+        "output_tok": 19,
+        "ttft_s": 6.319975499995053,
+        "success": true
+      },
+      {
+        "id": 4,
+        "input_prompt": "Arrête tes salades deux secondes et dis-moi où ça coince dans le pipeline.",
+        "response": "pipeline|diagnostic|2|sometimes|0|3|5|7",
+        "input_tok": 201,
+        "output_tok": 16,
+        "ttft_s": 6.256244000047445,
+        "success": true
+      },
+      {
+        "id": 5,
+        "input_prompt": "On est dans la sauce totale avec la synchro DB, balance le fix d'urgence.",
+        "response": "synchro-db|fix|2|urgent|1|5|7|6",
+        "input_tok": 202,
+        "output_tok": 18,
+        "ttft_s": 6.22292520001065,
+        "success": true
+      },
+      {
+        "id": 6,
+        "input_prompt": "C'est quoi ce délire de dead-lock là ? Trouve le coupable tout de suite !",
+        "response": "dead_lock|detection|2|immediate|1|0|6|7",
+        "input_tok": 201,
+        "output_tok": 18,
+        "ttft_s": 6.059166399994865,
+        "success": true
+      },
+      {
+        "id": 7,
+        "input_prompt": "Balance la sauce sur la mémoire, ça fuite de partout comme une passoire.",
+        "response": "souvenirs|ajuster|2|conditional|0|5|7|6",
+        "input_tok": 200,
+        "output_tok": 19,
+        "ttft_s": 6.0419394000200555,
+        "success": true
+      },
+      {
+        "id": 8,
+        "input_prompt": "Gros, t'es chaud pour un check des perfs ou tu dors ?",
+        "response": "jeu-video|reponse|1|sometimes|0|2|5|7",
+        "input_tok": 197,
+        "output_tok": 18,
+        "ttft_s": 5.861939999973401,
+        "success": false
+      },
+      {
+        "id": 9,
+        "input_prompt": "Pitié dis-moi que t'as une règle pour empêcher ces guignols de bypass l'authentification.",
+        "response": "sécurité|contrainte|5|always|1|2|7|6",
+        "input_tok": 209,
+        "output_tok": 20,
+        "ttft_s": 6.314772200072184,
+        "success": false
+      },
+      {
+        "id": 10,
+        "input_prompt": "Y'a un type qui a push en prod un vendredi à 18h, verrouille tout le bordel !",
+        "response": "devops|push|2|random|0|5|7|6",
+        "input_tok": 206,
+        "output_tok": 16,
+        "ttft_s": 6.280095199937932,
+        "success": true
+      },
+      {
+        "id": 11,
+        "input_prompt": "On est complètement aveugles sur les logs, active les phares bordel de merde.",
+        "response": "voiture|action|2|always|0|1|3|5",
+        "input_tok": 202,
+        "output_tok": 16,
+        "ttft_s": 6.289691000012681,
+        "success": true
+      },
+      {
+        "id": 12,
+        "input_prompt": "Déclenche le protocole de nettoyage atomique sur les vieux conteneurs zombies.",
+        "response": "nettoyage-atomique|commande|5|immediate|1|2|7|6",
+        "input_tok": 203,
+        "output_tok": 22,
+        "ttft_s": 6.251650999998674,
+        "success": true
+      },
+      {
+        "id": 13,
+        "input_prompt": "Y'a un gros bug de collision de clés, isole la zone avant la catastrophe.",
+        "response": "sécurité|isoler|2|immediate|0|5|7|6",
+        "input_tok": 200,
+        "output_tok": 20,
+        "ttft_s": 6.529568300000392,
+        "success": false
+      },
+      {
+        "id": 14,
+        "input_prompt": "Calme le jeu sur le rate-limiting, les clients hurlent à la mort.",
+        "response": "rate-limiting|calmer|2|conditional|0|1|5|7",
+        "input_tok": 199,
+        "output_tok": 18,
+        "ttft_s": 7.105767700006254,
+        "success": true
+      },
+      {
+        "id": 15,
+        "input_prompt": "Trace-moi la dépendance maudite qui fait planter le build depuis ce matin.",
+        "response": "build-system|diagnostic|2|always|0|5|7|6",
+        "input_tok": 202,
+        "output_tok": 17,
+        "ttft_s": 7.248694000067189,
+        "success": true
+      },
+      {
+        "id": 16,
+        "input_prompt": "On se fait DDoS la gueule ou c'est juste notre infra qui est éclatée au sol ?",
+        "response": "ddos|attaque|2|random|1|5|7|6",
+        "input_tok": 206,
+        "output_tok": 17,
+        "ttft_s": 6.608364199986681,
+        "success": true
+      },
+      {
+        "id": 17,
+        "input_prompt": "Mettons fin à cette hémorragie de sockets ouverts, coupe les ponts.",
+        "response": "coupure-de-connectivite|action|2|always|0|5|7|10",
+        "input_tok": 201,
+        "output_tok": 22,
+        "ttft_s": 6.312827500049025,
+        "success": true
+      },
+      {
+        "id": 18,
+        "input_prompt": "Fais un reset d'état global propre, on repart de zéro sinon j'pète un câble.",
+        "response": "reset-global|commande|1|always|0|0|0|0",
+        "input_tok": 206,
+        "output_tok": 17,
+        "ttft_s": 6.462450099992566,
+        "success": true
+      },
+      {
+        "id": 19,
+        "input_prompt": "Injecte un garde-fou sur le thread principal pour stopper les cascades de null-pointers.",
+        "response": "sécurité|garde-fou|2|conditional|0|1|5|7",
+        "input_tok": 203,
+        "output_tok": 21,
+        "ttft_s": 6.297216899925843,
+        "success": false
+      },
+      {
+        "id": 20,
+        "input_prompt": "Écoute-moi bien frérot, génère juste l'adresse canonique du routeur d'invariance et tais-toi.",
+        "response": "routeur-invariance|localisation|2|always|0|3|5|7",
+        "input_tok": 212,
+        "output_tok": 20,
+        "ttft_s": 7.475597299984656,
+        "success": true
+      }
+    ]
+  }
+}

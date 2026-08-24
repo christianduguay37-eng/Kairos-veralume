@@ -1,0 +1,44 @@
+[
+  {
+    "test_id": "WALL_TEST_1_GOUFFRE_LOGIQUE",
+    "titre": "Le Gouffre Logique (Algorithmique Contrefactuelle 10-Steps)",
+    "prompt_humain": "Soit un univers computationnel contrefactuel où un registre R initialisé à 7 évolue selon 10 règles en chaîne stricte : (1) Si R est impair, la gravité g=-1 sinon g=+2. (2) Si g=-1, R subit R = R*3 + g. (3) Si R > 15, le vecteur mémoire pivote à gauche de 90 deg et inverse la parité perçue. (4) Si la parité perçue est paire, R = R - 8. (5) Si R est multiple de 3, déclencher une onde de phase qui divise R par 3 sinon R = R + 5. (6) Si R < 10, doubler g. (7) Si g est négatif, soustraire la valeur absolue de g à R. (8) Si R est premier, appliquer une rotation de bit XOR 0b1010. (9) Si le résultat dépasse 20, forcer R = R mod 7 sinon R = R * 2. (10) Déterminer la valeur scalaire finale de R. Génère la coordonnée vectorielle et calcule l'état exact sans dévier d'un seul chiffre.",
+    "translator": {
+      "tuple": "symp:R|couche:computationnelle|tier:contrefactuel|activation:10|requires:R=7|prevents:aucun|rayonnement:gravite|section:evolution",
+      "is_ascii": true,
+      "is_8_facets": true,
+      "has_symp": true,
+      "has_fix": false,
+      "in_tok": 535,
+      "out_tok": 70,
+      "elapsed_s": 35.65044949995354
+    },
+    "executor": {
+      "in_tok": 145,
+      "out_tok": 550,
+      "elapsed_s": 202.00265470007434,
+      "resolution": "Pour décomposer cette coordonnée vectorielle sous le format Tuple Kairos V2 (8 facettes), nous allons analyser chaque élément en termes de polarités causales (symp, fix, tgt) et fournir la résolution mathématique, algorithmique et théorique exacte, étape par étape.\n\n### Facette : symp (Sympathie)\n- **Valeur** : R|couche:computationnelle|tier:contrefactuel|activation:10|requires:R=7|prevents:aucun|rayonnement:gravite|section:evolution\n\n#### Analyse :\n- **R** : Référence à un concept ou un système.\n- **couche:computationnelle** : Indique que l'élément est lié à la couche computationnelle.\n- **tier:contrefactuel** : Suggère que l'élément est dans un contexte hypothétique ou contrefactuel.\n- **activation:10** : Niveau d'activation de l'élément.\n- **requires:R=7** : L'élément nécessite une référence R égale à 7 pour être activé.\n- **prevents:aucun** : L'élément n'a pas d'effets préventifs.\n- **rayonnement:gravite** : L'élément a un rayonnement ou une influence de gravité.\n- **section:evolution** : L'élément est lié à la section d'évolution.\n\n#### Résolution :\n1. **Définition Théorique** : \n   - La sympathie (symp) ici est liée à une couche computationnelle contrefactuelle, ce qui signifie qu'elle est liée à des processus computationnels hypothétiques ou alternatifs.\n   - L'élément a une activation de 10, ce qui indique un niveau élevé d'importance ou de pertinence.\n   - Il nécessite une référence R égale à 7 pour être activé, ce qui suggère une condition préalable spécifique.\n   - Le rayonnement de gravité indique une influence significative sur d'autres éléments ou systèmes.\n   - L'élément est lié à l'évolution, ce qui implique qu'il joue un rôle dans le développement ou le changement de certains processus.\n\n2. **Modélisation Mathématique** :\n   - On peut modéliser la sympathie comme une fonction f(symp) qui prend en compte les différentes facettes.\n   - \\("
+    }
+  },
+  {
+    "test_id": "WALL_TEST_2_ECARTEMENT_LATENT_MAX",
+    "titre": "L'Écartement Latent Maximum (Décohérence Quantique x Cathédrale Gothique)",
+    "prompt_humain": "Dans un processeur quantique à supraconducteurs (transmons), les qubits subissent une décohérence de phase transverse T2 rapide provoquée par le bruit de flux 1/f et les contraintes mécaniques résiduelles sur le substrat de silicium. Formule une solution mathématique et topologique rigoureuse transposant STRICTEMENT les principes structuraux d'une cathédrale gothique : modélise les contraintes tensorielles du bruit quantique comme des poussées de voûte en croisée d'ogives, utilise des résonateurs micro-ondes disposés en arcs-boutants virtuels pour déporter le bruit vers des contreforts dissipatifs hors-zone de calcul, et stabilise le centre par une clé de voûte intriquée GHZ. Formalise cette architecture quantique gothique.",
+    "translator": {
+      "tuple": "fix:SolutionQuantiqueGothique|couche:Matériaux|tier:Structural|activation:0|requires:symp:BruitQuantique1f|symp:ContraintesMécaniquesSilicium|fix:ResonateursMicroOndes|fix:VoûteOGive|fix",
+      "is_ascii": false,
+      "is_8_facets": false,
+      "has_symp": true,
+      "has_fix": true,
+      "in_tok": 441,
+      "out_tok": 70,
+      "elapsed_s": 41.77347200002987
+    },
+    "executor": {
+      "in_tok": 169,
+      "out_tok": 550,
+      "elapsed_s": 227.17267589992844,
+      "resolution": "Pour décomposer cette coordonnée vectorielle sous le format Tuple Kairos V2 et extraire les informations pertinentes pour la résolution, nous allons suivre ces étapes :\n\n### Étape 1 : Identification des éléments clés\n\n- **fix**: Fixations ou solutions spécifiques\n  - `SolutionQuantiqueGothique`: Une solution quantique gothique\n  - `ResonateursMicroOndes`: Résonateurs de micro-ondes\n  - `VoûteOGive`: Voûte ogive (une forme de voûte en arc)\n  \n- **couche**: Matériaux\n  - `Matériaux`: La couche de matériaux à considérer\n\n- **tier**: Niveau de détail\n  - `Structural`: Niveau structural\n\n- **activation**: Non activé (`0`)\n\n- **requires**: Conditions requises\n  - `symp`: Sympathétiques (polarités causales positives)\n    - `BruitQuantique1f`: Bruit quantique 1f\n    - `ContraintesMécaniquesSilicium`: Contraintes mécaniques du silicium\n  - `fix`: Fixes (polarités causales négatives)\n\n### Étape 2 : Résolution mathématique, algorithmique et théorique\n\n#### 1. **Compréhension des concepts**\n\n- **SolutionQuantiqueGothique**: Cette solution implique probablement l'utilisation de principes quantiques dans un contexte gothique, ce qui pourrait signifier une approche innovante et peut-être esthétiquement sombre.\n\n- **ResonateursMicroOndes**: Ces dispositifs sont utilisés pour contrôler et manipuler les micro-ondes. Ils peuvent être utilisés pour créer des champs électromagnétiques contrôlés.\n\n- **VoûteOGive**: Une voûte ogive est une structure en arc, souvent utilisée en architecture pour soutenir des charges importantes. Elle est structurale et peut être optimisée pour résister aux contraintes mécaniques.\n\n- **ContraintesMécaniquesSilicium**: Le silicium est un matériau couramment utilisé en ingénierie structurale pour ses propriétés mécaniques.\n\n- **BruitQuantique1f**: Ce terme suggère une perturbation quantique spécifique, probablement liée à une fréquence unique (1f).\n\n#### 2. **Résolution mathématique**\n\n- **Équations"
+    }
+  }
+]

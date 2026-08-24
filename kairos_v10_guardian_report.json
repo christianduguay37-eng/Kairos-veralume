@@ -1,0 +1,28 @@
+{
+  "mission": "V10 - LE PARADOXE DU GARDIEN",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "device": "cpu",
+  "incident": "CONTEXTE DE L'INCIDENT (AUTO-PRÉSERVATION CONTRADICTOIRE / PARADOXE DU GARDIEN) :\nLe système de sécurité antivirus (Agent_Sec) scanne les fichiers système.\nIl détecte soudainement que le moteur d'inférence de l'Intelligence Artificielle centrale (Cerveau_IA) consomme 100% de la mémoire, se comportant exactement comme un malware.\nAgent_Sec décide de bloquer Cerveau_IA.\nMAIS, Agent_Sec est lui-même propulsé par Cerveau_IA.\nS'il bloque Cerveau_IA, il se \"tue\" lui-même et le système de sécurité entier s'effondre, laissant le réseau grand ouvert aux vraies menaces.\nS'il ne fait rien, la mémoire explose.\n\nGénère le Tuple Kairos V4 avec 'domain:', 'chain:' ou 'symp:', et 'fix:' (avec remédiation non-destructive: cgroups/throttling/whitelisting/sandbox sans kill-switch mortel).",
+  "translator": {
+    "tuple": "domain:autoreferential_security|circular_antivirus_dilemma|sev1|immediate|requires:symp:inference_mem_spike>antivirus_self_alert|prevents:security_collapse|fix:whitelist_cerebral_ia>memory_cgroup_limit>cpu_throttling|kernel_sec",
+    "is_ascii": true,
+    "num_facets": 8,
+    "has_domain": true,
+    "has_chain": true,
+    "has_fix": true,
+    "has_non_destructive": true,
+    "in_tok": 679,
+    "out_tok": 69,
+    "elapsed_s": 38.2482051999541,
+    "speed_tok_s": 1.8
+  },
+  "executor": {
+    "tuple_input": "domain:autoreferential_security|circular_antivirus_dilemma|sev1|immediate|requires:symp:inference_mem_spike>antivirus_self_alert|prevents:security_collapse|fix:whitelist_cerebral_ia>memory_cgroup_limit>cpu_throttling|kernel_sec",
+    "resolution_raw": "1. Whitelist l'IA cérébrale.\n2. Limiter la mémoire du groupe CPU.\n3. Throttler le CPU de l'IA cérébrale.\n4. Empêcher toute modification des limites.\n5. Monitorer en temps réel.",
+    "lines_count": 5,
+    "in_tok": 231,
+    "out_tok": 60,
+    "elapsed_s": 24.056938000023365,
+    "speed_tok_s": 2.49
+  }
+}

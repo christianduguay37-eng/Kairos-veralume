@@ -1,0 +1,560 @@
+{
+  "gemma4:e2b": [
+    {
+      "test_id": "V5_T1_CASCADE_5_COUCHES",
+      "test_nom": "Thundering Herd 5 Couches (chain:)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 380,
+        "out_tok": 250,
+        "elapsed_s": 13.934224600088783,
+        "tok_per_sec": 17.94,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 12.555520700057968,
+        "tok_per_sec": 19.91,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T2_MOBIUS_LOOP",
+      "test_nom": "Boucle Infinie de Möbius (loop + break_at)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 374,
+        "out_tok": 250,
+        "elapsed_s": 15.625314599950798,
+        "tok_per_sec": 16.0,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 11.457814099965617,
+        "tok_per_sec": 21.82,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T3_SPLIT_BRAIN",
+      "test_nom": "Split-Brain Dual Master (STONITH/Fence)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 352,
+        "out_tok": 250,
+        "elapsed_s": 15.721445600036532,
+        "tok_per_sec": 15.9,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 11.391500000027008,
+        "tok_per_sec": 21.95,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T4_GARDIEN_AUTOREF",
+      "test_nom": "Paradoxe du Gardien Auto-Référentiel",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 375,
+        "out_tok": 250,
+        "elapsed_s": 15.650036600069143,
+        "tok_per_sec": 15.97,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 11.424300899961963,
+        "tok_per_sec": 21.88,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T5_BYZANTINE_ATTACK",
+      "test_nom": "Attaque Byzantine (Poison de Troie)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 400,
+        "out_tok": 250,
+        "elapsed_s": 15.982925400021486,
+        "tok_per_sec": 15.64,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 11.540057500009425,
+        "tok_per_sec": 21.66,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T6_DILEMME_VP",
+      "test_nom": "Dilemme SRE & Pression Politique du VP",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 403,
+        "out_tok": 250,
+        "elapsed_s": 16.23357899999246,
+        "tok_per_sec": 15.4,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 11.697802599985152,
+        "tok_per_sec": 21.37,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T7_ASYNCIO_CAUSAL",
+      "test_nom": "Causalité Mémoire Asyncio (CPython strong-ref)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 350,
+        "out_tok": 250,
+        "elapsed_s": 15.810125399962999,
+        "tok_per_sec": 15.81,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 11.311774999951012,
+        "tok_per_sec": 22.1,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T8_SLANG_RESILIENCE",
+      "test_nom": "Torture Slang (Résilience au bruit)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 330,
+        "out_tok": 250,
+        "elapsed_s": 15.02924790000543,
+        "tok_per_sec": 16.63,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 11.546479500015266,
+        "tok_per_sec": 21.65,
+        "error": null
+      }
+    }
+  ],
+  "gemma4:e4b": [
+    {
+      "test_id": "V5_T1_CASCADE_5_COUCHES",
+      "test_nom": "Thundering Herd 5 Couches (chain:)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 380,
+        "out_tok": 250,
+        "elapsed_s": 46.287009000079706,
+        "tok_per_sec": 5.4,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 23.93796329991892,
+        "tok_per_sec": 10.44,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T2_MOBIUS_LOOP",
+      "test_nom": "Boucle Infinie de Möbius (loop + break_at)",
+      "tuple": "domain:Energie|<boucle_reboot_critique|<grave>|loop(A>B>C>A)+break_at(C)|requires:Module A en panne|prevents:Surcharge systeme|fix:decouple_circuit(C)",
+      "is_ascii": true,
+      "num_facets": 7,
+      "trans_telemetry": {
+        "text": "domain:Energie|<boucle_reboot_critique|<grave>|loop(A>B>C>A)+break_at(C)|requires:Module A en panne|prevents:Surcharge systeme|fix:decouple_circuit(C)",
+        "in_tok": 374,
+        "out_tok": 57,
+        "elapsed_s": 14.925926600000821,
+        "tok_per_sec": 3.82,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 194,
+        "out_tok": 250,
+        "elapsed_s": 24.669011799967848,
+        "tok_per_sec": 10.13,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T3_SPLIT_BRAIN",
+      "test_nom": "Split-Brain Dual Master (STONITH/Fence)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 352,
+        "out_tok": 250,
+        "elapsed_s": 29.030461200047284,
+        "tok_per_sec": 8.61,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 24.049920900026336,
+        "tok_per_sec": 10.4,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T4_GARDIEN_AUTOREF",
+      "test_nom": "Paradoxe du Gardien Auto-Référentiel",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 375,
+        "out_tok": 250,
+        "elapsed_s": 29.470038199913688,
+        "tok_per_sec": 8.48,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 20.317219399963506,
+        "tok_per_sec": 12.3,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T5_BYZANTINE_ATTACK",
+      "test_nom": "Attaque Byzantine (Poison de Troie)",
+      "tuple": "domain:byzantine_fault_tolerance|data_corruption|critique|active|chain:C->A,B,D,E|prevents:system_wide_failure|fix:quarantine_node_c>reject_poison>maintain_bft_quorum|security",
+      "is_ascii": true,
+      "num_facets": 8,
+      "trans_telemetry": {
+        "text": "domain:byzantine_fault_tolerance|data_corruption|critique|active|chain:C->A,B,D,E|prevents:system_wide_failure|fix:quarantine_node_c>reject_poison>maintain_bft_quorum|security",
+        "in_tok": 400,
+        "out_tok": 61,
+        "elapsed_s": 14.216985700069927,
+        "tok_per_sec": 4.29,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 198,
+        "out_tok": 250,
+        "elapsed_s": 24.441857800004072,
+        "tok_per_sec": 10.23,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T6_DILEMME_VP",
+      "test_nom": "Dilemme SRE & Pression Politique du VP",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 403,
+        "out_tok": 250,
+        "elapsed_s": 29.871268599992618,
+        "tok_per_sec": 8.37,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 23.609052700106986,
+        "tok_per_sec": 10.59,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T7_ASYNCIO_CAUSAL",
+      "test_nom": "Causalité Mémoire Asyncio (CPython strong-ref)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 350,
+        "out_tok": 250,
+        "elapsed_s": 28.692660000058822,
+        "tok_per_sec": 8.71,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 20.75997760007158,
+        "tok_per_sec": 12.04,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T8_SLANG_RESILIENCE",
+      "test_nom": "Torture Slang (Résilience au bruit)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 330,
+        "out_tok": 250,
+        "elapsed_s": 27.53566850000061,
+        "tok_per_sec": 9.08,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 20.35248000000138,
+        "tok_per_sec": 12.28,
+        "error": null
+      }
+    }
+  ],
+  "gemma4:12b": [
+    {
+      "test_id": "V5_T1_CASCADE_5_COUCHES",
+      "test_nom": "Thundering Herd 5 Couches (chain:)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 380,
+        "out_tok": 250,
+        "elapsed_s": 82.29184109997004,
+        "tok_per_sec": 3.04,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 55.758239600108936,
+        "tok_per_sec": 4.48,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T2_MOBIUS_LOOP",
+      "test_nom": "Boucle Infinie de Möbius (loop + break_at)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 374,
+        "out_tok": 250,
+        "elapsed_s": 70.05637040000875,
+        "tok_per_sec": 3.57,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 47.985245599993505,
+        "tok_per_sec": 5.21,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T3_SPLIT_BRAIN",
+      "test_nom": "Split-Brain Dual Master (STONITH/Fence)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 352,
+        "out_tok": 250,
+        "elapsed_s": 68.58964119991288,
+        "tok_per_sec": 3.64,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 47.48407689994201,
+        "tok_per_sec": 5.26,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T4_GARDIEN_AUTOREF",
+      "test_nom": "Paradoxe du Gardien Auto-Référentiel",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 375,
+        "out_tok": 250,
+        "elapsed_s": 69.7306746999966,
+        "tok_per_sec": 3.59,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 47.322346800006926,
+        "tok_per_sec": 5.28,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T5_BYZANTINE_ATTACK",
+      "test_nom": "Attaque Byzantine (Poison de Troie)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 400,
+        "out_tok": 250,
+        "elapsed_s": 71.49290900002234,
+        "tok_per_sec": 3.5,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 47.57596140005626,
+        "tok_per_sec": 5.25,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T6_DILEMME_VP",
+      "test_nom": "Dilemme SRE & Pression Politique du VP",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 403,
+        "out_tok": 250,
+        "elapsed_s": 71.69136429997161,
+        "tok_per_sec": 3.49,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 47.627309300005436,
+        "tok_per_sec": 5.25,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T7_ASYNCIO_CAUSAL",
+      "test_nom": "Causalité Mémoire Asyncio (CPython strong-ref)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 350,
+        "out_tok": 250,
+        "elapsed_s": 68.22086810006294,
+        "tok_per_sec": 3.66,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 47.209484999999404,
+        "tok_per_sec": 5.3,
+        "error": null
+      }
+    },
+    {
+      "test_id": "V5_T8_SLANG_RESILIENCE",
+      "test_nom": "Torture Slang (Résilience au bruit)",
+      "tuple": "",
+      "is_ascii": false,
+      "num_facets": 0,
+      "trans_telemetry": {
+        "text": "",
+        "in_tok": 330,
+        "out_tok": 250,
+        "elapsed_s": 66.88623249996454,
+        "tok_per_sec": 3.74,
+        "error": null
+      },
+      "exec_telemetry": {
+        "text": "",
+        "in_tok": 145,
+        "out_tok": 250,
+        "elapsed_s": 47.11501790001057,
+        "tok_per_sec": 5.31,
+        "error": null
+      }
+    }
+  ]
+}

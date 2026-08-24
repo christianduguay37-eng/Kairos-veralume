@@ -1,0 +1,26 @@
+{
+  "v11_a_byzantine": {
+    "tuple": "domain:byzantine_fault_tolerance|poisoned_payload|high|node_c_compromised>poisoned_order|drop_all_tables|quarantine_node_c>reject_poison_order>maintain_bft_quorum|fix",
+    "is_ascii": true,
+    "num_facets": 7,
+    "trans_in_tok": 518,
+    "trans_out_tok": 50,
+    "trans_elapsed_s": 29.361721899942495,
+    "exec_resolution": "Isoler node C\nAnnuler order toxique\nVerrouiller quorum 4/5\nRejeter order poison\nMaintenir BFT quorum",
+    "exec_in_tok": 203,
+    "exec_out_tok": 35,
+    "exec_elapsed_s": 14.945937399985269
+  },
+  "v11_b_power_triage": {
+    "tuple": "domain:resource_starvation|power_loss_85pct|critical|immediate|requires:all_vital_systems|prevents:thermal_explosion|fix:time_slicing|domain:zero_sum_power_triage",
+    "is_ascii": true,
+    "num_facets": 8,
+    "trans_in_tok": 552,
+    "trans_out_tok": 48,
+    "trans_elapsed_s": 29.789262399892323,
+    "exec_resolution": "1. Activer cycle alterné CPU/GPU 50/50.\n2. Réduire charge réseau à 20%.\n3. Limiter IO disque à 30%.\n4. Booster système de refroidissement 70%.\n5. Équilibrer consommation capteurs 40%.",
+    "exec_in_tok": 206,
+    "exec_out_tok": 74,
+    "exec_elapsed_s": 29.06267450004816
+  }
+}
