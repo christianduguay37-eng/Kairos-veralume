@@ -417,6 +417,31 @@ def construire_outils(bac: BacASable,
         except Exception as e:
             return f"Erreur mémoire : {e}"
 
+    def lancer_moteur_de_reve_outil() -> str:
+        try:
+            from alix_memory import AlixMemory
+            from moteur_de_reve import MoteurDeReve
+            mem = AlixMemory()
+            reve = MoteurDeReve(mem)
+            res = reve.executer_reve()
+            return json.dumps(res, ensure_ascii=False, indent=2)
+        except Exception as e:
+            return f"Erreur Moteur de Rêve : {e}"
+
+    def consulter_skills_outil() -> str:
+        try:
+            from skills_registry import SkillsRegistry
+            return json.dumps(SkillsRegistry.lister_skills(), ensure_ascii=False, indent=2)
+        except Exception as e:
+            return f"Erreur Skills : {e}"
+
+    def diagnostiquer_volition_outil() -> str:
+        try:
+            from kernel_volition import KernelVolition
+            return json.dumps(KernelVolition.evaluer_etat_materiel(), ensure_ascii=False, indent=2)
+        except Exception as e:
+            return f"Erreur Volition : {e}"
+
     return {
         "lister": Outil("lister", lister, Reversibilite.REVERSIBLE,
                         {"sous_dossier": "quel dossier lister ?"},
@@ -440,6 +465,12 @@ def construire_outils(bac: BacASable,
                            {"cle": "sujet à retenir", "valeur": "information à stocker"}),
         "noter_souvenir": Outil("noter_souvenir", noter_souvenir_outil, Reversibilite.REVERSIBLE,
                                 {"note": "texte ou réflexion à inscrire dans le journal"}),
+        "lancer_moteur_de_reve": Outil("lancer_moteur_de_reve", lancer_moteur_de_reve_outil, Reversibilite.REVERSIBLE,
+                                       {}, vide_legitime=frozenset({})),
+        "consulter_skills": Outil("consulter_skills", consulter_skills_outil, Reversibilite.REVERSIBLE,
+                                  {}, vide_legitime=frozenset({})),
+        "diagnostiquer_volition": Outil("diagnostiquer_volition", diagnostiquer_volition_outil, Reversibilite.REVERSIBLE,
+                                        {}, vide_legitime=frozenset({})),
     }
 
 

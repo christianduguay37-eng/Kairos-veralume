@@ -36,6 +36,9 @@ class KairosV6Gatekeeper {
         "launch_browser":        new Set(["lire", "lister", "ouvrir_systeme"]),
         "remember":              new Set(["lire", "lister", "memoriser", "noter_souvenir"]),
         "update_memory":         new Set(["lire", "lister", "memoriser", "noter_souvenir"]),
+        "dream_consolidation":   new Set(["lire", "lister", "lancer_moteur_de_reve"]),
+        "audit_system":          new Set(["lire", "lister", "diagnostiquer_volition"]),
+        "consult_skills":        new Set(["lire", "lister", "consulter_skills"]),
         "hold_and_probe":        new Set(["lire", "lister"])
     };
 

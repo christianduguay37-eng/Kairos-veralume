@@ -147,6 +147,9 @@ Tu disposes des outils suivants :
 - "ouvrir_systeme" : ouvrir un site Web dans le navigateur ou lancer une application Windows (args: {"cible": "youtube" ou "calculatrice" ou "code" ou "https://..."})
 - "memoriser" : enregistrer une information importante, préférence ou fait dans ta mémoire permanente (args: {"cle": "sujet", "valeur": "détails"})
 - "noter_souvenir" : inscrire une réflexion ou événement dans ton journal de bord (args: {"note": "texte..."})
+- "lancer_moteur_de_reve" : consolider la mémoire nocturne, défragmenter les souvenirs et éliminer les redondances (args: {})
+- "consulter_skills" : consulter et appliquer tes 36 compétences modulaires expertes (args: {})
+- "diagnostiquer_volition" : analyser la santé de la machine (RAM, CPU, disque) et formuler des propositions proactives (args: {})
 
 Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cette structure :
 {
@@ -157,12 +160,12 @@ Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cett
   "delta": 0.0,
   "fc": 1.0,
   "action": {
-    "outil": "ecrire" | "lire" | "lister" | "executer_commande" | "supprimer" | "rechercher_web" | "lire_page_web" | "ouvrir_systeme" | "memoriser" | "noter_souvenir" | "aucun",
+    "outil": "ecrire" | "lire" | "lister" | "executer_commande" | "supprimer" | "rechercher_web" | "lire_page_web" | "ouvrir_systeme" | "memoriser" | "noter_souvenir" | "lancer_moteur_de_reve" | "consulter_skills" | "diagnostiquer_volition" | "aucun",
     "args": { ... }
   }
 }
 
-Directives fix: valides : remember, update_memory, open_app, launch_browser, web_search, fetch_url, update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
+Directives fix: valides : dream_consolidation, audit_system, consult_skills, remember, update_memory, open_app, launch_browser, web_search, fetch_url, update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
 Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et fix:inspect."""
 
         # Contexte temporel, mémoire d'Alix et fichiers existants
@@ -216,11 +219,15 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
         except Exception:
             reponse_texte = llm_raw or thinking_raw
 
+        # Audit de Lucidité Épistémique
+        from lucidite_epistemique import LuciditeEpistemique
+        tool_name = action.get("outil", "aucun")
+        audit_lucidite = LuciditeEpistemique.auditer_posture(sigma, delta, fc, user_prompt, tool_name)
+
         # Mise à jour de l'historique
         self.chat_history.append({"role": "user", "content": user_prompt})
         self.chat_history.append({"role": "assistant", "content": reponse_texte})
 
-        tool_name = action.get("outil", "aucun")
         veralume_acte = None
         vcp1c_questions = []
 
@@ -246,8 +253,8 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
                     }
                 }
 
-                # Si l'outil est une recherche web ou lecture de fichier/page, on synthétise la réponse finale
-                if tool_name in ["rechercher_web", "lire_page_web", "lire"]:
+                # Synthèse intelligente si l'outil a produit des données riches
+                if tool_name in ["rechercher_web", "lire_page_web", "lire", "lancer_moteur_de_reve", "consulter_skills", "diagnostiquer_volition"]:
                     synth_prompt = f"Voici les informations réelles obtenues : \n{str(acte.resultat)[:1800]}\n\nRésume ces résultats en français de manière claire et directe pour Christian en réponse à sa question : '{user_prompt}'."
                     synth_res = self.query_llm([
                         {"role": "system", "content": "Tu es Veralume. Fais une synthèse claire et naturelle des informations trouvées."},
@@ -286,6 +293,7 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
             "status": gate_verdict.get("status"),
             "circadien": releve_circadien,
             "chronos": releve_chronos,
+            "lucidite": audit_lucidite,
             "elapsed_s": round(time.perf_counter() - t0, 2)
         }
 
