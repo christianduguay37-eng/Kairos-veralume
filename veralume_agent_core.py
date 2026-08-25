@@ -25,7 +25,7 @@ from veralume_governance import (
 )
 
 OLLAMA_URL = "http://127.0.0.1:11434/api/chat"
-DEFAULT_MODEL = "qwen2.5:14b"
+DEFAULT_MODEL = "qwen2.5-coder:7b"
 
 class VeralumeAutonomousAgent:
     """

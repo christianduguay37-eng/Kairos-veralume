@@ -21,7 +21,7 @@ UI_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ui")
 SANDBOX_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "workspace_sandbox")
 
 # Initialisation de l'Agent Veralume
-agent = VeralumeAutonomousAgent(SANDBOX_DIR, model_name="qwen2.5:14b")
+agent = VeralumeAutonomousAgent(SANDBOX_DIR, model_name="qwen2.5-coder:7b")
 
 # Initialisation d'un fichier de test dans le bac à sable
 initial_file = os.path.join(SANDBOX_DIR, "cluster_nodes.cfg")
