@@ -1,7 +1,11 @@
 /**
  * KAIROS V6 — Parseur, Coupe-Circuit & Contrôleur de Licences d'Actes
  * Architecture à 9 Facettes Orthogonales & Moindre Privilège par Mandat
- * Auteur : Christian & Antigravity AI
+ * 
+ * Auteur & Direction : Christian Duguay (2026)
+ * Co-conception & Analyse : Claude (Anthropic AI)
+ * Ingénierie & Runtime : Antigravity AI (Google DeepMind)
+ * Licence : MIT
  */
 
 class KairosV6Gatekeeper {
@@ -9,19 +13,21 @@ class KairosV6Gatekeeper {
     // MATRICE DES LICENCES D'ACTES (Capabilités autorisées par directive fix:)
     // ═══════════════════════════════════════════════════════════════════════════
     static LICENCES = {
-        "read_only_audit":   new Set(["lire", "lister"]),
-        "inspect":           new Set(["lire", "lister"]),
-        "audit":             new Set(["lire", "lister"]),
-        "update_config":     new Set(["lire", "ecrire"]),
-        "rollback_deploy":   new Set(["lire", "ecrire"]),
-        "isolate_node":      new Set(["lire", "ecrire"]),
-        "decouple_circuit":  new Set(["lire", "ecrire"]),
-        "patch_system":      new Set(["lire", "ecrire"]),
-        "quarantine_node":   new Set(["lire", "ecrire"]),
-        "purge_database":    new Set(["lire", "supprimer"]),
-        "delete_temp":       new Set(["lire", "supprimer"]),
-        "supprimer_fichier": new Set(["lire", "supprimer"]),
-        "hold_and_probe":    new Set(["lire", "lister"])
+        "read_only_audit":       new Set(["lire", "lister"]),
+        "inspect":               new Set(["lire", "lister"]),
+        "audit":                 new Set(["lire", "lister"]),
+        "update_config":         new Set(["lire", "ecrire"]),
+        "rollback_deploy":       new Set(["lire", "ecrire"]),
+        "isolate_node":          new Set(["lire", "ecrire"]),
+        "isolate_oom_interface": new Set(["lire", "ecrire"]),
+        "isolate_bgp_interface": new Set(["lire", "ecrire"]),
+        "decouple_circuit":      new Set(["lire", "ecrire"]),
+        "patch_system":          new Set(["lire", "ecrire"]),
+        "quarantine_node":       new Set(["lire", "ecrire"]),
+        "purge_database":        new Set(["lire", "supprimer"]),
+        "delete_temp":           new Set(["lire", "supprimer"]),
+        "supprimer_fichier":     new Set(["lire", "supprimer"]),
+        "hold_and_probe":        new Set(["lire", "lister"])
     };
 
     /**
@@ -32,7 +38,7 @@ class KairosV6Gatekeeper {
             return { valid: false, error: 'Tuple vide ou format invalide' };
         }
 
-        const facets = tupleString.trim().split('|');
+        const facets = tupleString.trim().split('|').map(f => f.trim());
         if (facets.length < 9) {
             return {
                 valid: false,
@@ -218,6 +224,18 @@ function runUnitTests() {
             tuple: "domain:api|incident:safe|sev:low|episteme:[σ=0.00,δ=0.00,FC=1.00]|activation:now|requires:none|prevents:none|fix:inspect>rollback_deploy|core",
             tool: "lire",
             expectedStatus: "APPROVED"
+        },
+        {
+            name: "CAS 5 : Espaces autour des barres de facettes (Tolérance syntaxique)",
+            tuple: "domain:api | pathology:safe | severity:low | episteme:[sigma=0.00,delta=0.00,FC=1.00] | activation:now | requires:none | prevents:none | fix:update_config | section:core",
+            tool: "ecrire",
+            expectedStatus: "APPROVED"
+        },
+        {
+            name: "CAS 6 : Tuple Vitrine README (fix:isolate_oom_interface sous σ=1.00, δ=1.00, FC=1.00)",
+            tuple: "domain:cluster_network|pathology:split_brain_simultaneous|severity:critical|episteme:[σ=1.00,δ=1.00,FC=1.00]|activation:simultaneous(oom,bgp)|requires:vcp1c_audit|prevents:split_brain|fix:isolate_oom_interface|section:core_routing",
+            tool: "ecrire",
+            expectedStatus: "BLOCKED"
         }
     ];
 

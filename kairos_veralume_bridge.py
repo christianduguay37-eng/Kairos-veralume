@@ -2,7 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 kairos_veralume_bridge.py — Pont Unifié KAIROS V6 & VERALUME v0.1
-Intègre le Coupe-Circuit Épistémique, la Licence de Mandat (Moindre Privilège) et la Gouvernance Matérielle
+Coupe-Circuit Épistémique, Licence de Mandat & Gouvernance Matérielle
+
+Auteur & Direction : Christian Duguay (2026)
+Co-conception & Analyse : Claude (Anthropic AI)
+Ingénierie & Runtime : Antigravity AI (Google DeepMind)
+Licence : MIT
 """
 
 import os
