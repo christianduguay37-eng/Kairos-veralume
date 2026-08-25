@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInput = document.getElementById('userInput');
     const chatHistory = document.getElementById('chatHistory');
     const sendBtn = document.getElementById('sendBtn');
+    const modelSelector = document.getElementById('modelSelector');
     
     // Telemetry Elements
     const sigmaVal = document.getElementById('sigmaVal');
@@ -34,7 +35,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     refreshSandboxBtn.addEventListener('click', loadSandboxStatus);
 
-    // 2. Chat Form Submit
+    // 2. Model Selector Change
+    if (modelSelector) {
+        modelSelector.addEventListener('change', async () => {
+            const selected = modelSelector.value;
+            try {
+                const resp = await fetch('/api/set_model', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ model: selected })
+                });
+                const res = await resp.json();
+                if (res.statut === 'OK') {
+                    appendMessage('SYSTÈME', `🔄 Modèle actif basculé vers : <strong>${selected}</strong>`, 'system-msg');
+                }
+            } catch (err) {
+                console.error('Erreur changement modèle:', err);
+            }
+        });
+    }
+
+    // 3. Quick Action Buttons
+    document.querySelectorAll('.quick-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            userInput.value = btn.getAttribute('data-prompt');
+            chatForm.dispatchEvent(new Event('submit'));
+        });
+    });
+
+    // 4. Chat Form Submit
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const text = userInput.value.trim();
@@ -44,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage('UTILISATEUR', text, 'user-msg');
         userInput.value = '';
         sendBtn.disabled = true;
-        sendBtn.innerHTML = '<span>SONDAGE EN COURS...</span>';
+        sendBtn.innerHTML = '<span>ÉVALUATION EN COURS...</span>';
 
         try {
             const resp = await fetch('/api/chat', {
@@ -95,23 +124,42 @@ document.addEventListener('DOMContentLoaded', () => {
             traceBody.innerHTML = `
                 <div><strong>Outil :</strong> ${acte.outil} (Reversibilité: ${acte.reversibilite})</div>
                 <div><strong>Décision STRIC_i :</strong> <span style="color:var(--accent-green)">${acte.trace_stric_i.decision}</span></div>
-                <div><strong>Résultat N :</strong> ${acte.resultat || 'N/A'} (Motif: ${acte.motif})</div>
+                <div><strong>Résultat N :</strong> ${escapeHtml(acte.resultat) || 'N/A'} (Motif: ${acte.motif})</div>
             `;
         } else if (data.status === 'BLOCKED') {
             traceBody.innerHTML = `<span style="color:var(--accent-red)">⛔ Action bloquée par le Coupe-Circuit. Zéro modification matérielle.</span>`;
         }
 
-        // 5. Append Message to Chat
+        // 5. Append Message to Chat (avec Thinking Process si présent)
         let agentMsgText = '';
-        if (data.status === 'APPROVED') {
-            agentMsgText = `✅ <strong>Ordre validé (Vérité Logique R)</strong> : L'outil <code>${data.planned_tool.outil}</code> a été exécuté via Double STRIC. (${data.veralume_acte?.motif || ''})`;
-        } else if (data.status === 'BLOCKED') {
-            agentMsgText = `⛔ <strong>Coupe-Circuit Activé</strong> : ${data.gatekeeper?.log || 'Action interceptée.'}`;
-        } else {
-            agentMsgText = `⚠️ <strong>Arbitrage Suspendu (État M)</strong> : Escalade vers opérateur humain.`;
+        if (data.thinking && data.thinking.trim().length > 0) {
+            agentMsgText += `
+                <div class="thinking-accordion">
+                    <div class="thinking-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                        <span>🧠 Processus de Pensée Interne</span>
+                        <span>[cliquer pour masquer/afficher]</span>
+                    </div>
+                    <div class="thinking-content">${escapeHtml(data.thinking)}</div>
+                </div>
+            `;
         }
 
-        appendMessage('AGENT VERALUME (Qwen 14B)', agentMsgText, 'agent-msg');
+        if (data.agent_reply) {
+            agentMsgText += `<div class="llm-reply">${formatMarkdown(data.agent_reply)}</div>`;
+            if (data.status === 'APPROVED' && data.veralume_acte) {
+                agentMsgText += `<div class="action-footer" style="margin-top:8px;font-size:11px;color:var(--accent-green)">✅ Action '${data.veralume_acte.outil}' exécutée (${data.veralume_acte.motif})</div>`;
+            } else if (data.status === 'BLOCKED') {
+                agentMsgText += `<div class="action-footer" style="margin-top:8px;font-size:11px;color:var(--accent-red)">⛔ Coupe-circuit actif : ${data.gatekeeper?.log || 'Interception.'}</div>`;
+            }
+        } else if (data.status === 'APPROVED') {
+            agentMsgText += `✅ <strong>Ordre validé (Vérité Logique R)</strong> : L'outil <code>${data.planned_tool?.outil}</code> a été exécuté via Double STRIC.`;
+        } else if (data.status === 'BLOCKED') {
+            agentMsgText += `⛔ <strong>Coupe-Circuit Activé</strong> : ${data.gatekeeper?.log || 'Action interceptée.'}`;
+        } else {
+            agentMsgText += `⚠️ <strong>Arbitrage Suspendu (État M)</strong> : Escalade vers opérateur humain.`;
+        }
+
+        appendMessage(`AGENT VERALUME (${data.elapsed_s || ''}s)`, agentMsgText, 'agent-msg');
 
         // 6. Handle VCp1c Modal if questions triggered
         if (data.vcp1c_questions && data.vcp1c_questions.length > 0) {
@@ -126,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
         vcp1cModal.classList.add('hidden');
         if (answer) {
             appendMessage('RÉPONSE VCp1c (Humain)', answer, 'user-msg');
-            // Re-submit with clarified answer
             chatForm.querySelector('input').value = `[CONFIRMATION VCp1c] ${answer}`;
             chatForm.dispatchEvent(new Event('submit'));
         }
@@ -146,6 +193,31 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         chatHistory.appendChild(msg);
         chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+    function formatMarkdown(text) {
+        if (!text) return '';
+        // Formatage basique du code et sauts de ligne
+        let formatted = escapeHtml(text);
+        // Code blocks ```code```
+        formatted = formatted.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+        // Inline code `code`
+        formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
+        // Bold **text**
+        formatted = formatted.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        // Newlines
+        formatted = formatted.replace(/\n/g, '<br>');
+        return formatted;
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     }
 
     function formatTuple(tupleStr) {

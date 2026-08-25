@@ -50,7 +50,10 @@ class VeralumeAutonomousAgent:
     def _handle_human_ratification_request(self, action: str, args: Dict[str, Any]) -> bool:
         return False
 
-    def query_llm(self, messages: List[Dict[str, str]], temperature: float = 0.2, max_tokens: int = 500) -> str:
+    def set_model(self, new_model: str):
+        self.model_name = new_model
+
+    def query_llm(self, messages: List[Dict[str, str]], temperature: float = 0.2, max_tokens: int = 300) -> Dict[str, str]:
         payload = {
             "model": self.model_name,
             "messages": messages,
@@ -69,9 +72,12 @@ class VeralumeAutonomousAgent:
             )
             with urllib.request.urlopen(req, timeout=120) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
-                return data.get("message", {}).get("content", "").strip()
+                msg = data.get("message", {})
+                content = msg.get("content", "").strip()
+                thinking = msg.get("thinking", "").strip()
+                return {"content": content, "thinking": thinking}
         except Exception as e:
-            return f"ERREUR_LLM: {e}"
+            return {"content": f"ERREUR_LLM: {e}", "thinking": ""}
 
     def evaluate_gatekeeper(self, tuple_v6: str, tool_name: Optional[str] = None) -> Dict[str, Any]:
         js_code = """
@@ -142,7 +148,9 @@ Si c'est une simple discussion sans besoin de toucher aux fichiers, mets action 
             messages.append(msg)
         messages.append({"role": "user", "content": user_prompt})
 
-        llm_raw = self.query_llm(messages, temperature=0.2, max_tokens=600)
+        llm_res = self.query_llm(messages, temperature=0.2, max_tokens=500)
+        llm_raw = llm_res.get("content", "")
+        thinking_raw = llm_res.get("thinking", "")
         
         # Valeurs par défaut
         reponse_texte = "Tâche reçue. Analyse en cours..."
@@ -152,21 +160,24 @@ Si c'est une simple discussion sans besoin de toucher aux fichiers, mets action 
         fc = 1.0
         action = {"outil": "aucun", "args": {}}
 
+        # Si le contenu est dans thinking (cas Gemma 4)
+        source_json = llm_raw if llm_raw else thinking_raw
+
         try:
-            debut = llm_raw.find("{")
-            fin = llm_raw.rfind("}") + 1
+            debut = source_json.find("{")
+            fin = source_json.rfind("}") + 1
             if debut != -1 and fin != 0:
-                parsed = json.loads(llm_raw[debut:fin])
-                reponse_texte = parsed.get("reponse", llm_raw)
+                parsed = json.loads(source_json[debut:fin])
+                reponse_texte = parsed.get("reponse", llm_raw or "Action analysée par l'agent.")
                 tuple_v6 = parsed.get("tuple_v6", tuple_v6)
                 sigma = float(parsed.get("sigma", 0.0))
                 delta = float(parsed.get("delta", 0.0))
                 fc = float(parsed.get("fc", 1.0))
                 action = parsed.get("action", action)
             else:
-                reponse_texte = llm_raw
+                reponse_texte = llm_raw or (thinking_raw[:300] + "...")
         except Exception:
-            reponse_texte = llm_raw
+            reponse_texte = llm_raw or thinking_raw
 
         # Mise à jour de l'historique
         self.chat_history.append({"role": "user", "content": user_prompt})
@@ -210,6 +221,7 @@ Si c'est une simple discussion sans besoin de toucher aux fichiers, mets action 
         return {
             "user_prompt": user_prompt,
             "agent_reply": reponse_texte,
+            "thinking": thinking_raw,
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
             "probe": {
                 "sigma": sigma,

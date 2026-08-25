@@ -48,6 +48,18 @@ class VeralumeHttpHandler(BaseHTTPRequestHandler):
         elif path == "/api/sandbox":
             data = agent.list_sandbox_files()
             self.send_json(data)
+        elif path == "/api/models":
+            self.send_json({
+                "actuel": agent.model_name,
+                "disponibles": [
+                    {"id": "qwen2.5-coder:7b", "nom": "⚡ Qwen 2.5 Coder 7B (Optimisé Code & SRE)"},
+                    {"id": "gemma4:e4b", "nom": "🧠 Gemma 4 E4B (Vision, Audio & Thinking)"},
+                    {"id": "gemma4:12b", "nom": "✨ Gemma 4 12B"},
+                    {"id": "gemma4:e2b", "nom": "✨ Gemma 4 E2B"},
+                    {"id": "gemma2:9b", "nom": "💎 Gemma 2 9B"},
+                    {"id": "qwen2.5:14b", "nom": "🏗️ Qwen 2.5 14B"}
+                ]
+            })
         else:
             self.send_error(404, "Page non trouvée")
 
@@ -55,7 +67,21 @@ class VeralumeHttpHandler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path
 
-        if path == "/api/chat":
+        if path == "/api/set_model":
+            content_len = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(content_len).decode("utf-8")
+            try:
+                payload = json.loads(body)
+                new_model = payload.get("model", "").strip()
+                if new_model:
+                    agent.set_model(new_model)
+                    print(f"\n[MISSION CONTROL] 🔄 Modèle basculé vers : {new_model}")
+                    self.send_json({"statut": "OK", "model": new_model})
+                else:
+                    self.send_json({"error": "Modèle invalide"}, status=400)
+            except Exception as e:
+                self.send_json({"error": str(e)}, status=500)
+        elif path == "/api/chat":
             content_len = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(content_len).decode("utf-8")
             try:
@@ -65,7 +91,7 @@ class VeralumeHttpHandler(BaseHTTPRequestHandler):
                     self.send_json({"error": "Prompt vide"}, status=400)
                     return
                 
-                print(f"\n[MISSION CONTROL] 📥 Requête reçue : '{prompt}'")
+                print(f"\n[MISSION CONTROL] 📥 Requête reçue : '{prompt}' (Modèle: {agent.model_name})")
                 result = agent.process_task(prompt)
                 print(f"[MISSION CONTROL] 📤 Statut : {result.get('status')} | Elapsed: {result.get('elapsed_s')}s")
                 self.send_json(result)

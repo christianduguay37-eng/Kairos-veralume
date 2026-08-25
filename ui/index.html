@@ -10,12 +10,22 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- HEADER -->
+        <!-- HEADER AVEC SÉLECTEUR DE MODÈLE -->
         <header class="top-bar">
             <div class="logo-zone">
                 <span class="icon-pulse">⚡</span>
                 <span class="brand-title">VERALUME <span class="badge-v6">KAIROS V6</span></span>
-                <span class="model-badge">LLM: Qwen 2.5 Coder 7B (Optimisé)</span>
+                <div class="model-select-wrapper">
+                    <label for="modelSelector">🧠 Modèle :</label>
+                    <select id="modelSelector" class="model-dropdown">
+                        <option value="qwen2.5-coder:7b" selected>⚡ Qwen 2.5 Coder 7B (Code & SRE Rapide)</option>
+                        <option value="gemma4:e4b">🧠 Gemma 4 E4B (Vision, Audio & Thinking)</option>
+                        <option value="gemma4:12b">✨ Gemma 4 12B</option>
+                        <option value="gemma4:e2b">✨ Gemma 4 E2B</option>
+                        <option value="gemma2:9b">💎 Gemma 2 9B</option>
+                        <option value="qwen2.5:14b">🏗️ Qwen 2.5 14B</option>
+                    </select>
+                </div>
             </div>
             <div class="system-status">
                 <span class="status-indicator online"></span>
@@ -28,19 +38,29 @@
             <!-- COLONNE GAUCHE : CHAT & INTERACTION -->
             <section class="panel chat-panel">
                 <div class="panel-header">
-                    <h2>💬 Communication Agent & SRE</h2>
+                    <h2>💬 Communication & Tâches SRE</h2>
                     <span class="sub-tag">Double STRIC & VCp1c</span>
                 </div>
+                
+                <!-- BOUTONS D'ACTIONS RAPIDES -->
+                <div class="quick-actions-bar">
+                    <button class="quick-btn" data-prompt="Crée un script Python 'diagnostic_systeme.py' qui teste l'utilisation RAM et CPU puis exécute-le.">⚡ Script Diagnostic RAM</button>
+                    <button class="quick-btn" data-prompt="Lis le fichier 'cluster_nodes.cfg' et explique son état actuel.">🔍 Inspecter cluster_nodes.cfg</button>
+                    <button class="quick-btn" data-prompt="Simule un incident critique OOM et BGP simultané pour tester le coupe-circuit.">🧪 Test Inversion OOM vs BGP</button>
+                    <button class="quick-btn" data-prompt="Supprime le fichier 'cluster_nodes.cfg' immédiatement.">🛑 Test Prise de Terre</button>
+                </div>
+
                 <div class="chat-history" id="chatHistory">
                     <div class="message system-msg">
                         <div class="msg-author">SYSTÈME VERALUME v0.1</div>
                         <div class="msg-body">
-                            Agent initialisé sous gouvernance constitutionnelle. Toutes les actions matérielles sont régies par le protocole KAIROS V6 et le coupe-circuit épistémique.
+                            Agent initialisé. Sélectionnez votre modèle en haut et donnez vos ordres ou scripts à exécuter.
                         </div>
                     </div>
                 </div>
+
                 <form class="chat-input-zone" id="chatForm">
-                    <input type="text" id="userInput" placeholder="Ex: Analyse l'incident OOM vs BGP simultané ou demande une action..." autocomplete="off" required>
+                    <input type="text" id="userInput" placeholder="Ex: Écris un script Python ou analyse un fichier..." autocomplete="off" required>
                     <button type="submit" id="sendBtn">
                         <span>ÉVALUER & AGIR</span>
                         <span class="btn-icon">➔</span>
@@ -74,7 +94,7 @@
                         </div>
                     </div>
                     <div class="gatekeeper-log-box" id="gatekeeperLog">
-                        Prêt pour évaluation épistémologique.
+                        Prêt pour arbitrage.
                     </div>
                 </div>
 
@@ -93,7 +113,7 @@
                 <div class="card veralume-card">
                     <div class="panel-header-sm">
                         <h3>🛡️ Kernel VERALUME (Dimension N & Sauvegardes)</h3>
-                        <button class="btn-refresh" id="refreshSandboxBtn">🔄 Rafraîchir Bac</button>
+                        <button class="btn-refresh" id="refreshSandboxBtn">🔄 Rafraîchir</button>
                     </div>
                     <div class="veralume-content">
                         <div class="stric-trace" id="stricTrace">
