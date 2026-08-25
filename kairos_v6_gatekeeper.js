@@ -39,6 +39,7 @@ class KairosV6Gatekeeper {
         "dream_consolidation":   new Set(["lire", "lister", "lancer_moteur_de_reve"]),
         "audit_system":          new Set(["lire", "lister", "diagnostiquer_volition"]),
         "consult_skills":        new Set(["lire", "lister", "consulter_skills"]),
+        "epistemic_audit_f9":    new Set(["lire", "lister", "analyser_filtres_f9"]),
         "hold_and_probe":        new Set(["lire", "lister"])
     };
 

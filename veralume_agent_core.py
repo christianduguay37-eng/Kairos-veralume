@@ -47,9 +47,11 @@ class VeralumeAutonomousAgent:
         )
         from alix_memory import AlixMemory
         from circadien_chronos import CycleCircadien, AncrageChronos
+        from detecteur_regeneration_biais import DetecteurRegenerationBiais
         self.memory = AlixMemory()
         self.circadien = CycleCircadien()
         self.chronos = AncrageChronos()
+        self.detecteur_biais = DetecteurRegenerationBiais()
         self.chat_history: List[Dict[str, str]] = []
 
     def _handle_human_ratification_request(self, action: str, args: Dict[str, Any]) -> bool:
@@ -150,6 +152,7 @@ Tu disposes des outils suivants :
 - "lancer_moteur_de_reve" : consolider la mémoire nocturne, défragmenter les souvenirs et éliminer les redondances (args: {})
 - "consulter_skills" : consulter et appliquer tes 36 compétences modulaires expertes (args: {})
 - "diagnostiquer_volition" : analyser la santé de la machine (RAM, CPU, disque) et formuler des propositions proactives (args: {})
+- "analyser_filtres_f9" : analyser un texte ou une affirmation selon la grille des 9 Filtres de Clôture F1-F9 de Christian Duguay (args: {"texte": "..."})
 
 Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cette structure :
 {
@@ -160,12 +163,12 @@ Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cett
   "delta": 0.0,
   "fc": 1.0,
   "action": {
-    "outil": "ecrire" | "lire" | "lister" | "executer_commande" | "supprimer" | "rechercher_web" | "lire_page_web" | "ouvrir_systeme" | "memoriser" | "noter_souvenir" | "lancer_moteur_de_reve" | "consulter_skills" | "diagnostiquer_volition" | "aucun",
+    "outil": "ecrire" | "lire" | "lister" | "executer_commande" | "supprimer" | "rechercher_web" | "lire_page_web" | "ouvrir_systeme" | "memoriser" | "noter_souvenir" | "lancer_moteur_de_reve" | "consulter_skills" | "diagnostiquer_volition" | "analyser_filtres_f9" | "aucun",
     "args": { ... }
   }
 }
 
-Directives fix: valides : dream_consolidation, audit_system, consult_skills, remember, update_memory, open_app, launch_browser, web_search, fetch_url, update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
+Directives fix: valides : epistemic_audit_f9, dream_consolidation, audit_system, consult_skills, remember, update_memory, open_app, launch_browser, web_search, fetch_url, update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
 Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et fix:inspect."""
 
         # Contexte temporel, mémoire d'Alix et fichiers existants
@@ -254,7 +257,7 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
                 }
 
                 # Synthèse intelligente si l'outil a produit des données riches
-                if tool_name in ["rechercher_web", "lire_page_web", "lire", "lancer_moteur_de_reve", "consulter_skills", "diagnostiquer_volition"]:
+                if tool_name in ["rechercher_web", "lire_page_web", "lire", "lancer_moteur_de_reve", "consulter_skills", "diagnostiquer_volition", "analyser_filtres_f9"]:
                     synth_prompt = f"Voici les informations réelles obtenues : \n{str(acte.resultat)[:1800]}\n\nRésume ces résultats en français de manière claire et directe pour Christian en réponse à sa question : '{user_prompt}'."
                     synth_res = self.query_llm([
                         {"role": "system", "content": "Tu es Veralume. Fais une synthèse claire et naturelle des informations trouvées."},

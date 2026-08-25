@@ -442,6 +442,13 @@ def construire_outils(bac: BacASable,
         except Exception as e:
             return f"Erreur Volition : {e}"
 
+    def analyser_filtres_f9_outil(texte: str = "") -> str:
+        try:
+            from filtres_cloture_f9 import AnalyseurFiltresF9
+            return json.dumps(AnalyseurFiltresF9.scanner_texte(texte), ensure_ascii=False, indent=2)
+        except Exception as e:
+            return f"Erreur Filtres F9 : {e}"
+
     return {
         "lister": Outil("lister", lister, Reversibilite.REVERSIBLE,
                         {"sous_dossier": "quel dossier lister ?"},
@@ -471,6 +478,8 @@ def construire_outils(bac: BacASable,
                                   {}, vide_legitime=frozenset({})),
         "diagnostiquer_volition": Outil("diagnostiquer_volition", diagnostiquer_volition_outil, Reversibilite.REVERSIBLE,
                                         {}, vide_legitime=frozenset({})),
+        "analyser_filtres_f9": Outil("analyser_filtres_f9", analyser_filtres_f9_outil, Reversibilite.REVERSIBLE,
+                                     {"texte": "quel texte analyser avec les 9 filtres de clôture F1-F9 ?"}),
     }
 
 
