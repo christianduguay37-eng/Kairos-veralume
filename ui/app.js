@@ -1,6 +1,6 @@
 /**
  * VERALUME × KAIROS V6 — Frontend Controller
- * Recherche Web, Reconnaissance Vocale (STT) & Synthèse Vocale (TTS)
+ * Recherche Web, Mot-Clé de Réveil "Alix" (Wake-Word), Voice STT & TTS
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,7 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleTtsBtn = document.getElementById('toggleTtsBtn');
     const ttsIcon = document.getElementById('ttsIcon');
     const ttsStatusText = document.getElementById('ttsStatusText');
+    const toggleWakeWordBtn = document.getElementById('toggleWakeWordBtn');
+    const wakeWordIcon = document.getElementById('wakeWordIcon');
+    const wakeWordStatusText = document.getElementById('wakeWordStatusText');
+
     let ttsEnabled = true;
+    let wakeWordEnabled = true;
+    const WAKE_WORDS = ["alix", "alex", "alice", "veralume", "alyx", "élix", "felix"];
 
     // Telemetry Elements
     const sigmaVal = document.getElementById('sigmaVal');
@@ -46,54 +52,136 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSandboxStatus();
     refreshSandboxBtn.addEventListener('click', loadSandboxStatus);
 
-    // 2. Voice Recognition (Speech-to-Text)
+    // Audio Feedback Beep
+    function playWakeBeep() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, ctx.currentTime); // Ré5
+            osc.frequency.setValueAtTime(880, ctx.currentTime + 0.08); // La5
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.25);
+        } catch (e) {}
+    }
+
+    // 2. Voice Recognition & Wake-Word Engine
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition = null;
+    let isExplicitRecording = false;
 
-    if (SpeechRecognition && micBtn) {
+    if (SpeechRecognition) {
         recognition = new SpeechRecognition();
         recognition.lang = 'fr-FR';
-        recognition.continuous = false;
-        recognition.interimResults = false;
+        recognition.continuous = true;
+        recognition.interimResults = true;
 
         recognition.onstart = () => {
-            micBtn.classList.add('listening');
-            userInput.placeholder = '🎙️ Écoute en cours... Parlez maintenant !';
+            if (isExplicitRecording) {
+                micBtn.classList.add('listening');
+                userInput.placeholder = '🎙️ Écoute en cours... Parlez maintenant !';
+            }
         };
 
         recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            userInput.value = transcript;
-            micBtn.classList.remove('listening');
-            userInput.placeholder = 'Écrivez ou cliquez sur le micro pour parler...';
-            // Auto-submit vocal query
-            chatForm.dispatchEvent(new Event('submit'));
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                const transcript = event.results[i][0].transcript.trim().toLowerCase();
+                const isFinal = event.results[i].isFinal;
+
+                // Cas 1 : Enregistrement manuel via clic sur le micro
+                if (isExplicitRecording && isFinal) {
+                    userInput.value = transcript;
+                    micBtn.classList.remove('listening');
+                    isExplicitRecording = false;
+                    userInput.placeholder = 'Écrivez ou dites "Alix..." pour parler...';
+                    chatForm.dispatchEvent(new Event('submit'));
+                    return;
+                }
+
+                // Cas 2 : Détection du mot-clé Wake-Word "Alix"
+                if (wakeWordEnabled && isFinal) {
+                    for (const ww of WAKE_WORDS) {
+                        const index = transcript.indexOf(ww);
+                        if (index !== -1) {
+                            // Mot de réveil trouvé ! Extraire la commande qui suit
+                            const command = transcript.substring(index + ww.length).replace(/^[,:.\s]+/, '').trim();
+                            if (command.length >= 2) {
+                                playWakeBeep();
+                                userInput.value = command;
+                                appendMessage('VOIX (Mot-Clé Alix)', `🗣️ <em>"${transcript}"</em>`, 'user-msg');
+                                chatForm.querySelector('input').value = command;
+                                chatForm.dispatchEvent(new Event('submit'));
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
         };
 
         recognition.onerror = (event) => {
-            console.error('Erreur reconnaissance vocale:', event.error);
-            micBtn.classList.remove('listening');
-            userInput.placeholder = 'Écrivez ou cliquez sur le micro pour parler...';
+            if (event.error !== 'no-speech') {
+                console.warn('SpeechRecognition error:', event.error);
+            }
         };
 
         recognition.onend = () => {
-            micBtn.classList.remove('listening');
-            userInput.placeholder = 'Écrivez ou cliquez sur le micro pour parler...';
+            // Redémarrage automatique si le mot-clé de réveil est actif
+            if (wakeWordEnabled) {
+                try {
+                    recognition.start();
+                } catch (e) {}
+            } else if (isExplicitRecording) {
+                micBtn.classList.remove('listening');
+                isExplicitRecording = false;
+                userInput.placeholder = 'Écrivez ou dites "Alix..." pour parler...';
+            }
         };
 
-        micBtn.addEventListener('click', () => {
-            try {
-                window.speechSynthesis.cancel(); // Stop talking if agent was speaking
-                recognition.start();
-            } catch (err) {
-                recognition.stop();
-            }
-        });
+        // Démarrage initial de l'écoute passive du mot de réveil
+        try {
+            recognition.start();
+        } catch (e) {}
+
+        if (micBtn) {
+            micBtn.addEventListener('click', () => {
+                window.speechSynthesis.cancel();
+                isExplicitRecording = true;
+                micBtn.classList.add('listening');
+                userInput.placeholder = '🎙️ Parlez maintenant...';
+                try {
+                    recognition.start();
+                } catch (e) {}
+            });
+        }
     } else if (micBtn) {
         micBtn.style.display = 'none';
     }
 
-    // 3. Voice Synthesis Toggle (Text-to-Speech)
+    // 3. Wake-Word Toggle Button
+    if (toggleWakeWordBtn) {
+        toggleWakeWordBtn.addEventListener('click', () => {
+            wakeWordEnabled = !wakeWordEnabled;
+            if (wakeWordEnabled) {
+                toggleWakeWordBtn.classList.add('active');
+                wakeWordIcon.textContent = '👂';
+                wakeWordStatusText.textContent = 'Mot-clé "Alix" : ON';
+                try { recognition.start(); } catch (e) {}
+            } else {
+                toggleWakeWordBtn.classList.remove('active');
+                wakeWordIcon.textContent = '💤';
+                wakeWordStatusText.textContent = 'Mot-clé "Alix" : OFF';
+                try { recognition.stop(); } catch (e) {}
+            }
+        });
+    }
+
+    // 4. Voice Synthesis Toggle (Text-to-Speech)
     if (toggleTtsBtn) {
         toggleTtsBtn.addEventListener('click', () => {
             ttsEnabled = !ttsEnabled;
@@ -113,9 +201,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function speakText(text) {
         if (!ttsEnabled || !('speechSynthesis' in window)) return;
 
-        window.speechSynthesis.cancel(); // Arrête la phrase précédente
+        window.speechSynthesis.cancel();
         
-        // Nettoyage des blocs de code et des caractères techniques
         let cleanText = text.replace(/```[\s\S]*?```/g, "Voir le code affiché à l'écran.");
         cleanText = cleanText.replace(/`([^`]+)`/g, '$1');
         cleanText = cleanText.replace(/https?:\/\/[^\s]+/g, 'lien web');
@@ -126,7 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
         utterance.rate = 1.05;
         utterance.pitch = 1.0;
 
-        // Cherche une voix française naturelle
         const voices = window.speechSynthesis.getVoices();
         const frenchVoice = voices.find(v => v.lang.startsWith('fr') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Denise') || v.name.includes('Paul') || v.name.includes('Julie')));
         if (frenchVoice) {
@@ -136,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.speechSynthesis.speak(utterance);
     }
 
-    // 4. Model Selector Change
+    // 5. Model Selector Change
     if (modelSelector) {
         modelSelector.addEventListener('change', async () => {
             const selected = modelSelector.value;
@@ -156,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Quick Action Buttons
+    // 6. Quick Action Buttons
     document.querySelectorAll('.quick-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             userInput.value = btn.getAttribute('data-prompt');
@@ -164,13 +250,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 6. Chat Form Submit
+    // 7. Chat Form Submit
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const text = userInput.value.trim();
         if (!text) return;
 
-        // Append User Message
         appendMessage('UTILISATEUR', text, 'user-msg');
         userInput.value = '';
         sendBtn.disabled = true;
@@ -183,8 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ prompt: text })
             });
             const data = await resp.json();
-
-            // Update UI with Agent response
             handleAgentResponse(data);
         } catch (err) {
             appendMessage('ERREUR SYSTÈME', `Échec de communication : ${err.message}`, 'system-msg');
@@ -207,13 +290,11 @@ document.addEventListener('DOMContentLoaded', () => {
             elapsedVal.textContent = `${data.elapsed_s}s`;
         }
 
-        // 2. Update Telemetry Gauges (sigma, delta, FC)
+        // 2. Update Telemetry Gauges
         if (data.probe) {
             sigmaVal.textContent = Number(data.probe.sigma).toFixed(2);
             deltaVal.textContent = Number(data.probe.delta).toFixed(2);
             fcVal.textContent = Number(data.probe.fc).toFixed(2);
-
-            // Coloration dynamique
             sigmaVal.style.color = data.probe.sigma > 0.3 ? 'var(--accent-red)' : 'var(--accent-cyan)';
         }
 
@@ -258,13 +339,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (data.status === 'BLOCKED') {
                 agentMsgText += `<div class="action-footer" style="margin-top:8px;font-size:11px;color:var(--accent-red)">⛔ Coupe-circuit actif : ${data.gatekeeper?.log || 'Interception.'}</div>`;
             }
-            // Synthèse vocale de la réponse
             speakText(data.agent_reply);
         } else if (data.status === 'APPROVED') {
             agentMsgText += `✅ <strong>Ordre validé (Vérité Logique R)</strong> : L'outil <code>${data.planned_tool?.outil}</code> a été exécuté via Double STRIC.`;
         } else if (data.status === 'BLOCKED') {
             agentMsgText += `⛔ <strong>Coupe-Circuit Activé</strong> : ${data.gatekeeper?.log || 'Action interceptée.'}`;
-            speakText("Coupe-circuit activé. Action bloquée pour incertitude.");
+            speakText("Coupe-circuit activé. Action bloquée.");
         } else {
             agentMsgText += `⚠️ <strong>Arbitrage Suspendu (État M)</strong> : Escalade vers opérateur humain.`;
         }

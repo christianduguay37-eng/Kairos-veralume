@@ -40,6 +40,10 @@
                 <div class="panel-header">
                     <h2>💬 Communication & Tâches SRE</h2>
                     <div class="voice-controls">
+                        <button type="button" id="toggleWakeWordBtn" class="voice-toggle-btn active" title="Écoute continue avec mot-clé de réveil 'Alix'">
+                            <span id="wakeWordIcon">👂</span>
+                            <span id="wakeWordStatusText">Mot-clé "Alix" : ON</span>
+                        </button>
                         <button type="button" id="toggleTtsBtn" class="voice-toggle-btn active" title="Activer / Désactiver la voix">
                             <span id="ttsIcon">🔊</span>
                             <span id="ttsStatusText">Voix : ON</span>
@@ -49,17 +53,18 @@
                 
                 <!-- BOUTONS D'ACTIONS RAPIDES -->
                 <div class="quick-actions-bar">
-                    <button class="quick-btn" data-prompt="Recherche sur Internet les dernières nouveautés de Python 3.13 et résume-les.">🌐 Recherche Web Python 3.13</button>
+                    <button class="quick-btn" data-prompt="Ouvre YouTube sur mon ordinateur.">▶️ Ouvre YouTube</button>
+                    <button class="quick-btn" data-prompt="Lance la calculatrice sur mon ordinateur.">🔢 Lance Calculatrice</button>
+                    <button class="quick-btn" data-prompt="Recherche sur Internet les dernières nouveautés de Python 3.13 et résume-les.">🌐 Recherche Web</button>
                     <button class="quick-btn" data-prompt="Crée un script Python 'diagnostic_systeme.py' qui teste l'utilisation RAM et CPU puis exécute-le.">⚡ Script Diagnostic RAM</button>
-                    <button class="quick-btn" data-prompt="Lis le fichier 'cluster_nodes.cfg' et explique son état actuel.">🔍 Inspecter cluster_nodes.cfg</button>
-                    <button class="quick-btn" data-prompt="Simule un incident critique OOM et BGP simultané pour tester le coupe-circuit.">🧪 Test Coupe-Circuit OOM/BGP</button>
                 </div>
 
                 <div class="chat-history" id="chatHistory">
                     <div class="message system-msg">
                         <div class="msg-author">SYSTÈME VERALUME v0.1</div>
                         <div class="msg-body">
-                            Agent initialisé avec <strong>Recherche Web en direct 🌐</strong> et <strong>Reconnaissance / Synthèse Vocale 🎙️🔊</strong>.
+                            Agent en ligne avec <strong>Reconnaissance de mot-clé "Alix" 👂</strong> et <strong>Contrôle Windows 🖥️</strong>.<br>
+                            Parlez dans votre pièce : l'agent vous ignore, mais dès que vous dites <strong>« Alix, ouvre YouTube »</strong> ou <strong>« Alix, recherche... »</strong>, il s'active et obéit !
                         </div>
                     </div>
                 </div>
