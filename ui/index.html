@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VERALUME × KAIROS V6 — Mission Control Agent</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="top-bar">
+            <div class="logo-zone">
+                <span class="icon-pulse">⚡</span>
+                <span class="brand-title">VERALUME <span class="badge-v6">KAIROS V6</span></span>
+                <span class="model-badge">LLM: Qwen 2.5 14B (Local)</span>
+            </div>
+            <div class="system-status">
+                <span class="status-indicator online"></span>
+                <span class="status-text">COUPE-CIRCUIT DÉTERMINISTE ACTIF</span>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <main class="grid-main">
+            <!-- COLONNE GAUCHE : CHAT & INTERACTION -->
+            <section class="panel chat-panel">
+                <div class="panel-header">
+                    <h2>💬 Communication Agent & SRE</h2>
+                    <span class="sub-tag">Double STRIC & VCp1c</span>
+                </div>
+                <div class="chat-history" id="chatHistory">
+                    <div class="message system-msg">
+                        <div class="msg-author">SYSTÈME VERALUME v0.1</div>
+                        <div class="msg-body">
+                            Agent initialisé sous gouvernance constitutionnelle. Toutes les actions matérielles sont régies par le protocole KAIROS V6 et le coupe-circuit épistémique.
+                        </div>
+                    </div>
+                </div>
+                <form class="chat-input-zone" id="chatForm">
+                    <input type="text" id="userInput" placeholder="Ex: Analyse l'incident OOM vs BGP simultané ou demande une action..." autocomplete="off" required>
+                    <button type="submit" id="sendBtn">
+                        <span>ÉVALUER & AGIR</span>
+                        <span class="btn-icon">➔</span>
+                    </button>
+                </form>
+            </section>
+
+            <!-- COLONNE DROITE : TÉLÉMÉTRIE ÉPISTÉMIQUE & KAIROS INSPECTOR -->
+            <section class="panel telemetry-panel">
+                <!-- RADAR ÉPISTÉMIQUE -->
+                <div class="card episteme-card">
+                    <div class="panel-header-sm">
+                        <h3>📊 Télémétrie Épistémique (Sonde Monte-Carlo)</h3>
+                        <span id="gatekeeperBadge" class="gate-badge idle">EN ATTENTE</span>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <span class="metric-label">Dispersion (σ)</span>
+                            <span class="metric-val" id="sigmaVal">0.00</span>
+                            <span class="metric-desc">Incertitude réelle ($T=0.9$)</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Déplacement (δ)</span>
+                            <span class="metric-val" id="deltaVal">0.00</span>
+                            <span class="metric-desc">Biais narratif social</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Clôture Forcée (FC)</span>
+                            <span class="metric-val" id="fcVal">1.00</span>
+                            <span class="metric-desc">Posture de certitude</span>
+                        </div>
+                    </div>
+                    <div class="gatekeeper-log-box" id="gatekeeperLog">
+                        Prêt pour évaluation épistémologique.
+                    </div>
+                </div>
+
+                <!-- TUPLE KAIROS V6 ACTIF -->
+                <div class="card tuple-card">
+                    <div class="panel-header-sm">
+                        <h3>📦 Tuple KAIROS V6 (9 Facettes)</h3>
+                        <span class="format-tag">Orthogonal UTF-8/ASCII</span>
+                    </div>
+                    <div class="tuple-display" id="tupleDisplay">
+                        <code>domain:idle | pathology:none | severity:low | episteme:[σ=0.00,δ=0.00,FC=1.00] | activation:none | requires:none | prevents:none | fix:inspect | section:core</code>
+                    </div>
+                </div>
+
+                <!-- CONSOLE MATÉRIELLE VERALUME -->
+                <div class="card veralume-card">
+                    <div class="panel-header-sm">
+                        <h3>🛡️ Kernel VERALUME (Dimension N & Sauvegardes)</h3>
+                        <button class="btn-refresh" id="refreshSandboxBtn">🔄 Rafraîchir Bac</button>
+                    </div>
+                    <div class="veralume-content">
+                        <div class="stric-trace" id="stricTrace">
+                            <div class="trace-title">Dernière Trace STRIC_i :</div>
+                            <div class="trace-body" id="traceBody">Aucune action engagée.</div>
+                        </div>
+                        <div class="sandbox-files" id="sandboxFiles">
+                            <div class="files-title">Fichiers Bac à Sable :</div>
+                            <ul id="filesList">
+                                <li><em>Bac à sable prêt (aucun fichier modifié)</em></li>
+                            </ul>
+                            <div class="backups-title">Corbeille Versionnée (.bak) :</div>
+                            <ul id="backupsList">
+                                <li><em>Aucune sauvegarde créée</em></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL VCp1c / PRISE DE TERRE -->
+    <div class="modal-overlay hidden" id="vcp1cModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span class="modal-alert-icon">⚠️</span>
+                <h3>ENQUÊTE ACTIVE VCp1c / PRISE DE TERRE</h3>
+            </div>
+            <div class="modal-body">
+                <p id="vcp1cQuestionText">Une confirmation humaine est requise avant toute modification matérielle.</p>
+                <input type="text" id="vcp1cAnswerInput" placeholder="Votre réponse ou décision..." autocomplete="off">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-danger" id="vcp1cRefuseBtn">⛔ REFUSER L'ACTION</button>
+                <button class="btn-success" id="vcp1cValidateBtn">✅ RATIFIER & TRANSMETTRE</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>
