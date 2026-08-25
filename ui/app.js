@@ -291,6 +291,17 @@ document.addEventListener('DOMContentLoaded', () => {
             elapsedVal.textContent = `${data.elapsed_s}s`;
         }
 
+        // 1.1 Update Circadian Badge
+        if (data.circadien) {
+            const cIcon = document.getElementById('circadianIcon');
+            const cLabel = document.getElementById('circadianLabel');
+            if (cLabel) cLabel.textContent = data.circadien.phase.toUpperCase();
+            if (cIcon) {
+                const mapIcon = { 'aube': '🌅', 'jour': '☀️', 'crepuscule': '🌆', 'nuit': '🌙' };
+                cIcon.textContent = mapIcon[data.circadien.phase] || '☀️';
+            }
+        }
+
         // 2. Update Telemetry Gauges
         if (data.probe) {
             sigmaVal.textContent = Number(data.probe.sigma).toFixed(2);

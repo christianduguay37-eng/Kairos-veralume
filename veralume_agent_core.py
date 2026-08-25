@@ -46,7 +46,10 @@ class VeralumeAutonomousAgent:
             ratifier=self._handle_human_ratification_request
         )
         from alix_memory import AlixMemory
+        from circadien_chronos import CycleCircadien, AncrageChronos
         self.memory = AlixMemory()
+        self.circadien = CycleCircadien()
+        self.chronos = AncrageChronos()
         self.chat_history: List[Dict[str, str]] = []
 
     def _handle_human_ratification_request(self, action: str, args: Dict[str, Any]) -> bool:
@@ -162,7 +165,11 @@ Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cett
 Directives fix: valides : remember, update_memory, open_app, launch_browser, web_search, fetch_url, update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
 Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et fix:inspect."""
 
-        # Contexte de la mémoire d'Alix et des fichiers existants
+        # Contexte temporel, mémoire d'Alix et fichiers existants
+        releve_circadien = self.circadien.relever()
+        releve_chronos = self.chronos.tick()
+        context_temporel_msg = f"[Rythme Circadien & Temps Réel] : Phase = {releve_circadien['label']} ({releve_circadien['heure_locale']}) | Intervalle depuis le dernier échange = {releve_chronos['langage']}"
+        
         sandbox_state = self.list_sandbox_files()
         fichiers_disponibles = [f["chemin"] for f in sandbox_state.get("fichiers", [])]
         context_files_msg = f"[Fichiers présents dans ton espace de travail] : {fichiers_disponibles}"
@@ -170,6 +177,7 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
 
         messages = [
             {"role": "system", "content": system_autonomous_prompt},
+            {"role": "system", "content": context_temporel_msg},
             {"role": "system", "content": context_memory_msg},
             {"role": "system", "content": context_files_msg}
         ]
@@ -276,6 +284,8 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
             "veralume_acte": veralume_acte,
             "vcp1c_questions": vcp1c_questions,
             "status": gate_verdict.get("status"),
+            "circadien": releve_circadien,
+            "chronos": releve_chronos,
             "elapsed_s": round(time.perf_counter() - t0, 2)
         }
 
