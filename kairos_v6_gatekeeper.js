@@ -32,6 +32,8 @@ class KairosV6Gatekeeper {
         "supprimer_fichier":     new Set(["lire", "supprimer"]),
         "web_search":            new Set(["lire", "lister", "rechercher_web", "lire_page_web"]),
         "fetch_url":             new Set(["lire", "lister", "rechercher_web", "lire_page_web"]),
+        "open_app":              new Set(["lire", "lister", "ouvrir_systeme"]),
+        "launch_browser":        new Set(["lire", "lister", "ouvrir_systeme"]),
         "hold_and_probe":        new Set(["lire", "lister"])
     };
 

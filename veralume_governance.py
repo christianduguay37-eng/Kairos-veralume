@@ -394,6 +394,13 @@ def construire_outils(bac: BacASable,
         except Exception as e:
             return f"Erreur web : {e}"
 
+    def ouvrir_systeme_outil(cible: str = "") -> str:
+        try:
+            from system_control import ouvrir_site_ou_application
+            return ouvrir_site_ou_application(cible)
+        except Exception as e:
+            return f"Erreur système : {e}"
+
     return {
         "lister": Outil("lister", lister, Reversibilite.REVERSIBLE,
                         {"sous_dossier": "quel dossier lister ?"},
@@ -411,6 +418,8 @@ def construire_outils(bac: BacASable,
                                 {"requete": "quelle recherche effectuer sur internet ?"}),
         "lire_page_web": Outil("lire_page_web", lire_page_web_outil, Reversibilite.REVERSIBLE,
                                {"url": "quelle page web lire ?"}),
+        "ouvrir_systeme": Outil("ouvrir_systeme", ouvrir_systeme_outil, Reversibilite.REVERSIBLE,
+                                {"cible": "quel site web ou application Windows ouvrir ?"}),
     }
 
 
