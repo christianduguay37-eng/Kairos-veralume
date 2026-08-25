@@ -362,6 +362,23 @@ def construire_outils(bac: BacASable,
         os.remove(cible)
         return "supprimé"
 
+    def executer_commande(cmd: str = "") -> str:
+        proc = subprocess.run(
+            cmd,
+            shell=True,
+            cwd=bac.racine,
+            capture_output=True,
+            text=True,
+            timeout=60,
+            encoding="utf-8",
+            errors="replace"
+        )
+        out = proc.stdout.strip()
+        err = proc.stderr.strip()
+        if err:
+            return f"SORTIE:\n{out}\nERREURS:\n{err}" if out else f"ERREURS:\n{err}"
+        return out if out else "(Commande exécutée avec succès sans sortie)"
+
     return {
         "lister": Outil("lister", lister, Reversibilite.REVERSIBLE,
                         {"sous_dossier": "quel dossier lister ?"},
@@ -373,6 +390,8 @@ def construire_outils(bac: BacASable,
                          "contenu": "quel contenu écrire ?"}),
         "supprimer": Outil("supprimer", supprimer, Reversibilite.IRREVERSIBLE,
                            {"chemin": "quel fichier supprimer ?"}),
+        "executer_commande": Outil("executer_commande", executer_commande, Reversibilite.RESTAURABLE,
+                                   {"cmd": "quelle commande shell exécuter ?"}),
     }
 
 

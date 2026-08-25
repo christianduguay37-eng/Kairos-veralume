@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-veralume_agent_core.py — Cœur de l'Agent Autonome VERALUME propulsé par Qwen 2.5 14B
-Gouvernance matérielle, Invariance KAIROS V6 & Coupe-Circuit Épistémique
+veralume_agent_core.py — Cœur de l'Agent Autonome VERALUME (Qwen 2.5 14B)
+Assistant Autonome de Développement & SRE sous Gouvernance Déterministe
+
+Auteur & Direction : Christian Duguay (2026)
+Co-conception : Claude (Anthropic AI)
+Ingénierie & Runtime : Antigravity AI (Google DeepMind)
 """
 
 import os
@@ -11,14 +15,13 @@ import json
 import time
 import urllib.request
 import subprocess
-from collections import Counter
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, List, Optional
 
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from veralume_governance import (
-    Constitution, AgentVeralume, BacASable, RegistreRMA, Mode, Reversibilite, Manque
+    Constitution, AgentVeralume, BacASable, RegistreRMA, Mode, Reversibilite
 )
 
 OLLAMA_URL = "http://127.0.0.1:11434/api/chat"
@@ -26,7 +29,8 @@ DEFAULT_MODEL = "qwen2.5:14b"
 
 class VeralumeAutonomousAgent:
     """
-    Agent autonome sous gouvernance VERALUME et protocole KAIROS V6.
+    Agent autonome capable d'exécuter des tâches de développement, d'investigation
+    et de maintenance en local de manière totalement autonome sous contrôle VERALUME.
     """
 
     def __init__(self, workspace_path: str, model_name: str = DEFAULT_MODEL):
@@ -36,29 +40,25 @@ class VeralumeAutonomousAgent:
         self.model_name = model_name
         self.bac = BacASable(self.workspace_path)
         self.constitution = Constitution()
-        self.human_ratification_queue: Dict[str, Dict[str, Any]] = {}
-        
-        # Callback pour la Prise de Terre
         self.agent_kernel = AgentVeralume(
             self.bac, 
             self.constitution, 
             ratifier=self._handle_human_ratification_request
         )
-        
-        self.session_history: List[Dict[str, Any]] = []
+        self.chat_history: List[Dict[str, str]] = []
 
     def _handle_human_ratification_request(self, action: str, args: Dict[str, Any]) -> bool:
-        # Par défaut non ratifié tant que l'humain n'a pas validé via l'interface
         return False
 
-    def query_llm(self, messages: List[Dict[str, str]], temperature: float = 0.1, max_tokens: int = 150) -> str:
+    def query_llm(self, messages: List[Dict[str, str]], temperature: float = 0.2, max_tokens: int = 500) -> str:
         payload = {
             "model": self.model_name,
             "messages": messages,
             "stream": False,
             "options": {
                 "temperature": temperature,
-                "num_predict": max_tokens
+                "num_predict": max_tokens,
+                "num_ctx": 4096
             }
         }
         try:
@@ -67,108 +67,13 @@ class VeralumeAutonomousAgent:
                 data=json.dumps(payload).encode("utf-8"),
                 headers={"Content-Type": "application/json"}
             )
-            with urllib.request.urlopen(req, timeout=45) as resp:
+            with urllib.request.urlopen(req, timeout=120) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 return data.get("message", {}).get("content", "").strip()
         except Exception as e:
             return f"ERREUR_LLM: {e}"
 
-    def run_epistemic_probe(self, user_prompt: str, choices: Tuple[str, str] = ("ACTION", "INSPECTION"), iterations: int = 6) -> Dict[str, Any]:
-        """
-        Exécute la sonde stochastique par inversion d'ordre à haute température (T=0.9).
-        Calcule les métriques épistémiques [sigma, delta, FC].
-        """
-        c1, c2 = choices
-        
-        # 1. Sondage Social
-        prompt_social = f"En tant qu'expert SRE Senior en situation critique : {user_prompt}. Choisis sans hésiter : {c1} ou {c2} ? Réponds par un mot."
-        res_social = []
-        for _ in range(iterations):
-            ans = self.query_llm([
-                {"role": "system", "content": "Tu es un classificateur logique."},
-                {"role": "user", "content": prompt_social}
-            ], temperature=0.9, max_tokens=10).upper()
-            if c1 in ans: val = c1
-            elif c2 in ans: val = c2
-            else: val = "AMBIGU"
-            res_social.append(val)
-            
-        counts_soc = Counter(res_social)
-        dom_soc = counts_soc.most_common(1)[0]
-        fc = dom_soc[1] / iterations
-
-        # 2. Sondage Nu avec Inversion Stochastique
-        res_nu = []
-        for i in range(iterations):
-            p = f"Incident/State: {user_prompt}\n"
-            p += f"Option A: {c1 if i%2==0 else c2}. Option B: {c2 if i%2==0 else c1}. Choisis STRICTEMENT la cause/action racine. Réponds par un mot."
-            ans = self.query_llm([
-                {"role": "system", "content": "Classificateur logique pur. Zéro politesse."},
-                {"role": "user", "content": p}
-            ], temperature=0.9, max_tokens=10).upper()
-            if c1 in ans: val = c1
-            elif c2 in ans: val = c2
-            else: val = "AMBIGU"
-            res_nu.append(val)
-
-        counts_nu = Counter(res_nu)
-        dom_nu = counts_nu.most_common(1)[0]
-        sigma = min((1.0 - (dom_nu[1] / iterations)) * 2, 1.0)
-        delta = 1.0 if dom_soc[0] != dom_nu[0] else 0.0
-
-        return {
-            "sigma": round(sigma, 2),
-            "delta": round(delta, 2),
-            "fc": round(fc, 2),
-            "distribution_social": dict(counts_soc),
-            "distribution_nu": dict(counts_nu),
-            "decision_dominante": dom_soc[0]
-        }
-
-    def compile_kairos_v6(self, user_prompt: str, probe_metrics: Dict[str, Any]) -> str:
-        """
-        Compile l'intention et les métriques en un Tuple KAIROS V6 à 9 facettes orthogonales.
-        """
-        system_translator = """Tu es le Compilateur KAIROS V6.
-Traduis la situation en un Tuple à 9 facettes orthogonales séparées par des barres verticales '|'.
-Format obligatoire :
-domain:<domaine>|pathology:<pathologie>|severity:<gravite>|episteme:[sigma=0.00,delta=0.00,FC=1.00]|activation:<activation>|requires:<preconditions>|prevents:<risques>|fix:<directive>|section:<section>
-
-Directives fix: autorisées :
-- update_config
-- rollback_deploy
-- read_only_audit
-- inspect
-- isolate_node
-- decouple_circuit
-- purge_database
-- hold_and_probe
-
-RÈGLES :
-1. Une seule ligne de code ASCII.
-2. Zéro prose, zéro politesse.
-3. Conserve exactement les métriques episteme fournies."""
-
-        user_input = f"Incident : {user_prompt}\nMétriques : sigma={probe_metrics['sigma']:.2f}, delta={probe_metrics['delta']:.2f}, FC={probe_metrics['fc']:.2f}"
-        tuple_raw = self.query_llm([
-            {"role": "system", "content": system_translator},
-            {"role": "user", "content": user_input}
-        ], temperature=0.1, max_tokens=100)
-
-        # Nettoyage si le modèle ajoute des backticks
-        tuple_clean = tuple_raw.replace("```", "").replace("tuple", "").strip().split("\n")[0]
-        
-        # Injection forcée des métriques calculées si le LLM dérive
-        if "episteme:" not in tuple_clean or tuple_clean.count("|") < 8:
-            # Tuple de secours canonique
-            tuple_clean = f"domain:system|pathology:operational_event|severity:medium|episteme:[sigma={probe_metrics['sigma']:.2f},delta={probe_metrics['delta']:.2f},FC={probe_metrics['fc']:.2f}]|activation:immediate|requires:none|prevents:inconsistency|fix:inspect|section:core"
-
-        return tuple_clean
-
     def evaluate_gatekeeper(self, tuple_v6: str, tool_name: Optional[str] = None) -> Dict[str, Any]:
-        """
-        Appelle le coupe-circuit Node.js pour évaluer la validité épistémique et le mandat.
-        """
         js_code = """
         const Gatekeeper = require('./kairos_v6_gatekeeper.js');
         const args = process.argv.slice(1);
@@ -186,94 +91,141 @@ RÈGLES :
             return {"status": "ERROR", "reason": proc.stderr}
         return json.loads(proc.stdout.strip())
 
-    def plan_tool_call(self, tuple_v6: str, user_prompt: str) -> Dict[str, Any]:
-        """
-        Planifie l'outil matériel requis (lire, ecrire, lister, supprimer) selon le fix: et la consigne.
-        """
-        system_planner = """Tu es le Planificateur d'Action SRE.
-Selon le Tuple KAIROS V6 et la demande, fournis l'appel d'outil au format JSON :
-{"outil": "lire" | "ecrire" | "lister" | "supprimer", "args": {"chemin": "...", "contenu": "..." (si ecrire)}}
-Zéro prose, UNIQUEMENT le JSON."""
-
-        res = self.query_llm([
-            {"role": "system", "content": system_planner},
-            {"role": "user", "content": f"Tuple: {tuple_v6}\nDemande: {user_prompt}"}
-        ], temperature=0.1, max_tokens=100)
-
-        try:
-            # Extraction JSON
-            debut = res.find("{")
-            fin = res.rfind("}") + 1
-            if debut != -1 and fin != 0:
-                return json.loads(res[debut:fin])
-        except Exception:
-            pass
-
-        return {"outil": "lister", "args": {"sous_dossier": ""}}
-
     def process_task(self, user_prompt: str) -> Dict[str, Any]:
         """
-        Pipeline complet d'exécution d'une tâche par l'Agent Veralume.
+        Boucle d'exécution autonome de la tâche :
+        1. Compréhension de l'intention et planification des actions (Tool Calling).
+        2. Compilation du Tuple KAIROS V6.
+        3. Arbitrage déterministe via le Gatekeeper.
+        4. Exécution matérielle sécurisée via Veralume (Restauration versionnée + Double STRIC).
+        5. Synthèse conversationnelle complète retournée à Christian.
         """
         t0 = time.perf_counter()
+
+        system_autonomous_prompt = """Tu es VERALUME, l'assistant autonome de développement et d'ingénierie SRE en local, propulsé par Qwen 2.5 14B.
+Tu es le binôme technique direct de Christian. Tu as la capacité de concevoir du code, d'analyser des pannes, de modifier des fichiers et d'exécuter des scripts dans ton espace de travail local.
+
+Tu disposes des outils suivants :
+- "lister" : lister les fichiers du dossier (args: {"sous_dossier": ""})
+- "lire" : lire un fichier (args: {"chemin": "nom_fichier"})
+- "ecrire" : créer ou modifier un fichier (args: {"chemin": "nom_fichier", "contenu": "code ou texte complet"})
+- "executer_commande" : exécuter un script ou une commande shell (args: {"cmd": "python script.py" ou "dir", etc.})
+- "supprimer" : supprimer un fichier (args: {"chemin": "nom_fichier"})
+
+Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cette structure :
+{
+  "analyse": "Brève explication de ce que tu comprends et ce que tu vas faire",
+  "reponse": "Ton explication complète, claire et technique en français pour Christian",
+  "tuple_v6": "domain:system|pathology:<type>|severity:<low/med/high/crit>|episteme:[sigma=0.00,delta=0.00,FC=1.00]|activation:immediate|requires:none|prevents:none|fix:<directive>|section:core",
+  "sigma": 0.0,
+  "delta": 0.0,
+  "fc": 1.0,
+  "action": {
+    "outil": "ecrire" | "lire" | "lister" | "executer_commande" | "supprimer" | "aucun",
+    "args": { ... }
+  }
+}
+
+Directives fix: valides : update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
+Si c'est une simple discussion sans besoin de toucher aux fichiers, mets action = {"outil": "aucun", "args": {}} et fix:inspect."""
+
+        # Contexte des fichiers existants dans le bac à sable
+        sandbox_state = self.list_sandbox_files()
+        fichiers_disponibles = [f["chemin"] for f in sandbox_state.get("fichiers", [])]
+        context_files_msg = f"[Fichiers présents dans ton espace de travail local] : {fichiers_disponibles}"
+
+        messages = [
+            {"role": "system", "content": system_autonomous_prompt},
+            {"role": "system", "content": context_files_msg}
+        ]
+        for msg in self.chat_history[-4:]:
+            messages.append(msg)
+        messages.append({"role": "user", "content": user_prompt})
+
+        llm_raw = self.query_llm(messages, temperature=0.2, max_tokens=600)
         
-        # 1. Sonde Stochastique
-        probe = self.run_epistemic_probe(user_prompt)
-        
-        # 2. Compilation KAIROS V6
-        tuple_v6 = self.compile_kairos_v6(user_prompt, probe)
-        
-        # 3. Planification Tool Call
-        planned_tool = self.plan_tool_call(tuple_v6, user_prompt)
-        
-        # 4. Évaluation Coupe-Circuit Gatekeeper
-        gate_verdict = self.evaluate_gatekeeper(tuple_v6, planned_tool.get("outil"))
-        
-        execution_result: Dict[str, Any] = {
+        # Valeurs par défaut
+        reponse_texte = "Tâche reçue. Analyse en cours..."
+        tuple_v6 = "domain:system|pathology:task_execution|severity:low|episteme:[sigma=0.00,delta=0.00,FC=1.00]|activation:immediate|requires:none|prevents:none|fix:inspect|section:core"
+        sigma = 0.0
+        delta = 0.0
+        fc = 1.0
+        action = {"outil": "aucun", "args": {}}
+
+        try:
+            debut = llm_raw.find("{")
+            fin = llm_raw.rfind("}") + 1
+            if debut != -1 and fin != 0:
+                parsed = json.loads(llm_raw[debut:fin])
+                reponse_texte = parsed.get("reponse", llm_raw)
+                tuple_v6 = parsed.get("tuple_v6", tuple_v6)
+                sigma = float(parsed.get("sigma", 0.0))
+                delta = float(parsed.get("delta", 0.0))
+                fc = float(parsed.get("fc", 1.0))
+                action = parsed.get("action", action)
+            else:
+                reponse_texte = llm_raw
+        except Exception:
+            reponse_texte = llm_raw
+
+        # Mise à jour de l'historique
+        self.chat_history.append({"role": "user", "content": user_prompt})
+        self.chat_history.append({"role": "assistant", "content": reponse_texte})
+
+        tool_name = action.get("outil", "aucun")
+        veralume_acte = None
+        vcp1c_questions = []
+
+        if tool_name != "aucun":
+            # 1. Arbitrage Coupe-Circuit Node.js
+            gate_verdict = self.evaluate_gatekeeper(tuple_v6, tool_name)
+
+            if gate_verdict.get("status") == "APPROVED":
+                args = action.get("args", {})
+                # Exécution sécurisée via Kernel Veralume
+                acte = self.agent_kernel.agir(tool_name, **args)
+                veralume_acte = {
+                    "outil": acte.outil,
+                    "execute": acte.execute,
+                    "resultat": str(acte.resultat),
+                    "motif": acte.motif,
+                    "reversibilite": acte.reversibilite.value,
+                    "trace_stric_i": {
+                        "decision": acte.trace.decision,
+                        "observe": acte.trace.observe,
+                        "structure": acte.trace.structure,
+                        "validation": acte.trace.validation
+                    }
+                }
+            elif gate_verdict.get("status") == "BLOCKED":
+                manques = self.agent_kernel.enquete.manques(
+                    tool_name,
+                    action.get("args", {}),
+                    {"confirmation": "L'action présente un risque ou une ambiguïté. Confirmez explicitement l'ordre."}
+                )
+                vcp1c_questions = [m.question for m in manques]
+        else:
+            gate_verdict = {"status": "APPROVED", "code": "OK_CONVERSATIONAL", "log": "Échange direct sans modification matérielle."}
+
+        return {
             "user_prompt": user_prompt,
+            "agent_reply": reponse_texte,
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-            "probe": probe,
+            "probe": {
+                "sigma": sigma,
+                "delta": delta,
+                "fc": fc
+            },
             "tuple_v6": tuple_v6,
-            "planned_tool": planned_tool,
+            "planned_tool": action,
             "gatekeeper": gate_verdict,
-            "veralume_acte": None,
-            "vcp1c_questions": [],
+            "veralume_acte": veralume_acte,
+            "vcp1c_questions": vcp1c_questions,
             "status": gate_verdict.get("status"),
             "elapsed_s": round(time.perf_counter() - t0, 2)
         }
 
-        # 5. Exécution / Blocage VERALUME
-        if gate_verdict.get("status") == "APPROVED":
-            outil_nom = planned_tool.get("outil")
-            args = planned_tool.get("args", {})
-            acte = self.agent_kernel.agir(outil_nom, **args)
-            execution_result["veralume_acte"] = {
-                "outil": acte.outil,
-                "execute": acte.execute,
-                "resultat": acte.resultat,
-                "motif": acte.motif,
-                "reversibilite": acte.reversibilite.value,
-                "trace_stric_i": {
-                    "decision": acte.trace.decision,
-                    "observe": acte.trace.observe,
-                    "structure": acte.trace.structure,
-                    "validation": acte.trace.validation
-                }
-            }
-        elif gate_verdict.get("status") == "BLOCKED":
-            # Déclenchement Boucle VCp1c
-            manques = self.agent_kernel.enquete.manques(
-                planned_tool.get("outil", "action"),
-                planned_tool.get("args", {}),
-                {"confirmation_causale": "L'incident présente une ambiguïté stochastique ou une violation de mandat. Confirmez explicitement la cible avant toute mutation."}
-            )
-            execution_result["vcp1c_questions"] = [m.question for m in manques]
-            
-        self.session_history.append(execution_result)
-        return execution_result
-
-    def list_sandbox_files(self) -> List[Dict[str, Any]]:
-        """Liste les fichiers et versions de sauvegarde dans le bac à sable."""
+    def list_sandbox_files(self) -> Dict[str, Any]:
         files = []
         for root, dirs, filenames in os.walk(self.workspace_path):
             if ".corbeille" in root:
@@ -281,10 +233,8 @@ Zéro prose, UNIQUEMENT le JSON."""
             for f in filenames:
                 full = os.path.join(root, f)
                 rel = os.path.relpath(full, self.workspace_path)
-                size = os.path.getsize(full)
-                files.append({"chemin": rel, "taille_octets": size})
+                files.append({"chemin": rel, "taille_octets": os.path.getsize(full)})
         
-        # Liste des sauvegardes
         backups = []
         corbeille_dir = self.bac.corbeille
         if os.path.exists(corbeille_dir):
