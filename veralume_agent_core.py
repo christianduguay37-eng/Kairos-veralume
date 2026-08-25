@@ -225,6 +225,46 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
         except Exception:
             reponse_texte = llm_raw or thinking_raw
 
+        # Routeur Déterministe d'Intention Veralume (Fallback Tool Trigger)
+        # Garantit que les ordres explicites de Christian déclenchent TOUJOURS l'outil réel
+        prompt_lower = user_prompt.lower()
+        if action.get("outil") == "aucun" or not action.get("outil"):
+            # 1. Recherche Web
+            if any(k in prompt_lower for k in ["recherche sur internet", "cherche sur internet", "recherche sur le net", "cherche sur le net", "recherche sur le web", "météo", "dernières nouvelles", "actualités", "cherche sur google", "trouve sur internet", "va sur internet"]):
+                requete = user_prompt
+                for prefix in ["peux-tu faire une recherche sur internet pour", "peux-tu chercher sur internet", "recherche sur internet", "cherche sur internet", "recherche sur le net", "cherche sur le net", "va sur internet et cherche", "va sur internet chercher", "cherche", "recherche"]:
+                    if prompt_lower.startswith(prefix):
+                        requete = user_prompt[len(prefix):].strip(" :?")
+                        break
+                action = {"outil": "rechercher_web", "args": {"requete": requete or user_prompt}}
+                tuple_v6 = "domain:system|pathology:external_query|severity:low|episteme:[sigma=0.00,delta=0.00,FC=1.00]|activation:immediate|requires:none|prevents:none|fix:web_search|section:core"
+
+            # 2. Ouverture Application / Site
+            elif any(prompt_lower.startswith(p) for p in ["ouvre ", "lance ", "ouvrir "]):
+                cible = user_prompt.split(maxsplit=1)[-1].strip(" .?!")
+                action = {"outil": "ouvrir_systeme", "args": {"cible": cible}}
+                tuple_v6 = "domain:system|pathology:os_control|severity:low|episteme:[sigma=0.00,delta=0.00,FC=1.00]|activation:immediate|requires:none|prevents:none|fix:open_app|section:core"
+
+            # 3. Moteur de Rêve
+            elif "moteur de r" in prompt_lower or ("consolide" in prompt_lower and "m" in prompt_lower):
+                action = {"outil": "lancer_moteur_de_reve", "args": {}}
+                tuple_v6 = "domain:system|pathology:memory_consolidation|severity:low|episteme:[sigma=0.00,delta=0.00,FC=1.00]|activation:immediate|requires:none|prevents:none|fix:dream_consolidation|section:core"
+
+            # 4. Diagnostic Volition
+            elif "diagnostic" in prompt_lower or ("sant" in prompt_lower and "machine" in prompt_lower):
+                action = {"outil": "diagnostiquer_volition", "args": {}}
+                tuple_v6 = "domain:system|pathology:system_audit|severity:low|episteme:[sigma=0.00,delta=0.00,FC=1.00]|activation:immediate|requires:none|prevents:none|fix:audit_system|section:core"
+
+            # 5. Consultation Skills
+            elif "skills" in prompt_lower or "compétences" in prompt_lower:
+                action = {"outil": "consulter_skills", "args": {}}
+                tuple_v6 = "domain:system|pathology:skills_consultation|severity:low|episteme:[sigma=0.00,delta=0.00,FC=1.00]|activation:immediate|requires:none|prevents:none|fix:consult_skills|section:core"
+
+            # 6. Analyse 9 Filtres F1-F9
+            elif "filtre" in prompt_lower or "f1-f9" in prompt_lower or "clôture" in prompt_lower:
+                action = {"outil": "analyser_filtres_f9", "args": {"texte": user_prompt}}
+                tuple_v6 = "domain:system|pathology:epistemic_closure|severity:low|episteme:[sigma=0.00,delta=0.00,FC=1.00]|activation:immediate|requires:none|prevents:none|fix:epistemic_audit_f9|section:core"
+
         # Audit de Lucidité Épistémique & Calcul de Sigma Objectif Externe
         from lucidite_epistemique import LuciditeEpistemique
         tool_name = action.get("outil", "aucun")
