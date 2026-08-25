@@ -632,3 +632,102 @@ body {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(0.9); }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PRISE DE TERRE / RATIFICATION BOX
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ratification-box {
+    margin-top: 12px;
+    padding: 14px;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid var(--accent-amber);
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.15);
+}
+
+.ratification-box.approved {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: var(--accent-green);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.15);
+}
+
+.ratification-box.rejected {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: var(--accent-red);
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.15);
+}
+
+.ratif-header {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-amber);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ratif-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.ratif-tool {
+    font-size: 12px;
+    color: #fff;
+    margin-bottom: 6px;
+}
+
+.ratif-args {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #38bdf8;
+    margin-bottom: 12px;
+    white-space: pre-wrap;
+}
+
+.ratif-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-ratif-ok {
+    flex: 1;
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid var(--accent-green);
+    color: var(--accent-green);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-ratif-ok:hover {
+    background: var(--accent-green);
+    color: #000;
+}
+
+.btn-ratif-no {
+    flex: 1;
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid var(--accent-red);
+    color: var(--accent-red);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-ratif-no:hover {
+    background: var(--accent-red);
+    color: #fff;
+}

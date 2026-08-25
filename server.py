@@ -113,6 +113,18 @@ class VeralumeHttpHandler(BaseHTTPRequestHandler):
                 self.send_json(result)
             except Exception as e:
                 self.send_json({"error": str(e)}, status=500)
+        elif path == "/api/ratify":
+            content_len = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(content_len).decode("utf-8")
+            try:
+                payload = json.loads(body)
+                token = payload.get("token", "").strip()
+                approved = bool(payload.get("approved", False))
+                print(f"\n[PRISE DE TERRE] ⚡ Ratification reçue pour token {token} : Approved={approved}")
+                res = agent.ratify_action(token, approved)
+                self.send_json(res)
+            except Exception as e:
+                self.send_json({"error": str(e)}, status=500)
         else:
             self.send_error(404, "Endpoint API inconnu")
 

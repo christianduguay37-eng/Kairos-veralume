@@ -346,7 +346,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (data.agent_reply) {
             agentMsgText += `<div class="llm-reply">${formatMarkdown(data.agent_reply)}</div>`;
-            if (data.status === 'APPROVED' && data.veralume_acte) {
+            
+            // Prise de Terre : Demande de Ratification Interactive
+            if (data.requires_ratification && data.ratification_token) {
+                agentMsgText += `
+                    <div class="ratification-box" id="box-${data.ratification_token}">
+                        <div class="ratif-header">⚡ PRISE DE TERRE VERALUME — Ratification Requise</div>
+                        <div class="ratif-sub">L'action suivante demande la validation formelle de l'opérateur :</div>
+                        <div class="ratif-tool">🔧 Outil : <code>${data.ratification_details?.outil}</code></div>
+                        <pre class="ratif-args">${escapeHtml(JSON.stringify(data.ratification_details?.args || {}, null, 2))}</pre>
+                        <div class="ratif-buttons">
+                            <button class="btn-ratif-ok" onclick="window.envoyerRatification('${data.ratification_token}', true)">✅ Autoriser l'exécution</button>
+                            <button class="btn-ratif-no" onclick="window.envoyerRatification('${data.ratification_token}', false)">❌ Bloquer l'action</button>
+                        </div>
+                    </div>
+                `;
+            } else if (data.status === 'APPROVED' && data.veralume_acte) {
                 agentMsgText += `<div class="action-footer" style="margin-top:8px;font-size:11px;color:var(--accent-green)">✅ Action '${data.veralume_acte.outil}' exécutée (${data.veralume_acte.motif})</div>`;
             } else if (data.status === 'BLOCKED') {
                 agentMsgText += `<div class="action-footer" style="margin-top:8px;font-size:11px;color:var(--accent-red)">⛔ Coupe-circuit actif : ${data.gatekeeper?.log || 'Interception.'}</div>`;
@@ -502,6 +517,48 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Erreur chargement mémoire:', err);
         }
     }
+
+    // 7. Fonction Globale de Prise de Terre (Ratification Humaine)
+    window.envoyerRatification = async function(token, approved) {
+        const box = document.getElementById(`box-${token}`);
+        if (box) {
+            box.innerHTML = `<div style="color:var(--accent-gold);padding:8px">⏳ Transmission de la ratification au Kernel VERALUME...</div>`;
+        }
+
+        try {
+            const resp = await fetch('/api/ratify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: token, approved: approved })
+            });
+            const res = await resp.json();
+
+            if (box) {
+                if (approved && res.execute) {
+                    box.className = 'ratification-box approved';
+                    box.innerHTML = `
+                        <div style="color:var(--accent-green);font-weight:700">✅ Action Ratifiée & Exécutée avec succès</div>
+                        <div style="font-size:12px;margin-top:4px">Outil : <code>${res.outil}</code> | Statut : ${res.motif}</div>
+                        <pre class="ratif-args" style="max-height:120px;overflow-y:auto">${escapeHtml(res.resultat)}</pre>
+                    `;
+                    speakText(`Action ${res.outil} ratifiée et exécutée.`);
+                } else {
+                    box.className = 'ratification-box rejected';
+                    box.innerHTML = `
+                        <div style="color:var(--accent-red);font-weight:700">⛔ Action Bloquée par l'Opérateur</div>
+                        <div style="font-size:12px;margin-top:4px">${res.motif || 'Annulation enregistrée.'}</div>
+                    `;
+                    speakText("Action bloquée par l'opérateur.");
+                }
+            }
+
+            loadSandboxFiles();
+        } catch (err) {
+            if (box) {
+                box.innerHTML = `<div style="color:var(--accent-red)">❌ Erreur lors de la ratification : ${err.message}</div>`;
+            }
+        }
+    };
 
     // Chargement initial de la mémoire
     loadMemoryStatus();

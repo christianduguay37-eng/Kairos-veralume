@@ -55,10 +55,52 @@ class VeralumeAutonomousAgent:
         self.chronos = AncrageChronos()
         self.detecteur_biais = DetecteurRegenerationBiais()
         self.chat_history: List[Dict[str, str]] = []
+        self.pending_ratifications: Dict[str, Dict[str, Any]] = {}
+        self._current_ratification_granted: bool = False
 
     def _handle_human_ratification_request(self, action: str, args: Dict[str, Any]) -> bool:
-        # En mode Web interactif, les actions légitimes validées par le Gatekeeper sont ratifiées
-        return True
+        # Retourne True UNIQUEMENT si l'action a été expressément ratifiée par l'humain via ratify_action()
+        return getattr(self, "_current_ratification_granted", False)
+
+    def ratify_action(self, token: str, approved: bool) -> Dict[str, Any]:
+        """Exécute ou annule une action en attente de Prise de Terre humaine."""
+        if token not in self.pending_ratifications:
+            return {"error": "Demande de ratification expirée ou introuvable.", "execute": False}
+        
+        req = self.pending_ratifications.pop(token)
+        tool_name = req["outil"]
+        args = req["args"]
+
+        if not approved:
+            self.agent_kernel.terre.demandes.append((tool_name, dict(args), False))
+            return {
+                "statut": "REFUSE",
+                "outil": tool_name,
+                "execute": False,
+                "motif": "Action formellement refusée par le nœud humain (Prise de Terre)",
+                "resultat": "Exécution annulée par l'utilisateur."
+            }
+
+        # Ratification confirmée par le nœud humain
+        self._current_ratification_granted = True
+        try:
+            acte = self.agent_kernel.agir(tool_name, **args)
+            return {
+                "statut": "RATIFIE_ET_EXECUTE",
+                "outil": acte.outil,
+                "execute": acte.execute,
+                "resultat": str(acte.resultat),
+                "motif": acte.motif,
+                "reversibilite": acte.reversibilite.value,
+                "trace_stric_i": {
+                    "decision": acte.trace.decision,
+                    "observe": acte.trace.observe,
+                    "structure": acte.trace.structure,
+                    "validation": acte.trace.validation
+                }
+            }
+        finally:
+            self._current_ratification_granted = False
 
     def set_model(self, new_model: str):
         self.model_name = new_model
@@ -338,7 +380,44 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
 
             if gate_verdict.get("status") == "APPROVED":
                 args = action.get("args", {})
-                # Exécution sécurisée via Kernel Veralume
+                
+                # Vérification de Prise de Terre requise (Nœud Humain)
+                if tool_name in ["executer_commande", "ouvrir_systeme", "supprimer"]:
+                    token = f"ratif_{int(time.time()*1000)}"
+                    self.pending_ratifications[token] = {
+                        "outil": tool_name,
+                        "args": args,
+                        "prompt": user_prompt,
+                        "tuple_v6": tuple_v6
+                    }
+                    return {
+                        "user_prompt": user_prompt,
+                        "agent_reply": f"⚠️ **PRISE DE TERRE REQUISE** : L'outil `{tool_name}` (empreinte non bornée ou irréversible) demande votre ratification humaine avant d'agir.",
+                        "thinking": thinking_raw,
+                        "tokens": llm_res.get("tokens", 0),
+                        "prompt_tokens": llm_res.get("prompt_tokens", 0),
+                        "speed_tok_s": llm_res.get("speed_tok_s", 0.0),
+                        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "requires_ratification": True,
+                        "ratification_token": token,
+                        "ratification_details": {
+                            "outil": tool_name,
+                            "args": args
+                        },
+                        "probe": {"sigma": sigma, "delta": delta, "fc": fc},
+                        "tuple_v6": tuple_v6,
+                        "planned_tool": action,
+                        "gatekeeper": gate_verdict,
+                        "veralume_acte": None,
+                        "vcp1c_questions": [],
+                        "status": "WAITING_RATIFICATION",
+                        "circadien": releve_circadien,
+                        "chronos": releve_chronos,
+                        "lucidite": audit_lucidite,
+                        "elapsed_s": round(time.perf_counter() - t0, 2)
+                    }
+
+                # Exécution sécurisée directe pour les outils réversibles/restaurables
                 acte = self.agent_kernel.agir(tool_name, **args)
                 veralume_acte = {
                     "outil": acte.outil,
