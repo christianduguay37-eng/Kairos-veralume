@@ -230,6 +230,16 @@ Si c'est une simple discussion sans besoin de toucher aux fichiers ni au web, me
                         "validation": acte.trace.validation
                     }
                 }
+
+                # Si l'outil est une recherche web ou lecture de fichier/page, on synthétise la réponse finale
+                if tool_name in ["rechercher_web", "lire_page_web", "lire"]:
+                    synth_prompt = f"Voici les informations réelles obtenues : \n{str(acte.resultat)[:1800]}\n\nRésume ces résultats en français de manière claire et directe pour Christian en réponse à sa question : '{user_prompt}'."
+                    synth_res = self.query_llm([
+                        {"role": "system", "content": "Tu es Veralume. Fais une synthèse claire et naturelle des informations trouvées."},
+                        {"role": "user", "content": synth_prompt}
+                    ], temperature=0.3, max_tokens=250)
+                    reponse_texte = synth_res.get("content") or synth_res.get("thinking", reponse_texte)
+                    self.chat_history[-1] = {"role": "assistant", "content": reponse_texte}
             elif gate_verdict.get("status") == "BLOCKED":
                 manques = self.agent_kernel.enquete.manques(
                     tool_name,
