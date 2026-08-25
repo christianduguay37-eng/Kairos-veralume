@@ -209,12 +209,21 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
         # Si le contenu est dans thinking (cas Gemma 4)
         source_json = llm_raw if llm_raw else thinking_raw
 
+        # Nettoyage des balises Markdown ```json
+        cleaned_json = source_json
+        if "```json" in cleaned_json:
+            cleaned_json = cleaned_json.split("```json", 1)[1].split("```", 1)[0]
+        elif "```" in cleaned_json:
+            cleaned_json = cleaned_json.split("```", 1)[1].split("```", 1)[0]
+
         try:
-            debut = source_json.find("{")
-            fin = source_json.rfind("}") + 1
+            debut = cleaned_json.find("{")
+            fin = cleaned_json.rfind("}") + 1
             if debut != -1 and fin != 0:
-                parsed = json.loads(source_json[debut:fin])
-                reponse_texte = parsed.get("reponse", llm_raw or "Action analysée par l'agent.")
+                parsed = json.loads(cleaned_json[debut:fin])
+                reponse_texte = parsed.get("reponse", "")
+                if not reponse_texte and parsed.get("analyse"):
+                    reponse_texte = parsed.get("analyse")
                 tuple_v6 = parsed.get("tuple_v6", tuple_v6)
                 sigma = float(parsed.get("sigma", 0.0))
                 delta = float(parsed.get("delta", 0.0))
@@ -223,7 +232,13 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
             else:
                 reponse_texte = llm_raw or (thinking_raw[:300] + "...")
         except Exception:
-            reponse_texte = llm_raw or thinking_raw
+            # Si le parsing JSON échoue mais que des balises JSON sont présentes, extraire le champ réponse par regex
+            import re
+            m = re.search(r'"reponse"\s*:\s*"([^"]+)"', source_json)
+            if m:
+                reponse_texte = m.group(1)
+            else:
+                reponse_texte = llm_raw or thinking_raw
 
         # Routeur Déterministe d'Intention Veralume (Fallback Tool Trigger)
         # Garantit que les ordres explicites de Christian déclenchent TOUJOURS l'outil réel
