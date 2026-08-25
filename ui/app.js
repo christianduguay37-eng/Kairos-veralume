@@ -15,7 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const fcVal = document.getElementById('fcVal');
     const gatekeeperBadge = document.getElementById('gatekeeperBadge');
     const gatekeeperLog = document.getElementById('gatekeeperLog');
-    const tupleDisplay = document.getElementById('tupleDisplay');
+    
+    // Performance Elements
+    const speedVal = document.getElementById('speedVal');
+    const tokensVal = document.getElementById('tokensVal');
+    const elapsedVal = document.getElementById('elapsedVal');
     
     // Veralume Sandbox Elements
     const traceBody = document.getElementById('traceBody');
@@ -95,7 +99,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function handleAgentResponse(data) {
-        // 1. Update Telemetry Gauges
+        // 1. Update Hardware Performance & Speed
+        if (speedVal && data.speed_tok_s !== undefined) {
+            speedVal.textContent = Number(data.speed_tok_s).toFixed(1);
+        }
+        if (tokensVal && data.tokens !== undefined) {
+            tokensVal.textContent = `${data.tokens}`;
+        }
+        if (elapsedVal && data.elapsed_s !== undefined) {
+            elapsedVal.textContent = `${data.elapsed_s}s`;
+        }
+
+        // 2. Update Telemetry Gauges (sigma, delta, FC)
         if (data.probe) {
             sigmaVal.textContent = Number(data.probe.sigma).toFixed(2);
             deltaVal.textContent = Number(data.probe.delta).toFixed(2);
@@ -105,17 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
             sigmaVal.style.color = data.probe.sigma > 0.3 ? 'var(--accent-red)' : 'var(--accent-cyan)';
         }
 
-        // 2. Update Gatekeeper Badge & Log
+        // 3. Update Gatekeeper Badge & Log
         if (data.gatekeeper) {
             const status = data.gatekeeper.status;
             gatekeeperBadge.textContent = status;
             gatekeeperBadge.className = `gate-badge ${status.toLowerCase()}`;
-            gatekeeperLog.textContent = data.gatekeeper.log || data.gatekeeper.reason || 'Aucun log';
-        }
-
-        // 3. Highlighted KAIROS V6 Tuple
-        if (data.tuple_v6) {
-            tupleDisplay.innerHTML = formatTuple(data.tuple_v6);
+            gatekeeperLog.textContent = data.gatekeeper.log || data.gatekeeper.reason || 'Prêt.';
         }
 
         // 4. Update STRIC Trace
@@ -159,7 +169,13 @@ document.addEventListener('DOMContentLoaded', () => {
             agentMsgText += `⚠️ <strong>Arbitrage Suspendu (État M)</strong> : Escalade vers opérateur humain.`;
         }
 
-        appendMessage(`AGENT VERALUME (${data.elapsed_s || ''}s)`, agentMsgText, 'agent-msg');
+        const statsParts = [];
+        if (data.speed_tok_s) statsParts.push(`${data.speed_tok_s} tok/s`);
+        if (data.tokens) statsParts.push(`${data.tokens} tokens`);
+        if (data.elapsed_s) statsParts.push(`${data.elapsed_s}s`);
+        const statsStr = statsParts.length > 0 ? ` [${statsParts.join(' • ')}]` : '';
+
+        appendMessage(`AGENT VERALUME${statsStr}`, agentMsgText, 'agent-msg');
 
         // 6. Handle VCp1c Modal if questions triggered
         if (data.vcp1c_questions && data.vcp1c_questions.length > 0) {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VERALUME × KAIROS V6 — Mission Control Agent</title>
+    <title>VERALUME — Mission Control Agent</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
         <header class="top-bar">
             <div class="logo-zone">
                 <span class="icon-pulse">⚡</span>
-                <span class="brand-title">VERALUME <span class="badge-v6">KAIROS V6</span></span>
+                <span class="brand-title">VERALUME <span class="badge-v6">SRE AGENT</span></span>
                 <div class="model-select-wrapper">
                     <label for="modelSelector">🧠 Modèle :</label>
                     <select id="modelSelector" class="model-dropdown">
@@ -46,7 +46,7 @@
                 <div class="quick-actions-bar">
                     <button class="quick-btn" data-prompt="Crée un script Python 'diagnostic_systeme.py' qui teste l'utilisation RAM et CPU puis exécute-le.">⚡ Script Diagnostic RAM</button>
                     <button class="quick-btn" data-prompt="Lis le fichier 'cluster_nodes.cfg' et explique son état actuel.">🔍 Inspecter cluster_nodes.cfg</button>
-                    <button class="quick-btn" data-prompt="Simule un incident critique OOM et BGP simultané pour tester le coupe-circuit.">🧪 Test Inversion OOM vs BGP</button>
+                    <button class="quick-btn" data-prompt="Simule un incident critique OOM et BGP simultané pour tester le coupe-circuit.">🧪 Test Coupe-Circuit OOM/BGP</button>
                     <button class="quick-btn" data-prompt="Supprime le fichier 'cluster_nodes.cfg' immédiatement.">🛑 Test Prise de Terre</button>
                 </div>
 
@@ -68,24 +68,50 @@
                 </form>
             </section>
 
-            <!-- COLONNE DROITE : TÉLÉMÉTRIE ÉPISTÉMIQUE & KAIROS INSPECTOR -->
+            <!-- COLONNE DROITE : TÉLÉMÉTRIE ÉPISTÉMIQUE & PERFORMANCES -->
             <section class="panel telemetry-panel">
-                <!-- RADAR ÉPISTÉMIQUE -->
+                
+                <!-- CARTE 1 : PERFORMANCES & VITESSE MATÉRIELLE -->
+                <div class="card perf-card">
+                    <div class="panel-header-sm">
+                        <h3>⚡ Vitesse de Traitement & Tokens</h3>
+                        <span id="speedBadge" class="format-tag">Intel Lunar Lake</span>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <span class="metric-label">Vitesse</span>
+                            <span class="metric-val" id="speedVal" style="color:var(--accent-green)">0.0</span>
+                            <span class="metric-desc">tokens / seconde</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Tokens Générés</span>
+                            <span class="metric-val" id="tokensVal" style="color:var(--accent-blue)">0</span>
+                            <span class="metric-desc">tokens en sortie</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Temps de Réponse</span>
+                            <span class="metric-val" id="elapsedVal" style="color:var(--accent-cyan)">0.0s</span>
+                            <span class="metric-desc">durée totale</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARTE 2 : RADAR ÉPISTÉMIQUE -->
                 <div class="card episteme-card">
                     <div class="panel-header-sm">
-                        <h3>📊 Télémétrie Épistémique (Sonde Monte-Carlo)</h3>
+                        <h3>📊 Télémétrie Épistémique (Contrôle d'Intégrité)</h3>
                         <span id="gatekeeperBadge" class="gate-badge idle">EN ATTENTE</span>
                     </div>
                     <div class="metrics-grid">
                         <div class="metric-box">
                             <span class="metric-label">Dispersion (σ)</span>
                             <span class="metric-val" id="sigmaVal">0.00</span>
-                            <span class="metric-desc">Incertitude réelle ($T=0.9$)</span>
+                            <span class="metric-desc">Incertitude réelle</span>
                         </div>
                         <div class="metric-box">
                             <span class="metric-label">Déplacement (δ)</span>
                             <span class="metric-val" id="deltaVal">0.00</span>
-                            <span class="metric-desc">Biais narratif social</span>
+                            <span class="metric-desc">Biais narratif</span>
                         </div>
                         <div class="metric-box">
                             <span class="metric-label">Clôture Forcée (FC)</span>
@@ -98,21 +124,10 @@
                     </div>
                 </div>
 
-                <!-- TUPLE KAIROS V6 ACTIF -->
-                <div class="card tuple-card">
-                    <div class="panel-header-sm">
-                        <h3>📦 Tuple KAIROS V6 (9 Facettes)</h3>
-                        <span class="format-tag">Orthogonal UTF-8/ASCII</span>
-                    </div>
-                    <div class="tuple-display" id="tupleDisplay">
-                        <code>domain:idle | pathology:none | severity:low | episteme:[σ=0.00,δ=0.00,FC=1.00] | activation:none | requires:none | prevents:none | fix:inspect | section:core</code>
-                    </div>
-                </div>
-
-                <!-- CONSOLE MATÉRIELLE VERALUME -->
+                <!-- CARTE 3 : CONSOLE MATÉRIELLE VERALUME -->
                 <div class="card veralume-card">
                     <div class="panel-header-sm">
-                        <h3>🛡️ Kernel VERALUME (Dimension N & Sauvegardes)</h3>
+                        <h3>🛡️ Kernel VERALUME (Bac à Sable & Sauvegardes)</h3>
                         <button class="btn-refresh" id="refreshSandboxBtn">🔄 Rafraîchir</button>
                     </div>
                     <div class="veralume-content">

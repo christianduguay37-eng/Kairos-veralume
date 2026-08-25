@@ -53,7 +53,7 @@ class VeralumeAutonomousAgent:
     def set_model(self, new_model: str):
         self.model_name = new_model
 
-    def query_llm(self, messages: List[Dict[str, str]], temperature: float = 0.2, max_tokens: int = 300) -> Dict[str, str]:
+    def query_llm(self, messages: List[Dict[str, str]], temperature: float = 0.2, max_tokens: int = 350) -> Dict[str, Any]:
         payload = {
             "model": self.model_name,
             "messages": messages,
@@ -64,6 +64,7 @@ class VeralumeAutonomousAgent:
                 "num_ctx": 4096
             }
         }
+        t0 = time.perf_counter()
         try:
             req = urllib.request.Request(
                 OLLAMA_URL,
@@ -75,9 +76,28 @@ class VeralumeAutonomousAgent:
                 msg = data.get("message", {})
                 content = msg.get("content", "").strip()
                 thinking = msg.get("thinking", "").strip()
-                return {"content": content, "thinking": thinking}
+                
+                eval_count = data.get("eval_count", 0)
+                eval_duration = data.get("eval_duration", 0)
+                speed = round(eval_count / (eval_duration / 1e9), 1) if eval_duration > 0 else round(eval_count / (time.perf_counter() - t0), 1)
+                
+                return {
+                    "content": content,
+                    "thinking": thinking,
+                    "tokens": eval_count,
+                    "prompt_tokens": data.get("prompt_eval_count", 0),
+                    "speed_tok_s": speed,
+                    "elapsed_s": round(time.perf_counter() - t0, 2)
+                }
         except Exception as e:
-            return {"content": f"ERREUR_LLM: {e}", "thinking": ""}
+            return {
+                "content": f"ERREUR_LLM: {e}",
+                "thinking": "",
+                "tokens": 0,
+                "prompt_tokens": 0,
+                "speed_tok_s": 0.0,
+                "elapsed_s": round(time.perf_counter() - t0, 2)
+            }
 
     def evaluate_gatekeeper(self, tuple_v6: str, tool_name: Optional[str] = None) -> Dict[str, Any]:
         js_code = """
@@ -222,6 +242,9 @@ Si c'est une simple discussion sans besoin de toucher aux fichiers, mets action 
             "user_prompt": user_prompt,
             "agent_reply": reponse_texte,
             "thinking": thinking_raw,
+            "tokens": llm_res.get("tokens", 0),
+            "prompt_tokens": llm_res.get("prompt_tokens", 0),
+            "speed_tok_s": llm_res.get("speed_tok_s", 0.0),
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
             "probe": {
                 "sigma": sigma,
