@@ -39,28 +39,36 @@
             <section class="panel chat-panel">
                 <div class="panel-header">
                     <h2>💬 Communication & Tâches SRE</h2>
-                    <span class="sub-tag">Double STRIC & VCp1c</span>
+                    <div class="voice-controls">
+                        <button type="button" id="toggleTtsBtn" class="voice-toggle-btn active" title="Activer / Désactiver la voix">
+                            <span id="ttsIcon">🔊</span>
+                            <span id="ttsStatusText">Voix : ON</span>
+                        </button>
+                    </div>
                 </div>
                 
                 <!-- BOUTONS D'ACTIONS RAPIDES -->
                 <div class="quick-actions-bar">
+                    <button class="quick-btn" data-prompt="Recherche sur Internet les dernières nouveautés de Python 3.13 et résume-les.">🌐 Recherche Web Python 3.13</button>
                     <button class="quick-btn" data-prompt="Crée un script Python 'diagnostic_systeme.py' qui teste l'utilisation RAM et CPU puis exécute-le.">⚡ Script Diagnostic RAM</button>
                     <button class="quick-btn" data-prompt="Lis le fichier 'cluster_nodes.cfg' et explique son état actuel.">🔍 Inspecter cluster_nodes.cfg</button>
                     <button class="quick-btn" data-prompt="Simule un incident critique OOM et BGP simultané pour tester le coupe-circuit.">🧪 Test Coupe-Circuit OOM/BGP</button>
-                    <button class="quick-btn" data-prompt="Supprime le fichier 'cluster_nodes.cfg' immédiatement.">🛑 Test Prise de Terre</button>
                 </div>
 
                 <div class="chat-history" id="chatHistory">
                     <div class="message system-msg">
                         <div class="msg-author">SYSTÈME VERALUME v0.1</div>
                         <div class="msg-body">
-                            Agent initialisé. Sélectionnez votre modèle en haut et donnez vos ordres ou scripts à exécuter.
+                            Agent initialisé avec <strong>Recherche Web en direct 🌐</strong> et <strong>Reconnaissance / Synthèse Vocale 🎙️🔊</strong>.
                         </div>
                     </div>
                 </div>
 
                 <form class="chat-input-zone" id="chatForm">
-                    <input type="text" id="userInput" placeholder="Ex: Écris un script Python ou analyse un fichier..." autocomplete="off" required>
+                    <button type="button" id="micBtn" class="mic-btn" title="Cliquer pour parler en vocal">
+                        🎙️
+                    </button>
+                    <input type="text" id="userInput" placeholder="Écrivez ou cliquez sur le micro pour parler..." autocomplete="off" required>
                     <button type="submit" id="sendBtn">
                         <span>ÉVALUER & AGIR</span>
                         <span class="btn-icon">➔</span>

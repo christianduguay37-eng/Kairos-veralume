@@ -316,12 +316,55 @@ body {
     transform: scale(0.98);
 }
 
+.voice-toggle-btn {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.voice-toggle-btn.active {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.mic-btn {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    color: #fff !important;
+    font-size: 16px !important;
+    padding: 0 14px !important;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.mic-btn:hover {
+    border-color: var(--accent-cyan) !important;
+}
+
+.mic-btn.listening {
+    background: rgba(239, 68, 68, 0.2) !important;
+    border-color: var(--accent-red) !important;
+    animation: micPulse 1.2s infinite;
+}
+
+@keyframes micPulse {
+    0%, 100% { box-shadow: 0 0 5px var(--accent-red); transform: scale(1); }
+    50% { box-shadow: 0 0 18px var(--accent-red); transform: scale(1.08); }
+}
+
 /* TELEMETRY PANEL */
 .telemetry-panel {
-    padding: 14px;
-    gap: 14px;
-    overflow-y: auto;
-}
 
 .card {
     background: var(--bg-card);

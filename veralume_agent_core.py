@@ -137,6 +137,8 @@ Tu disposes des outils suivants :
 - "ecrire" : créer ou modifier un fichier (args: {"chemin": "nom_fichier", "contenu": "code ou texte complet"})
 - "executer_commande" : exécuter un script ou une commande shell (args: {"cmd": "python script.py" ou "dir", etc.})
 - "supprimer" : supprimer un fichier (args: {"chemin": "nom_fichier"})
+- "rechercher_web" : rechercher des informations récentes en direct sur Internet (args: {"requete": "termes de recherche"})
+- "lire_page_web" : lire le contenu d'un site Web ou d'une documentation (args: {"url": "https://..."})
 
 Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cette structure :
 {
@@ -147,13 +149,13 @@ Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cett
   "delta": 0.0,
   "fc": 1.0,
   "action": {
-    "outil": "ecrire" | "lire" | "lister" | "executer_commande" | "supprimer" | "aucun",
+    "outil": "ecrire" | "lire" | "lister" | "executer_commande" | "supprimer" | "rechercher_web" | "lire_page_web" | "aucun",
     "args": { ... }
   }
 }
 
-Directives fix: valides : update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
-Si c'est une simple discussion sans besoin de toucher aux fichiers, mets action = {"outil": "aucun", "args": {}} et fix:inspect."""
+Directives fix: valides : web_search, fetch_url, update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
+Si c'est une simple discussion sans besoin de toucher aux fichiers ni au web, mets action = {"outil": "aucun", "args": {}} et fix:inspect."""
 
         # Contexte des fichiers existants dans le bac à sable
         sandbox_state = self.list_sandbox_files()

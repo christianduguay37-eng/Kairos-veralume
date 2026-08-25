@@ -1,5 +1,6 @@
 /**
  * VERALUME × KAIROS V6 — Frontend Controller
+ * Recherche Web, Reconnaissance Vocale (STT) & Synthèse Vocale (TTS)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,6 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('sendBtn');
     const modelSelector = document.getElementById('modelSelector');
     
+    // Voice Elements
+    const micBtn = document.getElementById('micBtn');
+    const toggleTtsBtn = document.getElementById('toggleTtsBtn');
+    const ttsIcon = document.getElementById('ttsIcon');
+    const ttsStatusText = document.getElementById('ttsStatusText');
+    let ttsEnabled = true;
+
     // Telemetry Elements
     const sigmaVal = document.getElementById('sigmaVal');
     const deltaVal = document.getElementById('deltaVal');
@@ -36,10 +44,99 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Initial Load of Sandbox Files
     loadSandboxStatus();
-
     refreshSandboxBtn.addEventListener('click', loadSandboxStatus);
 
-    // 2. Model Selector Change
+    // 2. Voice Recognition (Speech-to-Text)
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+
+    if (SpeechRecognition && micBtn) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'fr-FR';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onstart = () => {
+            micBtn.classList.add('listening');
+            userInput.placeholder = '🎙️ Écoute en cours... Parlez maintenant !';
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            userInput.value = transcript;
+            micBtn.classList.remove('listening');
+            userInput.placeholder = 'Écrivez ou cliquez sur le micro pour parler...';
+            // Auto-submit vocal query
+            chatForm.dispatchEvent(new Event('submit'));
+        };
+
+        recognition.onerror = (event) => {
+            console.error('Erreur reconnaissance vocale:', event.error);
+            micBtn.classList.remove('listening');
+            userInput.placeholder = 'Écrivez ou cliquez sur le micro pour parler...';
+        };
+
+        recognition.onend = () => {
+            micBtn.classList.remove('listening');
+            userInput.placeholder = 'Écrivez ou cliquez sur le micro pour parler...';
+        };
+
+        micBtn.addEventListener('click', () => {
+            try {
+                window.speechSynthesis.cancel(); // Stop talking if agent was speaking
+                recognition.start();
+            } catch (err) {
+                recognition.stop();
+            }
+        });
+    } else if (micBtn) {
+        micBtn.style.display = 'none';
+    }
+
+    // 3. Voice Synthesis Toggle (Text-to-Speech)
+    if (toggleTtsBtn) {
+        toggleTtsBtn.addEventListener('click', () => {
+            ttsEnabled = !ttsEnabled;
+            if (ttsEnabled) {
+                toggleTtsBtn.classList.add('active');
+                ttsIcon.textContent = '🔊';
+                ttsStatusText.textContent = 'Voix : ON';
+            } else {
+                toggleTtsBtn.classList.remove('active');
+                ttsIcon.textContent = '🔇';
+                ttsStatusText.textContent = 'Voix : OFF';
+                window.speechSynthesis.cancel();
+            }
+        });
+    }
+
+    function speakText(text) {
+        if (!ttsEnabled || !('speechSynthesis' in window)) return;
+
+        window.speechSynthesis.cancel(); // Arrête la phrase précédente
+        
+        // Nettoyage des blocs de code et des caractères techniques
+        let cleanText = text.replace(/```[\s\S]*?```/g, "Voir le code affiché à l'écran.");
+        cleanText = cleanText.replace(/`([^`]+)`/g, '$1');
+        cleanText = cleanText.replace(/https?:\/\/[^\s]+/g, 'lien web');
+        cleanText = cleanText.replace(/[*_#|]/g, ' ');
+
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = 'fr-FR';
+        utterance.rate = 1.05;
+        utterance.pitch = 1.0;
+
+        // Cherche une voix française naturelle
+        const voices = window.speechSynthesis.getVoices();
+        const frenchVoice = voices.find(v => v.lang.startsWith('fr') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Denise') || v.name.includes('Paul') || v.name.includes('Julie')));
+        if (frenchVoice) {
+            utterance.voice = frenchVoice;
+        }
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // 4. Model Selector Change
     if (modelSelector) {
         modelSelector.addEventListener('change', async () => {
             const selected = modelSelector.value;
@@ -59,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Quick Action Buttons
+    // 5. Quick Action Buttons
     document.querySelectorAll('.quick-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             userInput.value = btn.getAttribute('data-prompt');
@@ -67,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 4. Chat Form Submit
+    // 6. Chat Form Submit
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const text = userInput.value.trim();
@@ -161,10 +258,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (data.status === 'BLOCKED') {
                 agentMsgText += `<div class="action-footer" style="margin-top:8px;font-size:11px;color:var(--accent-red)">⛔ Coupe-circuit actif : ${data.gatekeeper?.log || 'Interception.'}</div>`;
             }
+            // Synthèse vocale de la réponse
+            speakText(data.agent_reply);
         } else if (data.status === 'APPROVED') {
             agentMsgText += `✅ <strong>Ordre validé (Vérité Logique R)</strong> : L'outil <code>${data.planned_tool?.outil}</code> a été exécuté via Double STRIC.`;
         } else if (data.status === 'BLOCKED') {
             agentMsgText += `⛔ <strong>Coupe-Circuit Activé</strong> : ${data.gatekeeper?.log || 'Action interceptée.'}`;
+            speakText("Coupe-circuit activé. Action bloquée pour incertitude.");
         } else {
             agentMsgText += `⚠️ <strong>Arbitrage Suspendu (État M)</strong> : Escalade vers opérateur humain.`;
         }
@@ -181,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.vcp1c_questions && data.vcp1c_questions.length > 0) {
             vcp1cQuestionText.textContent = data.vcp1c_questions[0];
             vcp1cModal.classList.remove('hidden');
+            speakText(data.vcp1c_questions[0]);
         }
     }
 
@@ -198,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     vcp1cRefuseBtn.addEventListener('click', () => {
         vcp1cModal.classList.add('hidden');
         appendMessage('PRISE DE TERRE', '❌ Action manuellement refusée par le nœud humain.', 'system-msg');
+        speakText("Action refusée par le nœud humain.");
     });
 
     function appendMessage(author, body, className) {
@@ -213,15 +315,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function formatMarkdown(text) {
         if (!text) return '';
-        // Formatage basique du code et sauts de ligne
         let formatted = escapeHtml(text);
-        // Code blocks ```code```
         formatted = formatted.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
-        // Inline code `code`
         formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
-        // Bold **text**
         formatted = formatted.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-        // Newlines
         formatted = formatted.replace(/\n/g, '<br>');
         return formatted;
     }
@@ -234,22 +331,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;');
-    }
-
-    function formatTuple(tupleStr) {
-        const facets = tupleStr.split('|');
-        return facets.map(f => {
-            const trimmed = f.trim();
-            if (trimmed.startsWith('episteme:')) {
-                return `<span style="color:#f59e0b;font-weight:bold">${trimmed}</span>`;
-            } else if (trimmed.startsWith('fix:')) {
-                return `<span style="color:#10b981;font-weight:bold">${trimmed}</span>`;
-            } else if (trimmed.startsWith('severity:') || trimmed.startsWith('sev:')) {
-                return `<span style="color:#ef4444">${trimmed}</span>`;
-            } else {
-                return `<span style="color:#38bdf8">${trimmed}</span>`;
-            }
-        }).join(' <span style="color:#475569">|</span> ');
     }
 
     async function loadSandboxStatus() {

@@ -379,6 +379,21 @@ def construire_outils(bac: BacASable,
             return f"SORTIE:\n{out}\nERREURS:\n{err}" if out else f"ERREURS:\n{err}"
         return out if out else "(Commande exécutée avec succès sans sortie)"
 
+    def rechercher_web_outil(requete: str = "") -> str:
+        try:
+            from web_tools import rechercher_web
+            res = rechercher_web(requete)
+            return json.dumps(res, ensure_ascii=False, indent=2)
+        except Exception as e:
+            return f"Erreur web : {e}"
+
+    def lire_page_web_outil(url: str = "") -> str:
+        try:
+            from web_tools import lire_page_web
+            return lire_page_web(url)
+        except Exception as e:
+            return f"Erreur web : {e}"
+
     return {
         "lister": Outil("lister", lister, Reversibilite.REVERSIBLE,
                         {"sous_dossier": "quel dossier lister ?"},
@@ -392,6 +407,10 @@ def construire_outils(bac: BacASable,
                            {"chemin": "quel fichier supprimer ?"}),
         "executer_commande": Outil("executer_commande", executer_commande, Reversibilite.RESTAURABLE,
                                    {"cmd": "quelle commande shell exécuter ?"}),
+        "rechercher_web": Outil("rechercher_web", rechercher_web_outil, Reversibilite.REVERSIBLE,
+                                {"requete": "quelle recherche effectuer sur internet ?"}),
+        "lire_page_web": Outil("lire_page_web", lire_page_web_outil, Reversibilite.REVERSIBLE,
+                               {"url": "quelle page web lire ?"}),
     }
 
 

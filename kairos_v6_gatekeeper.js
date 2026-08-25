@@ -30,6 +30,8 @@ class KairosV6Gatekeeper {
         "purge_database":        new Set(["lire", "supprimer"]),
         "delete_temp":           new Set(["lire", "supprimer"]),
         "supprimer_fichier":     new Set(["lire", "supprimer"]),
+        "web_search":            new Set(["lire", "lister", "rechercher_web", "lire_page_web"]),
+        "fetch_url":             new Set(["lire", "lister", "rechercher_web", "lire_page_web"]),
         "hold_and_probe":        new Set(["lire", "lister"])
     };
 
