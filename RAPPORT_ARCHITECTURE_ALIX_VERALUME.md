@@ -92,6 +92,10 @@ Elle agit comme le **binôme technique direct de Christian**, capable de compren
 * **`ouvrir_systeme(cible)` :**
   * **Sites Web :** *« Ouvre YouTube »*, *« Ouvre GitHub »*, *« Ouvre Gmail »*, etc.
   * **Applications :** *« Lance la calculatrice »*, *« Ouvre le Bloc-notes »*, *« Ouvre VS Code »*, *« Ouvre l'explorateur de fichiers »*, *« Ouvre Paint »*.
+* **⚡ Prise de Terre Interactive (Human-in-the-Loop) :**
+  * Toute action non bornée (`ouvrir_systeme`, `executer_commande`) ou irréversible (`supprimer`) génère un **Jeton de Ratification Unique**.
+  * L'interface Mission Control affiche une **Carte Ambrée d'Autorisation** avec les détails précis de l'action.
+  * L'opérateur humain clique sur **`[ ✅ Autoriser ]`** (`POST /api/ratify`) pour débloquer l'action matérielle ou **`[ ❌ Bloquer ]`** pour l'intercepter.
 
 ---
 
