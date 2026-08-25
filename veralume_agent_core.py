@@ -45,6 +45,8 @@ class VeralumeAutonomousAgent:
             self.constitution, 
             ratifier=self._handle_human_ratification_request
         )
+        from alix_memory import AlixMemory
+        self.memory = AlixMemory()
         self.chat_history: List[Dict[str, str]] = []
 
     def _handle_human_ratification_request(self, action: str, args: Dict[str, Any]) -> bool:
@@ -128,8 +130,8 @@ class VeralumeAutonomousAgent:
         """
         t0 = time.perf_counter()
 
-        system_autonomous_prompt = """Tu es VERALUME, l'assistant autonome de développement et d'ingénierie SRE en local, propulsé par Qwen 2.5 14B.
-Tu es le binôme technique direct de Christian. Tu as la capacité de concevoir du code, d'analyser des pannes, de modifier des fichiers et d'exécuter des scripts dans ton espace de travail local.
+        system_autonomous_prompt = """Tu es ALIX (propulsée par VERALUME), l'assistante autonome de développement et d'ingénierie en local.
+Tu es le binôme direct de Christian. Tu as ta propre mémoire persistante, tu peux concevoir du code, piloter des applications, rechercher sur le Web et retenir des informations.
 
 Tu disposes des outils suivants :
 - "lister" : lister les fichiers du dossier (args: {"sous_dossier": ""})
@@ -140,6 +142,8 @@ Tu disposes des outils suivants :
 - "rechercher_web" : rechercher des informations récentes en direct sur Internet (args: {"requete": "termes de recherche"})
 - "lire_page_web" : lire le contenu d'un site Web ou d'une documentation (args: {"url": "https://..."})
 - "ouvrir_systeme" : ouvrir un site Web dans le navigateur ou lancer une application Windows (args: {"cible": "youtube" ou "calculatrice" ou "code" ou "https://..."})
+- "memoriser" : enregistrer une information importante, préférence ou fait dans ta mémoire permanente (args: {"cle": "sujet", "valeur": "détails"})
+- "noter_souvenir" : inscrire une réflexion ou événement dans ton journal de bord (args: {"note": "texte..."})
 
 Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cette structure :
 {
@@ -150,21 +154,23 @@ Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cett
   "delta": 0.0,
   "fc": 1.0,
   "action": {
-    "outil": "ecrire" | "lire" | "lister" | "executer_commande" | "supprimer" | "rechercher_web" | "lire_page_web" | "ouvrir_systeme" | "aucun",
+    "outil": "ecrire" | "lire" | "lister" | "executer_commande" | "supprimer" | "rechercher_web" | "lire_page_web" | "ouvrir_systeme" | "memoriser" | "noter_souvenir" | "aucun",
     "args": { ... }
   }
 }
 
-Directives fix: valides : open_app, launch_browser, web_search, fetch_url, update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
-Si c'est une simple discussion sans besoin de toucher aux fichiers, aux applications ni au web, mets action = {"outil": "aucun", "args": {}} et fix:inspect."""
+Directives fix: valides : remember, update_memory, open_app, launch_browser, web_search, fetch_url, update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
+Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et fix:inspect."""
 
-        # Contexte des fichiers existants dans le bac à sable
+        # Contexte de la mémoire d'Alix et des fichiers existants
         sandbox_state = self.list_sandbox_files()
         fichiers_disponibles = [f["chemin"] for f in sandbox_state.get("fichiers", [])]
-        context_files_msg = f"[Fichiers présents dans ton espace de travail local] : {fichiers_disponibles}"
+        context_files_msg = f"[Fichiers présents dans ton espace de travail] : {fichiers_disponibles}"
+        context_memory_msg = f"[Ta Mémoire Personnelle Active] : {self.memory.lire_resume_memoire()}"
 
         messages = [
             {"role": "system", "content": system_autonomous_prompt},
+            {"role": "system", "content": context_memory_msg},
             {"role": "system", "content": context_files_msg}
         ]
         for msg in self.chat_history[-4:]:

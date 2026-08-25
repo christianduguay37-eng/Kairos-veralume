@@ -60,6 +60,8 @@ class VeralumeHttpHandler(BaseHTTPRequestHandler):
                     {"id": "qwen2.5:14b", "nom": "🏗️ Qwen 2.5 14B"}
                 ]
             })
+        elif path == "/api/memory":
+            self.send_json(agent.memory.obtenir_toute_la_memoire())
         else:
             self.send_error(404, "Page non trouvée")
 
@@ -67,7 +69,21 @@ class VeralumeHttpHandler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path
 
-        if path == "/api/set_model":
+        if path == "/api/memory":
+            content_len = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(content_len).decode("utf-8")
+            try:
+                payload = json.loads(body)
+                cle = payload.get("cle", "").strip()
+                valeur = payload.get("valeur", "").strip()
+                if cle and valeur:
+                    msg = agent.memory.memoriser_fait(cle, valeur)
+                    self.send_json({"statut": "OK", "message": msg, "memoire": agent.memory.obtenir_toute_la_memoire()})
+                else:
+                    self.send_json({"error": "Clé ou valeur manquante"}, status=400)
+            except Exception as e:
+                self.send_json({"error": str(e)}, status=500)
+        elif path == "/api/set_model":
             content_len = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(content_len).decode("utf-8")
             try:

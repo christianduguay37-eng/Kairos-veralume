@@ -275,6 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sendBtn.disabled = false;
             sendBtn.innerHTML = '<span>ÉVALUER & AGIR</span><span class="btn-icon">➔</span>';
             loadSandboxStatus();
+            loadMemoryStatus();
         }
     });
 
@@ -445,4 +446,52 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Erreur sandbox load:', err);
         }
     }
+
+    const factsList = document.getElementById('factsList');
+    const journalList = document.getElementById('journalList');
+    const refreshMemoryBtn = document.getElementById('refreshMemoryBtn');
+
+    if (refreshMemoryBtn) {
+        refreshMemoryBtn.addEventListener('click', loadMemoryStatus);
+    }
+
+    async function loadMemoryStatus() {
+        if (!factsList || !journalList) return;
+        try {
+            const resp = await fetch('/api/memory');
+            const data = await resp.json();
+
+            // Facts
+            factsList.innerHTML = '';
+            const facts = data.faits_et_preferences || {};
+            const keys = Object.keys(facts);
+            if (keys.length > 0) {
+                keys.forEach(k => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span style="color:var(--accent-cyan);font-weight:600">${escapeHtml(k)} :</span> ${escapeHtml(facts[k])}`;
+                    factsList.appendChild(li);
+                });
+            } else {
+                factsList.innerHTML = '<li><em>Aucun fait stocké</em></li>';
+            }
+
+            // Journal
+            journalList.innerHTML = '';
+            const journal = data.journal_souvenirs || [];
+            if (journal.length > 0) {
+                journal.slice(-4).reverse().forEach(j => {
+                    const li = document.createElement('li');
+                    li.textContent = `📝 ${j}`;
+                    journalList.appendChild(li);
+                });
+            } else {
+                journalList.innerHTML = '<li><em>Journal vide</em></li>';
+            }
+        } catch (err) {
+            console.error('Erreur chargement mémoire:', err);
+        }
+    }
+
+    // Chargement initial de la mémoire
+    loadMemoryStatus();
 });

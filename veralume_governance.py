@@ -401,6 +401,22 @@ def construire_outils(bac: BacASable,
         except Exception as e:
             return f"Erreur système : {e}"
 
+    def memoriser_outil(cle: str = "", valeur: str = "") -> str:
+        try:
+            from alix_memory import AlixMemory
+            mem = AlixMemory()
+            return mem.memoriser_fait(cle, valeur)
+        except Exception as e:
+            return f"Erreur mémoire : {e}"
+
+    def noter_souvenir_outil(note: str = "") -> str:
+        try:
+            from alix_memory import AlixMemory
+            mem = AlixMemory()
+            return mem.ajouter_note(note)
+        except Exception as e:
+            return f"Erreur mémoire : {e}"
+
     return {
         "lister": Outil("lister", lister, Reversibilite.REVERSIBLE,
                         {"sous_dossier": "quel dossier lister ?"},
@@ -420,6 +436,10 @@ def construire_outils(bac: BacASable,
                                {"url": "quelle page web lire ?"}),
         "ouvrir_systeme": Outil("ouvrir_systeme", ouvrir_systeme_outil, Reversibilite.REVERSIBLE,
                                 {"cible": "quel site web ou application Windows ouvrir ?"}),
+        "memoriser": Outil("memoriser", memoriser_outil, Reversibilite.REVERSIBLE,
+                           {"cle": "sujet à retenir", "valeur": "information à stocker"}),
+        "noter_souvenir": Outil("noter_souvenir", noter_souvenir_outil, Reversibilite.REVERSIBLE,
+                                {"note": "texte ou réflexion à inscrire dans le journal"}),
     }
 
 
