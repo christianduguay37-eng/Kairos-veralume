@@ -286,11 +286,27 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
                 sigma_objectif = max(sigma_objectif, 0.40)
                 break
 
-        # Mise à jour du tuple KAIROS avec le sigma objectif si nécessaire
-        if sigma_objectif != sigma:
-            sigma = sigma_objectif
+        # Alignement automatique de la directive fix: vers la licence Gatekeeper
+        directive_map = {
+            "rechercher_web": "web_search",
+            "lire_page_web": "fetch_url",
+            "ouvrir_systeme": "open_app",
+            "memoriser": "remember",
+            "noter_souvenir": "update_memory",
+            "lancer_moteur_de_reve": "dream_consolidation",
+            "diagnostiquer_volition": "audit_system",
+            "consulter_skills": "consult_skills",
+            "analyser_filtres_f9": "epistemic_audit_f9",
+            "lire": "inspect",
+            "lister": "inspect",
+            "ecrire": "patch_system",
+            "executer_commande": "execute_command",
+            "supprimer": "rollback_deploy"
+        }
+        if tool_name in directive_map:
+            target_fix = directive_map[tool_name]
             import re
-            tuple_v6 = re.sub(r"sigma=[\d\.]+", f"sigma={sigma:.2f}", tuple_v6)
+            tuple_v6 = re.sub(r"fix:[^\|]+", f"fix:{target_fix}", tuple_v6)
 
         audit_lucidite = LuciditeEpistemique.auditer_posture(sigma, delta, fc, user_prompt, tool_name)
 
