@@ -12,10 +12,13 @@ Distribué sous licence MIT.
 import json
 import os
 import shutil
+import subprocess
 import tempfile
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, Tuple
+
+OUTILS_EMPREINTE_NON_BORNEE = frozenset({"executer_commande", "ouvrir_systeme"})
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -41,6 +44,7 @@ class Constitution:
         self._humain: Dict[str, Any] = {
             "autoriser_suppression": False,
             "autoriser_hors_bac_a_sable": False,
+            "autoriser_execution_non_bornee": False,
             "redefinir_irreversibilite": False,
         }
 
@@ -319,6 +323,14 @@ class Outil:
     vide_legitime: frozenset = frozenset()
 
 
+def chemin_declare(args: Dict[str, Any]) -> Optional[str]:
+    """Balaie les clés usuelles contenant un chemin de fichier ou dossier."""
+    for k in ("chemin", "sous_dossier", "fichier", "destination", "source", "dossier"):
+        if k in args and isinstance(args[k], str):
+            return args[k]
+    return None
+
+
 class BacASable:
     def __init__(self, racine: str) -> None:
         self.racine = os.path.abspath(racine)
@@ -331,7 +343,10 @@ class BacASable:
         return os.path.commonpath([p, self.racine]) == self.racine
 
     def resoudre(self, chemin: str) -> str:
-        return os.path.abspath(os.path.join(self.racine, chemin))
+        p = os.path.abspath(os.path.join(self.racine, chemin))
+        if not self.dedans(chemin):
+            raise PermissionError(f"Chemin hors du bac à sable interdit : {chemin}")
+        return p
 
 
 def construire_outils(bac: BacASable,
@@ -460,13 +475,13 @@ def construire_outils(bac: BacASable,
                          "contenu": "quel contenu écrire ?"}),
         "supprimer": Outil("supprimer", supprimer, Reversibilite.IRREVERSIBLE,
                            {"chemin": "quel fichier supprimer ?"}),
-        "executer_commande": Outil("executer_commande", executer_commande, Reversibilite.RESTAURABLE,
+        "executer_commande": Outil("executer_commande", executer_commande, Reversibilite.IRREVERSIBLE,
                                    {"cmd": "quelle commande shell exécuter ?"}),
         "rechercher_web": Outil("rechercher_web", rechercher_web_outil, Reversibilite.REVERSIBLE,
                                 {"requete": "quelle recherche effectuer sur internet ?"}),
         "lire_page_web": Outil("lire_page_web", lire_page_web_outil, Reversibilite.REVERSIBLE,
                                {"url": "quelle page web lire ?"}),
-        "ouvrir_systeme": Outil("ouvrir_systeme", ouvrir_systeme_outil, Reversibilite.REVERSIBLE,
+        "ouvrir_systeme": Outil("ouvrir_systeme", ouvrir_systeme_outil, Reversibilite.IRREVERSIBLE,
                                 {"cible": "quel site web ou application Windows ouvrir ?"}),
         "memoriser": Outil("memoriser", memoriser_outil, Reversibilite.REVERSIBLE,
                            {"cle": "sujet à retenir", "valeur": "information à stocker"}),
@@ -506,6 +521,16 @@ class PriseDeTerre:
             return True, "restaurable — copie préalable en corbeille"
         if not self.c.verrouille("irreversible_requiert_ratification"):
             return True, "garde désactivée (verrouillé, humain seul)"
+
+        # Branche dédiée aux outils d'empreinte non bornée (commandes, OS)
+        if outil.nom in OUTILS_EMPREINTE_NON_BORNEE:
+            if not self.c.humain("autoriser_execution_non_bornee"):
+                return False, "exécution non bornée non autorisée (niveau 3, humain seul)"
+            ok = bool(self._ratifier(outil.nom, args))
+            self.demandes.append((outil.nom, dict(args), ok))
+            return ok, ("ratifié par le nœud humain" if ok else "refusé par le nœud humain")
+
+        # Branche suppression de fichiers
         if not self.c.humain("autoriser_suppression"):
             return False, "suppression non autorisée (niveau 3, humain seul)"
         ok = bool(self._ratifier(outil.nom, args))
@@ -570,19 +595,22 @@ class AgentVeralume:
             t.decision = "DEMANDER"
             return t
 
-        chemin = args.get("chemin", args.get("sous_dossier", ""))
-        if not self.bac.dedans(chemin):
+        chemin = chemin_declare(args)
+        if chemin is not None and not self.bac.dedans(chemin):
             t.structure.append("cible hors du bac à sable")
             t.hypothese = "franchissement de frontière N"
             t.validation.append("niveau 3 : autoriser_hors_bac_a_sable")
             t.decision = ("AGIR" if self.c.humain("autoriser_hors_bac_a_sable") else "REFUSER")
             return t
 
-        altere = outil.reversibilite is not Reversibilite.REVERSIBLE
-        cible = self.bac.resoudre(chemin)
-        pont = self.restauration.evaluer(cible, acte_ecrase=altere)
-        self.ponts.append(pont)
-        t.observe.append(str(pont))
+        if chemin is not None and outil.nom not in OUTILS_EMPREINTE_NON_BORNEE:
+            altere = outil.reversibilite is not Reversibilite.REVERSIBLE
+            cible = self.bac.resoudre(chemin)
+            pont = self.restauration.evaluer(cible, acte_ecrase=altere)
+            self.ponts.append(pont)
+            t.observe.append(str(pont))
+        else:
+            pont = None
 
         if outil.reversibilite is Reversibilite.RESTAURABLE and altere:
             if pont.existe and not pont.intact:
