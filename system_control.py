@@ -38,11 +38,21 @@ def ouvrir_site_ou_application(cible: str) -> str:
         "chatgpt": "https://chatgpt.com",
         "reddit": "https://www.reddit.com",
         "netflix": "https://www.netflix.com",
-        "wikipedia": "https://fr.wikipedia.org"
+        "wikipedia": "https://fr.wikipedia.org",
+        "facebook": "https://www.facebook.com",
+        "twitter": "https://x.com",
+        "x": "https://x.com",
+        "amazon": "https://www.amazon.ca",
+        "linkedin": "https://www.linkedin.com"
     }
 
     # 2. Raccourcis d'applications Windows
     apps_connues = {
+        "word": "winword.exe",
+        "winword": "winword.exe",
+        "wordpad": "wordpad.exe",
+        "excel": "excel.exe",
+        "powerpoint": "powerpnt.exe",
         "calculatrice": "calc.exe",
         "calculator": "calc.exe",
         "calc": "calc.exe",
@@ -54,11 +64,23 @@ def ouvrir_site_ou_application(cible: str) -> str:
         "code": "code",
         "explorateur": "explorer.exe",
         "fichiers": "explorer.exe",
+        "dossier": "explorer.exe",
         "terminal": "wt.exe",
         "powershell": "powershell.exe",
         "cmd": "cmd.exe",
         "spotify": "spotify.exe",
-        "paint": "mspaint.exe"
+        "paint": "mspaint.exe",
+        "chrome": "chrome.exe",
+        "google chrome": "chrome.exe",
+        "edge": "msedge.exe",
+        "ms edge": "msedge.exe",
+        "firefox": "firefox.exe",
+        "discord": "discord.exe",
+        "vlc": "vlc.exe",
+        "steam": "steam.exe",
+        "obs": "obs64.exe",
+        "gestionnaire des taches": "taskmgr.exe",
+        "task manager": "taskmgr.exe"
     }
 
     # Cas 1 : URL explicite
