@@ -40,6 +40,7 @@ class KairosV6Gatekeeper {
         "audit_system":          new Set(["lire", "lister", "diagnostiquer_volition"]),
         "consult_skills":        new Set(["lire", "lister", "consulter_skills"]),
         "epistemic_audit_f9":    new Set(["lire", "lister", "analyser_filtres_f9"]),
+        "epistemic_corpus":      new Set(["lire", "lister", "interroger_corpus_epistemique"]),
         "hold_and_probe":        new Set(["lire", "lister"])
     };
 

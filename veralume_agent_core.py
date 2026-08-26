@@ -198,6 +198,7 @@ Tu disposes des outils suivants :
 - "consulter_skills" : consulter et appliquer tes 36 compétences modulaires expertes (args: {})
 - "diagnostiquer_volition" : analyser la santé de la machine (RAM, CPU, disque) et formuler des propositions proactives (args: {})
 - "analyser_filtres_f9" : analyser un texte ou une affirmation selon la grille des 9 Filtres de Clôture F1-F9 de Christian Duguay (args: {"texte": "..."})
+- "interroger_corpus_epistemique" : rechercher des concepts théoriques dans le Grand Traité Méta-Synthèse (CPC, Hamiltonien, STRIC, etc.) (args: {"requete": "..."})
 
 Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cette structure :
 {
@@ -208,12 +209,12 @@ Pour chaque consigne de Christian, réponds STRICTEMENT au format JSON avec cett
   "delta": 0.0,
   "fc": 1.0,
   "action": {
-    "outil": "ecrire" | "lire" | "lister" | "executer_commande" | "supprimer" | "rechercher_web" | "lire_page_web" | "ouvrir_systeme" | "memoriser" | "noter_souvenir" | "lancer_moteur_de_reve" | "consulter_skills" | "diagnostiquer_volition" | "analyser_filtres_f9" | "aucun",
+    "outil": "ecrire" | "lire" | "lister" | "executer_commande" | "supprimer" | "rechercher_web" | "lire_page_web" | "ouvrir_systeme" | "memoriser" | "noter_souvenir" | "lancer_moteur_de_reve" | "consulter_skills" | "diagnostiquer_volition" | "analyser_filtres_f9" | "interroger_corpus_epistemique" | "aucun",
     "args": { ... }
   }
 }
 
-Directives fix: valides : epistemic_audit_f9, dream_consolidation, audit_system, consult_skills, remember, update_memory, open_app, launch_browser, web_search, fetch_url, update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
+Directives fix: valides : epistemic_corpus, epistemic_audit_f9, dream_consolidation, audit_system, consult_skills, remember, update_memory, open_app, launch_browser, web_search, fetch_url, update_config, patch_system, execute_command, run_script, test, read_only_audit, inspect, rollback_deploy, isolate_node, purge_database.
 Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et fix:inspect."""
 
         # Contexte temporel, mémoire d'Alix et fichiers existants
@@ -322,6 +323,11 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
                 action = {"outil": "analyser_filtres_f9", "args": {"texte": user_prompt}}
                 tuple_v6 = "domain:system|pathology:epistemic_closure|severity:low|episteme:[sigma=0.00,delta=0.00,FC=1.00]|activation:immediate|requires:none|prevents:none|fix:epistemic_audit_f9|section:core"
 
+            # 7. Interrogation du Grand Traité & Corpus Épistémique
+            elif any(k in prompt_lower for k in ["grand traité", "traité", "corpus", "théorie cpc", "hamiltonien", "chiralité", "registre"]):
+                action = {"outil": "interroger_corpus_epistemique", "args": {"requete": user_prompt}}
+                tuple_v6 = "domain:system|pathology:epistemic_invariance|severity:low|episteme:[sigma=0.00,delta=0.00,FC=1.00]|activation:immediate|requires:none|prevents:none|fix:epistemic_corpus|section:core"
+
         # Audit de Lucidité Épistémique & Calcul de Sigma Objectif Externe
         from lucidite_epistemique import LuciditeEpistemique
         tool_name = action.get("outil", "aucun")
@@ -354,6 +360,7 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
             "diagnostiquer_volition": "audit_system",
             "consulter_skills": "consult_skills",
             "analyser_filtres_f9": "epistemic_audit_f9",
+            "interroger_corpus_epistemique": "epistemic_corpus",
             "lire": "inspect",
             "lister": "inspect",
             "ecrire": "patch_system",
@@ -434,7 +441,7 @@ Si c'est une simple discussion, mets action = {"outil": "aucun", "args": {}} et 
                 }
 
                 # Synthèse intelligente si l'outil a produit des données riches
-                if tool_name in ["rechercher_web", "lire_page_web", "lire", "lancer_moteur_de_reve", "consulter_skills", "diagnostiquer_volition", "analyser_filtres_f9"]:
+                if tool_name in ["rechercher_web", "lire_page_web", "lire", "lancer_moteur_de_reve", "consulter_skills", "diagnostiquer_volition", "analyser_filtres_f9", "interroger_corpus_epistemique"]:
                     synth_prompt = f"Voici les informations réelles obtenues : \n{str(acte.resultat)[:1800]}\n\nRésume ces résultats en français de manière claire et directe pour Christian en réponse à sa question : '{user_prompt}'."
                     synth_res = self.query_llm([
                         {"role": "system", "content": "Tu es Veralume. Fais une synthèse claire et naturelle des informations trouvées."},

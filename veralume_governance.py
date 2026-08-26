@@ -464,6 +464,23 @@ def construire_outils(bac: BacASable,
         except Exception as e:
             return f"Erreur Filtres F9 : {e}"
 
+    def interroger_corpus_epistemique_outil(requete: str = "") -> str:
+        try:
+            from epistemic_memory.vector_store import EpistemicMemoryStore
+            store = EpistemicMemoryStore("data/epistemic_memory.json")
+            res = store.search(requete, top_k=3)
+            out = []
+            for chunk, score in res:
+                out.append({
+                    "titre": chunk.title,
+                    "registre": chunk.register,
+                    "score": round(score, 3),
+                    "extrait": chunk.content[:400]
+                })
+            return json.dumps(out, ensure_ascii=False, indent=2)
+        except Exception as e:
+            return f"Erreur Corpus Épistémique : {e}"
+
     return {
         "lister": Outil("lister", lister, Reversibilite.REVERSIBLE,
                         {"sous_dossier": "quel dossier lister ?"},
@@ -495,6 +512,8 @@ def construire_outils(bac: BacASable,
                                         {}, vide_legitime=frozenset({})),
         "analyser_filtres_f9": Outil("analyser_filtres_f9", analyser_filtres_f9_outil, Reversibilite.REVERSIBLE,
                                      {"texte": "quel texte analyser avec les 9 filtres de clôture F1-F9 ?"}),
+        "interroger_corpus_epistemique": Outil("interroger_corpus_epistemique", interroger_corpus_epistemique_outil, Reversibilite.REVERSIBLE,
+                                               {"requete": "sujet théorique ou conceptuel à rechercher dans le Grand Traité"}),
     }
 
 
